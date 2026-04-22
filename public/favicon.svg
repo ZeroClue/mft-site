@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" width="32" height="32">
+  <!-- Background with rounded corners -->
+  <rect width="32" height="32" rx="6" fill="#0F4C75"/>
+
+  <!-- Simplified file icon -->
+  <rect x="8" y="6" width="16" height="20" rx="2" fill="white"/>
+
+  <!-- Arrow -->
+  <path d="M12 13L18 16L12 19" stroke="#0F4C75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M18 16H10" stroke="#0F4C75" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Circuit dots -->
+  <circle cx="11" cy="25" r="1" fill="#0F4C75"/>
+  <circle cx="16" cy="25" r="1" fill="#0F4C75"/>
+  <circle cx="21" cy="25" r="1" fill="#0F4C75"/>
+</svg>
