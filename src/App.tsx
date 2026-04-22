@@ -142,7 +142,13 @@ function App() {
           <Terminal title="mftplus@demo:~">
             <div className="terminal-line">
               <span className="prompt">$</span>
-              <span className="command">mftctl create --name "partner-sync" \</span>
+              <span className="command">mftctl jobs create \</span>
+            </div>
+            <div className="terminal-line">
+              <span className="command indent">  --agent abc123 \</span>
+            </div>
+            <div className="terminal-line">
+              <span className="command indent">  --name "partner-sync" \</span>
             </div>
             <div className="terminal-line">
               <span className="command indent">  --source sftp://partners.example.com/incoming \</span>
@@ -155,28 +161,28 @@ function App() {
             </div>
             <div className="terminal-line output">
               <span className="success">✓</span>
-              <span> Transfer created: partner-sync</span>
+              <span> Job created successfully</span>
             </div>
             <div className="terminal-line">
               <span className="prompt">$</span>
-              <span className="command">mftctl list</span>
+              <span className="command">mftctl jobs list</span>
             </div>
             <div className="terminal-output">
               <table className="transfer-table">
                 <thead>
                   <tr>
+                    <th>ID</th>
                     <th>NAME</th>
-                    <th>SOURCE</th>
                     <th>SCHEDULE</th>
-                    <th>STATUS</th>
+                    <th>ENABLED</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
+                    <td>job_abc123</td>
                     <td>partner-sync</td>
-                    <td>sftp://...</td>
-                    <td>daily @ 2am</td>
-                    <td><span className="status success">active</span></td>
+                    <td>0 2 * * *</td>
+                    <td><span className="status success">true</span></td>
                   </tr>
                 </tbody>
               </table>
@@ -281,14 +287,16 @@ function App() {
             <div className="feature-icon">📅</div>
             <h3>Scheduled Transfers</h3>
             <p>Set up recurring transfers with cron syntax. Jobs persist across restarts with full run history and error details.</p>
-            <CodeBlock code="mftctl create --schedule '0 2 * * *' --source ./data --dest sftp://backup/" />
+            <CodeBlock code={`mftctl jobs create --agent <agent-id> \\
+  --schedule '0 2 * * *' \\
+  --source ./data --dest sftp://backup/`} />
           </div>
 
           <div className="feature-card">
             <div className="feature-icon">📋</div>
             <h3>Complete Audit Trail</h3>
             <p>Every transfer logged with source, destination, protocol, bytes, duration, and SHA-256 checksum verification.</p>
-            <CodeBlock code="mftctl logs --transfer-id abc123 --format json" />
+            <CodeBlock code="mftctl transfers list --status completed --limit 50" />
           </div>
 
           <div className="feature-card">
@@ -302,14 +310,18 @@ function App() {
             <div className="feature-icon">💻</div>
             <h3>Cross-Platform</h3>
             <p>Windows, macOS, Linux parity. ~5MB native bundle. System tray background operation. CLI + GUI interfaces.</p>
-            <CodeBlock code="# Install on any platform\nbrew tap mftplus/tap\nbrew install mftplus" />
+            <CodeBlock code={`# Download pre-built binary from
+# https://github.com/ZeroClue/MFTxyz/releases
+./mftctl login <api-key> --server http://localhost:3001`} />
           </div>
 
           <div className="feature-card">
             <div className="feature-icon">🔄</div>
             <h3>Multiple Protocols</h3>
             <p>SFTP, FTP, FTPS, and local file sync. One tool for all your transfer needs. Automatic retry on failure.</p>
-            <CodeBlock code="mftctl create --source sftp://files.example.com --dest ./local" />
+            <CodeBlock code={`mftctl jobs create --agent <agent-id> \\
+  --source sftp://files.example.com \\
+  --dest ./local --protocol sftp`} />
           </div>
 
           <div className="feature-card">
@@ -434,7 +446,7 @@ function App() {
               <li>✓ Custom integrations</li>
               <li>✓ Dedicated support & SLA</li>
             </ul>
-            <a href="mailto:enterprise@MFTPlus.co.za" className="pricing-cta">Contact Sales</a>
+            <a href="mailto:enterprise@mftplus.co.za" className="pricing-cta">Contact Sales</a>
           </div>
         </div>
       </section>
@@ -444,13 +456,13 @@ function App() {
           <h2>Ready to Modernize Your File Transfers?</h2>
           <p>Get started with MFTPlus today and experience reliable, secure file transfers.</p>
 
-          <a href="mailto:info@MFTPlus.co.za?subject=MFTPlus Inquiry" className="cta-large">
+          <a href="mailto:info@mftplus.co.za?subject=MFTPlus Inquiry" className="cta-large">
             Get Started
             <span className="cta-arrow">→</span>
           </a>
 
           <div className="contact-meta">
-            <p>Questions? Email us at <a href="mailto:info@MFTPlus.co.za">info@MFTPlus.co.za</a></p>
+            <p>Questions? Email us at <a href="mailto:info@mftplus.co.za">info@mftplus.co.za</a></p>
           </div>
         </div>
       </section>
@@ -458,7 +470,7 @@ function App() {
       <footer className="footer">
         <div className="footer-content">
           <div className="footer-links">
-            <a href="mailto:info@MFTPlus.co.za">Contact</a>
+            <a href="mailto:info@mftplus.co.za">Contact</a>
             <a href="#">Privacy Policy</a>
             <a href="#">Terms of Service</a>
           </div>
