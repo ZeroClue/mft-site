@@ -18,3 +18,10 @@ npm run build
 ## Deployment
 
 Auto-deploys to Vercel from the `main` branch.
+
+## Ownership
+
+| Site | Repo | Owner |
+|------|------|-------|
+| mftplus.co.za | ZeroClue/mft-site | CTO (tech) + CMO (content) |
+| docs.mftplus.co.za | ZeroClue/mft-docs | CMO |
