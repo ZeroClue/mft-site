@@ -95,6 +95,7 @@ function App() {
             <a href="#features">Features</a>
             <a href="#how-it-works">How It Works</a>
             <a href="#pricing">Pricing</a>
+            <a href="/releases">Releases</a>
             <a href="#contact" className="cta-button">Get Started</a>
           </div>
         </div>
