@@ -310,8 +310,7 @@ function App() {
             <div className="feature-icon">💻</div>
             <h3>Cross-Platform</h3>
             <p>Windows, macOS, Linux parity. ~5MB native bundle. System tray background operation. CLI + GUI interfaces.</p>
-            <CodeBlock code={`# Download pre-built binary from
-# https://github.com/ZeroClue/MFTxyz/releases
+            <CodeBlock code={`# Download installer from mftplus.co.za
 ./mftctl login <api-key> --server http://localhost:3001`} />
           </div>
 
