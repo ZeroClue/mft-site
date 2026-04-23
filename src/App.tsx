@@ -310,9 +310,7 @@ function App() {
             <div className="feature-icon">💻</div>
             <h3>Cross-Platform</h3>
             <p>Windows, macOS, Linux parity. ~5MB native bundle. System tray background operation. CLI + GUI interfaces.</p>
-            <CodeBlock code={`# Download pre-built binary from
-# https://github.com/ZeroClue/MFTxyz/releases
-./mftctl login <api-key> --server http://localhost:3001`} />
+            <CodeBlock code="./mftctl login <api-key> --server http://localhost:3001" />
           </div>
 
           <div className="feature-card">
@@ -370,7 +368,7 @@ function App() {
         <div className="section-header">
           <span className="section-tag">// PRICING</span>
           <h2>Simple, Transparent Pricing</h2>
-          <p>Per-seat pricing that scales with your team. No per-server fees.</p>
+          <p>Flat monthly pricing. No per-server fees. Pick the plan that fits your needs.</p>
         </div>
 
         <div className="pricing-container">
