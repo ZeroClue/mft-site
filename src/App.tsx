@@ -400,7 +400,7 @@ function App() {
             </div>
             <div className="pricing-price">
               <span className="price-value">$150</span>
-              <span className="price-period">/user/month</span>
+              <span className="price-period">/month</span>
             </div>
             <ul className="pricing-features">
               <li>✓ Everything in Community</li>
@@ -419,7 +419,7 @@ function App() {
             </div>
             <div className="pricing-price">
               <span className="price-value">$499</span>
-              <span className="price-period">/user/month</span>
+              <span className="price-period">/month</span>
             </div>
             <ul className="pricing-features">
               <li>✓ Everything in Starter</li>
