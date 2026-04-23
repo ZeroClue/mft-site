@@ -399,7 +399,7 @@ function App() {
               <div className="pricing-status">Popular</div>
             </div>
             <div className="pricing-price">
-              <span className="price-value">$29</span>
+              <span className="price-value">$150</span>
               <span className="price-period">/user/month</span>
             </div>
             <ul className="pricing-features">
@@ -418,7 +418,7 @@ function App() {
               <div className="pricing-status">Best Value</div>
             </div>
             <div className="pricing-price">
-              <span className="price-value">$79</span>
+              <span className="price-value">$499</span>
               <span className="price-period">/user/month</span>
             </div>
             <ul className="pricing-features">
@@ -437,7 +437,7 @@ function App() {
               <div className="pricing-status">Custom</div>
             </div>
             <div className="pricing-price">
-              <span className="price-value">Contact Us</span>
+              <span className="price-value">Custom</span>
             </div>
             <ul className="pricing-features">
               <li>✓ Everything in Pro</li>
