@@ -370,7 +370,7 @@ function App() {
         <div className="section-header">
           <span className="section-tag">// PRICING</span>
           <h2>Simple, Transparent Pricing</h2>
-          <p>Per-seat pricing that scales with your team. No per-server fees.</p>
+          <p>Choose the plan that fits your needs. No hidden fees, no per-server charges.</p>
         </div>
 
         <div className="pricing-container">
@@ -399,8 +399,8 @@ function App() {
               <div className="pricing-status">Popular</div>
             </div>
             <div className="pricing-price">
-              <span className="price-value">$29</span>
-              <span className="price-period">/user/month</span>
+              <span className="price-value">$150</span>
+              <span className="price-period">/month</span>
             </div>
             <ul className="pricing-features">
               <li>✓ Everything in Community</li>
@@ -418,8 +418,8 @@ function App() {
               <div className="pricing-status">Best Value</div>
             </div>
             <div className="pricing-price">
-              <span className="price-value">$79</span>
-              <span className="price-period">/user/month</span>
+              <span className="price-value">$499</span>
+              <span className="price-period">/month</span>
             </div>
             <ul className="pricing-features">
               <li>✓ Everything in Starter</li>
