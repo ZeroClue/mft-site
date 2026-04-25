@@ -26,6 +26,71 @@
     <!-- Additional SEO -->
     <link rel="canonical" href="https://www.mftplus.co.za/" />
     <meta name="robots" content="index, follow" />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://www.mftplus.co.za/#organization",
+          "name": "MFTPlus",
+          "url": "https://www.mftplus.co.za",
+          "logo": "https://www.mftplus.co.za/favicon.svg",
+          "email": "info@mftplus.co.za",
+          "description": "Modern file transfer for DevOps teams. Secure, scheduled file transfers with complete audit trails.",
+          "sameAs": []
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://www.mftplus.co.za/#website",
+          "url": "https://www.mftplus.co.za",
+          "name": "MFTPlus",
+          "publisher": {
+            "@id": "https://www.mftplus.co.za/#organization"
+          },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://www.mftplus.co.za/?s={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://www.mftplus.co.za/#software",
+          "name": "MFTPlus",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "Windows, macOS, Linux",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD",
+            "description": "Community edition is free. Starter plan from $150/month, Pro from $499/month."
+          },
+          "description": "Secure, scheduled file transfers with complete audit trails. A 5MB desktop agent that replaces expensive legacy MFT servers.",
+          "keywords": "MFT, file transfer, DevOps, SFTP, FTP, managed file transfer, scheduled transfers, audit trail, cross-platform"
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://www.mftplus.co.za/#webpage",
+          "url": "https://www.mftplus.co.za",
+          "name": "MFTPlus - Modern File Transfer for DevOps Teams",
+          "description": "Secure, scheduled file transfers with complete audit trails. A 5MB desktop agent that replaces expensive legacy MFT servers. Cross-platform support for Windows, macOS, and Linux.",
+          "isPartOf": {
+            "@id": "https://www.mftplus.co.za/#website"
+          },
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": "https://www.mftplus.co.za/og-image.png"
+          },
+          "about": {
+            "@id": "https://www.mftplus.co.za/#software"
+          }
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>
