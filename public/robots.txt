@@ -1,4 +1,4 @@
-# robots.txt for MFTPlus
+# robots.txt for MFTPlus — https://www.mftplus.co.za
 
 User-agent: *
 Allow: /
