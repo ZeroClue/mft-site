@@ -94,7 +94,7 @@ function App() {
       <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
         <div className="nav-content">
           <div className="nav-logo">
-            <span className="logo-text">MFTPlus</span>
+            <img src="/brand-assets/logo-full-dark.svg" alt="MFTPlus" style={{ height: '32px' }} />
           </div>
           <div className="nav-links">
             <a href="#features">Features</a>
@@ -308,8 +308,8 @@ function App() {
           <div className="feature-card">
             <div className="feature-icon">🔒</div>
             <h3>Enterprise Security</h3>
-            <p>AES-256-GCM encryption, OS keychain integration, private keys never transmitted, zero-knowledge architecture.</p>
-            <CodeBlock code="# Credentials stored in OS keychain\n# Never transmitted or stored in plaintext" />
+            <p>AES-256-GCM encryption, secure credential storage, private keys never transmitted, zero-knowledge architecture.</p>
+            <CodeBlock code="# Credentials encrypted at rest\n# Never transmitted or stored in plaintext" />
           </div>
 
           <div className="feature-card">
