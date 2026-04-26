@@ -1,4 +1,6 @@
+# robots.txt for MFTPlus — https://www.mftplus.co.za
+
 User-agent: *
 Allow: /
 
-Sitemap: https://mftplus.co.za/sitemap.xml
+Sitemap: https://www.mftplus.co.za/sitemap.xml
