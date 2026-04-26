@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MFTPlus Brand Concepts - Round 2</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 60px 40px;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+      min-height: 100vh;
+    }
+    .header {
+      max-width: 1200px;
+      margin: 0 auto 60px;
+      text-align: center;
+    }
+    .header h1 {
+      font-size: 48px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 16px;
+    }
+    .header p {
+      font-size: 18px;
+      color: #666;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+    .concepts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 32px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .concept {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .concept:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    }
+    .concept-header {
+      margin-bottom: 24px;
+    }
+    .concept-header h2 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 8px;
+    }
+    .concept-header p {
+      font-size: 14px;
+      color: #888;
+    }
+    .logo-display {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100px;
+    }
+    .logo-display img {
+      max-width: 100%;
+      height: auto;
+    }
+    .icon-display {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+    .icon-display img {
+      width: 48px;
+      height: 48px;
+    }
+    .palette {
+      margin-bottom: 20px;
+    }
+    .palette h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #444;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .swatches {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .swatch {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      border: 2px solid #eee;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .swatch:hover {
+      transform: scale(1.1);
+      z-index: 1;
+    }
+    .swatch::after {
+      content: attr(data-color);
+      position: absolute;
+      bottom: -28px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 11px;
+      font-family: monospace;
+      color: #666;
+      white-space: nowrap;
+    }
+    .typography {
+      margin-bottom: 20px;
+    }
+    .typography h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #444;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .typography p {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.6;
+    }
+    .usage {
+      border-top: 1px solid #eee;
+      padding-top: 20px;
+    }
+    .usage h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #444;
+      margin-bottom: 8px;
+    }
+    .usage p {
+      font-size: 13px;
+      color: #888;
+      line-height: 1.5;
+    }
+    .mode-examples {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .mode-example {
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+    }
+    .mode-example.light {
+      background: #F5F0EB;
+      color: #2C2416;
+    }
+    .mode-example.dark {
+      background: #2C2416;
+      color: #F5F0EB;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>MFTPlus Brand Concepts</h1>
+    <p>Three distinctive brand directions with actual design thinking — no AI defaults, no navy/teal, serif typography with character.</p>
+  </div>
+
+  <div class="concepts">
+    <!-- Concept 1: Monument -->
+    <div class="concept">
+      <div class="concept-header">
+        <h2>1. Monument Wordmark</h2>
+        <p>Foundation · Permanence · Warmth</p>
+      </div>
+
+      <div class="logo-display">
+        <img src="/brand-assets/concept1-monument-logo.svg" alt="Monument Wordmark Logo">
+      </div>
+
+      <div class="icon-display">
+        <img src="/brand-assets/concept1-monument-icon.svg" alt="Monument Icon">
+      </div>
+
+      <div class="palette">
+        <h3>Colors</h3>
+        <div class="swatches">
+          <div class="swatch" style="background: #8B7355" data-color="#8B7355" title="Warm Taupe"></div>
+          <div class="swatch" style="background: #2C2416" data-color="#2C2416" title="Deep Coffee"></div>
+          <div class="swatch" style="background: #D4A574" data-color="#D4A574" title="Terracotta"></div>
+          <div class="swatch" style="background: #F5F0EB" data-color="#F5F0EB" title="Off-white"></div>
+        </div>
+      </div>
+
+      <div class="typography">
+        <h3>Typography</h3>
+        <p><strong>GT Supera / Playfair Display</strong> — A serif with gravitas. The typography IS the logo.</p>
+      </div>
+
+      <div class="usage">
+        <h3>Usage</h3>
+        <p>Solid, established, warm. A brown-based palette (rare in tech). Feels permanent.</p>
+      </div>
+    </div>
+
+    <!-- Concept 2: Notation -->
+    <div class="concept">
+      <div class="concept-header">
+        <h2>2. Transfer Notation</h2>
+        <p>Precision · Intention · Editorial</p>
+      </div>
+
+      <div class="logo-display">
+        <img src="/brand-assets/concept2-notation-logo.svg" alt="Transfer Notation Logo">
+      </div>
+
+      <div class="icon-display">
+        <img src="/brand-assets/concept2-notation-icon.svg" alt="Notation Icon">
+      </div>
+
+      <div class="palette">
+        <h3>Colors</h3>
+        <div class="swatches">
+          <div class="swatch" style="background: #1A3A2F" data-color="#1A3A2F" title="Deep Forest"></div>
+          <div class="swatch" style="background: #3D5A4E" data-color="#3D5A4E" title="Sage"></div>
+          <div class="swatch" style="background: #C4A35A" data-color="#C4A35A" title="Mustard Gold"></div>
+          <div class="swatch" style="background: #F2F1ED" data-color="#F2F1ED" title="Bone"></div>
+        </div>
+      </div>
+
+      <div class="typography">
+        <h3>Typography</h3>
+        <p><strong>Lyon Display / Crimson Pro</strong> — Editorial serif. The bracket-plus is a proofreader's mark.</p>
+      </div>
+
+      <div class="usage">
+        <h3>Usage</h3>
+        <p>Precise, intentional, publishing aesthetic. Deep greens with gold accents.</p>
+      </div>
+    </div>
+
+    <!-- Concept 3: Weave -->
+    <div class="concept">
+      <div class="concept-header">
+        <h2>3. The Weave</h2>
+        <p>Connection · Craft · Elegance</p>
+      </div>
+
+      <div class="logo-display">
+        <img src="/brand-assets/concept3-weave-logo.svg" alt="Weave Logo">
+      </div>
+
+      <div class="icon-display">
+        <img src="/brand-assets/concept3-weave-icon.svg" alt="Weave Icon">
+      </div>
+
+      <div class="palette">
+        <h3>Colors</h3>
+        <div class="swatches">
+          <div class="swatch" style="background: #1F1A17" data-color="#1F1A17" title="Charcoal"></div>
+          <div class="swatch" style="background: #8B4513" data-color="#8B4513" title="Saddle Brown"></div>
+          <div class="swatch" style="background: #B8860B" data-color="#B8860B" title="Dark Goldenrod"></div>
+          <div class="swatch" style="background: #FAF8F5" data-color="#FAF8F5" title="Ivory"></div>
+        </div>
+      </div>
+
+      <div class="typography">
+        <h3>Typography</h3>
+        <p><strong>Tiempos / Source Serif 4</strong> — Contemporary serif. The weave creates the plus at crossing.</p>
+      </div>
+
+      <div class="usage">
+        <h3>Usage</h3>
+        <p>Elegant, connected, distinctive. Charcoal with brown undertones. The most iconic mark.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Copy hex codes on click
+    document.querySelectorAll('.swatch').forEach(swatch => {
+      swatch.addEventListener('click', () => {
+        const color = swatch.getAttribute('data-color');
+        navigator.clipboard.writeText(color).then(() => {
+          swatch.style.border = '2px solid #10b981';
+          setTimeout(() => {
+            swatch.style.border = '2px solid #eee';
+          }, 500);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

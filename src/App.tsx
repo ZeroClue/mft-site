@@ -94,7 +94,7 @@ function App() {
       <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
         <div className="nav-content">
           <div className="nav-logo">
-            <img src="/brand-assets/logo-full-dark.svg" alt="MFTPlus" style={{ height: '32px' }} />
+            <img src="/brand-assets/logo-full-dark.svg" alt="MFTPlus" className="logo-image" />
           </div>
           <div className="nav-links">
             <a href="#features">Features</a>
@@ -474,6 +474,9 @@ function App() {
 
       <footer className="footer">
         <div className="footer-content">
+          <div className="footer-brand">
+            <img src="/brand-assets/logo-full-dark.svg" alt="MFTPlus" className="footer-logo" />
+          </div>
           <div className="footer-links">
             <a href="mailto:info@mftplus.co.za">Contact</a>
             <a href="#">Privacy Policy</a>

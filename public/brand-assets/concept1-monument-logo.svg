@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 56" fill="none" width="240" height="56">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&amp;display=swap');
+    </style>
+  </defs>
+
+  <!-- MFTPlus Wordmark - Monument Concept -->
+  <!-- Using Playfair Display as proxy for GT Supera (serif with gravitas) -->
+  <text x="0" y="48" font-family="'Playfair Display', 'Georgia', serif" font-weight="900" font-size="52" fill="#2C2416" letter-spacing="-2">
+    MFT
+  </text>
+
+  <!-- Plus as superscript element - integrated with the T -->
+  <text x="148" y="28" font-family="'Playfair Display', 'Georgia', serif" font-weight="700" font-size="22" fill="#8B7355">
+    +
+  </text>
+
+  <!-- Full "Plus" text for clarity -->
+  <text x="172" y="48" font-family="'Playfair Display', 'Georgia', serif" font-weight="700" font-size="32" fill="#2C2416" letter-spacing="-1">
+    lus
+  </text>
+</svg>
