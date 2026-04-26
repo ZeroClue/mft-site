@@ -6,27 +6,29 @@
    CSS VARIABLES - Design Tokens
    ============================================================================ */
 :root {
-  /* Colors - Dark Terminal Theme */
-  --color-bg: #0D1117;
-  --color-bg-secondary: #161B22;
-  --color-bg-tertiary: #21262D;
-  --color-border: #30363D;
-  --color-border-bright: #484F58;
+  /* Colors - Weave Brand Palette (Dark Mode Default) */
+  --color-bg: #1F1A17;
+  --color-bg-secondary: #2A231E;
+  --color-bg-tertiary: #352D26;
+  --color-border: #3D342D;
+  --color-border-bright: #5C4F45;
 
-  /* Accents - MFTPlus Brand Colors */
-  --color-primary: #0F4C75;
-  --color-secondary: #00D9C0;
+  /* Accents - Weave Brand Colors */
+  --color-primary: #B8860B;
+  --color-secondary: #C8A96E;
+  --color-accent: #8B4513;
   --color-success: #10B981;
   --color-error: #EF4444;
-  --color-warning: #F59E0B;
+  --color-warning: #D4A843;
 
-  /* Text */
-  --color-text-primary: #ffffff;
-  --color-text-secondary: #b0b0b0;
-  --color-text-muted: #707070;
-  --color-text-code: #e0e0e0;
+  /* Text - Dark Mode */
+  --color-text-primary: #FAF8F5;
+  --color-text-secondary: #C8A96E;
+  --color-text-muted: #8B7355;
+  --color-text-code: #E8E4E0;
 
   /* Typography */
+  --font-heading: 'Source Serif 4', 'Georgia', 'Times New Roman', serif;
   --font-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Droid Sans Mono', 'Source Code Pro', monospace;
   --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
 
@@ -70,6 +72,10 @@ body {
   color: var(--color-text-primary);
   line-height: 1.6;
   overflow-x: hidden;
+}
+
+body h1, body h2, body h3, body h4, body h5, body h6 {
+  font-family: var(--font-heading);
 }
 
 .app {
@@ -126,7 +132,7 @@ body {
   right: 10%;
   width: 400px;
   height: 400px;
-  background: var(--color-primary);
+  background: var(--color-accent);
 }
 
 .orb-2 {
@@ -151,7 +157,7 @@ body {
 }
 
 .nav.scrolled {
-  background: rgba(13, 17, 23, 0.95);
+  background: rgba(31, 26, 23, 0.95);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--color-border);
 }
@@ -170,8 +176,9 @@ body {
   font-weight: 600;
 }
 
-.logo-text {
-  color: var(--color-text-primary);
+.logo-image {
+  height: 32px;
+  width: auto;
 }
 
 .nav-links {
@@ -202,7 +209,7 @@ body {
 
 .cta-button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(15, 76, 117, 0.3);
+  box-shadow: 0 4px 12px rgba(184, 134, 11, 0.3);
 }
 
 /* ============================================================================
@@ -222,7 +229,7 @@ section {
 .section-tag {
   font-family: var(--font-mono);
   font-size: 0.85rem;
-  color: var(--color-primary);
+  color: var(--color-secondary);
   display: block;
   margin-bottom: var(--space-md);
   letter-spacing: 2px;
@@ -321,7 +328,7 @@ section {
 
 .cta-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(15, 76, 117, 0.4);
+  box-shadow: 0 8px 24px rgba(184, 134, 11, 0.4);
 }
 
 .cta-secondary {
@@ -367,7 +374,7 @@ section {
   font-family: var(--font-mono);
   font-size: 2rem;
   font-weight: 700;
-  color: var(--color-primary);
+  color: var(--color-secondary);
   display: block;
 }
 
@@ -664,7 +671,7 @@ section {
 
 .comparison-table th.highlight,
 .comparison-table td.highlight {
-  background: rgba(15, 76, 117, 0.1);
+  background: rgba(184, 134, 11, 0.15);
   color: var(--color-primary);
 }
 
@@ -702,7 +709,7 @@ section {
 }
 
 .feature-card:hover {
-  border-color: var(--color-primary);
+  border-color: var(--color-secondary);
 }
 
 .feature-icon {
@@ -753,7 +760,7 @@ section {
   width: 60px;
   height: 60px;
   background: var(--color-bg-secondary);
-  border: 2px solid var(--color-primary);
+  border: 2px solid var(--color-secondary);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -761,7 +768,7 @@ section {
   font-family: var(--font-mono);
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--color-primary);
+  color: var(--color-secondary);
   margin-bottom: var(--space-lg);
 }
 
@@ -869,7 +876,7 @@ section {
 
 .pricing-cta:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(15, 76, 117, 0.4);
+  box-shadow: 0 8px 24px rgba(184, 134, 11, 0.4);
 }
 
 .pricing-cta.disabled {
@@ -928,7 +935,7 @@ section {
 
 .cta-large:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(15, 76, 117, 0.4);
+  box-shadow: 0 12px 32px rgba(184, 134, 11, 0.4);
 }
 
 .contact-meta {
@@ -938,7 +945,7 @@ section {
 }
 
 .contact-meta a {
-  color: var(--color-primary);
+  color: var(--color-secondary);
   text-decoration: none;
 }
 
@@ -961,6 +968,16 @@ section {
   gap: var(--space-xl);
 }
 
+.footer-brand {
+  display: flex;
+  align-items: center;
+}
+
+.footer-logo {
+  height: 28px;
+  width: auto;
+}
+
 .footer-links {
   display: flex;
   gap: var(--space-xl);
@@ -974,7 +991,7 @@ section {
 }
 
 .footer-links a:hover {
-  color: var(--color-primary);
+  color: var(--color-secondary);
 }
 
 .footer-copy {
