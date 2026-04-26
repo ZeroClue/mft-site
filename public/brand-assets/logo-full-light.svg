@@ -1,27 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 56" fill="none" width="240" height="56">
-  <defs>
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@600;700&display=swap');
-    </style>
-  </defs>
-
   <!-- Weave lines - two lines that cross to create a plus -->
   <g stroke-width="5" stroke-linecap="square">
-    <!-- Horizontal line - saddle brown -->
     <line x1="4" y1="28" x2="88" y2="28" stroke="#8B4513"/>
-
-    <!-- Vertical line - charcoal -->
     <line x1="46" y1="4" x2="46" y2="52" stroke="#1F1A17"/>
   </g>
 
   <!-- Weave effect: horizontal goes over at crossing -->
   <rect x="41" y="23" width="10" height="10" fill="#8B4513" stroke="none"/>
 
-  <!-- Plus emerges at crossing - dark goldenrod -->
+  <!-- Plus emerges at crossing -->
   <circle cx="46" cy="28" r="4" fill="#B8860B"/>
 
-  <!-- MFTPlus text - positioned after the weave mark -->
-  <text x="100" y="40" font-family="'Source Serif 4', 'Georgia', serif" font-weight="600" font-size="32" fill="#1F1A17" letter-spacing="1">
+  <!-- MFTPlus text - Georgia fallback works in img tags -->
+  <text x="100" y="40" font-family="Georgia, 'Times New Roman', serif" font-weight="600" font-size="32" fill="#1F1A17" letter-spacing="1">
     MFTPlus
   </text>
 </svg>
