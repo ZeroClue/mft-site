@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { track } from '@vercel/analytics'
 import './App.css'
 
 function Terminal({ children, title = "terminal@mftplus" }: { children: React.ReactNode; title?: string }) {
@@ -52,6 +53,10 @@ function App() {
   const [scrolled, setScrolled] = useState(false)
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set())
 
+  const trackConversion = (_event: React.MouseEvent<HTMLAnchorElement>, action: string) => {
+    track('cta_click', { action, location: window.location.pathname })
+  }
+
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50)
     window.addEventListener('scroll', handleScroll)
@@ -95,8 +100,8 @@ function App() {
             <a href="#features">Features</a>
             <a href="#how-it-works">How It Works</a>
             <a href="#pricing">Pricing</a>
-            <a href="/releases">Releases</a>
-            <a href="#contact" className="cta-button">Get Started</a>
+            <a href="/releases" onClick={(e) => trackConversion(e, 'releases_nav')}>Releases</a>
+            <a href="#contact" className="cta-button" onClick={(e) => trackConversion(e, 'get_started_nav')}>Get Started</a>
           </div>
         </div>
       </nav>
@@ -114,11 +119,11 @@ function App() {
           </p>
 
           <div className="hero-cta">
-            <a href="#contact" className="cta-primary">
+            <a href="#contact" className="cta-primary" onClick={(e) => trackConversion(e, 'get_started_hero')}>
               Get Started
               <span className="cta-arrow">→</span>
             </a>
-            <a href="#how-it-works" className="cta-secondary">
+            <a href="#how-it-works" className="cta-secondary" onClick={(e) => trackConversion(e, 'how_it_works')}>
               How It Works
             </a>
           </div>
@@ -390,7 +395,7 @@ function App() {
               <li>✓ Command-line interface</li>
               <li>✓ Community support</li>
             </ul>
-            <a href="#contact" className="pricing-cta">Get Started</a>
+            <a href="#contact" className="pricing-cta" onClick={(e) => trackConversion(e, 'get_started_community')}>Get Started</a>
           </div>
 
           <div className="pricing-card">
@@ -409,7 +414,7 @@ function App() {
               <li>✓ Web dashboard</li>
               <li>✓ Email support</li>
             </ul>
-            <a href="#contact" className="pricing-cta">Start Free Trial</a>
+            <a href="#contact" className="pricing-cta" onClick={(e) => trackConversion(e, 'start_trial_starter')}>Start Free Trial</a>
           </div>
 
           <div className="pricing-card">
@@ -428,7 +433,7 @@ function App() {
               <li>✓ API access</li>
               <li>✓ Priority support</li>
             </ul>
-            <a href="#contact" className="pricing-cta">Start Free Trial</a>
+            <a href="#contact" className="pricing-cta" onClick={(e) => trackConversion(e, 'start_trial_pro')}>Start Free Trial</a>
           </div>
 
           <div className="pricing-card coming-soon">
@@ -446,7 +451,7 @@ function App() {
               <li>✓ Custom integrations</li>
               <li>✓ Dedicated support & SLA</li>
             </ul>
-            <a href="mailto:enterprise@mftplus.co.za" className="pricing-cta">Contact Sales</a>
+            <a href="mailto:enterprise@mftplus.co.za" className="pricing-cta" onClick={(e) => trackConversion(e, 'contact_enterprise')}>Contact Sales</a>
           </div>
         </div>
       </section>
@@ -456,7 +461,7 @@ function App() {
           <h2>Ready to Modernize Your File Transfers?</h2>
           <p>Get started with MFTPlus today and experience reliable, secure file transfers.</p>
 
-          <a href="mailto:info@mftplus.co.za?subject=MFTPlus Inquiry" className="cta-large">
+          <a href="mailto:info@mftplus.co.za?subject=MFTPlus Inquiry" className="cta-large" onClick={(e) => trackConversion(e, 'contact_main')}>
             Get Started
             <span className="cta-arrow">→</span>
           </a>

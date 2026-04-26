@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mftplus.co.za/sitemap.xml
