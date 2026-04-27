@@ -303,8 +303,10 @@ function App() {
           <div className="feature-card">
             <div className="feature-icon">🔒</div>
             <h3>Enterprise Security</h3>
-            <p>AES-256-GCM encryption, OS keychain integration, private keys never transmitted, zero-knowledge architecture.</p>
-            <CodeBlock code="# Credentials stored in OS keychain\n# Never transmitted or stored in plaintext" />
+            <p>TLS-encrypted transfers, API key authentication, private keys never stored in plaintext. Full audit trail for compliance.</p>
+            <CodeBlock code={`mftctl jobs create --agent <agent-id> \\
+  --source sftp://secure.example.com/data \\
+  --dest ./incoming --protocol sftp`} />
           </div>
 
           <div className="feature-card">
@@ -327,8 +329,10 @@ function App() {
           <div className="feature-card">
             <div className="feature-icon">⚡</div>
             <h3>Self-Healing</h3>
-            <p>Automatic retry with exponential backoff. Network interruptions don't mean failed transfers. Resume partial transfers.</p>
-            <CodeBlock code="# Automatically retries on failure\n# Configurable max attempts and delays" />
+            <p>Automatic retry with exponential backoff. Network interruptions don't mean failed transfers. Configurable max attempts.</p>
+            <CodeBlock code={`mftctl jobs create --agent <agent-id> \\
+  --source sftp://partner.example.com \\
+  --dest ./backup --max-retries 5 --retry-delay 30`} />
           </div>
         </div>
       </section>
