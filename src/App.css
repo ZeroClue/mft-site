@@ -14,7 +14,7 @@
   --color-border-bright: #484F58;
 
   /* Accents - MFTPlus Brand Colors */
-  --color-primary: #0F4C75;
+  --color-primary: #B8860B;
   --color-secondary: #00D9C0;
   --color-success: #10B981;
   --color-error: #EF4444;
@@ -362,7 +362,7 @@ section {
 
 .cta-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(15, 76, 117, 0.4);
+  box-shadow: 0 8px 24px rgba(184, 134, 11, 0.4);
 }
 
 .cta-secondary {
@@ -705,7 +705,7 @@ section {
 
 .comparison-table th.highlight,
 .comparison-table td.highlight {
-  background: rgba(15, 76, 117, 0.1);
+  background: rgba(184, 134, 11, 0.1);
   color: var(--color-primary);
 }
 
@@ -899,8 +899,8 @@ section {
 
 .pricing-cta {
   padding: var(--space-lg) var(--space-xl);
-  background: var(--color-primary);
-  color: var(--color-bg);
+  background: var(--mft-goldenrod);
+  color: var(--mft-charcoal);
   text-decoration: none;
   border-radius: var(--radius-sm);
   font-weight: 600;
@@ -909,8 +909,10 @@ section {
 }
 
 .pricing-cta:hover {
+  background: var(--mft-saddleBrown);
+  color: var(--mft-ivory);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(15, 76, 117, 0.4);
+  box-shadow: 0 8px 24px rgba(218, 165, 32, 0.3);
 }
 
 .pricing-cta.disabled {
@@ -958,8 +960,8 @@ section {
   align-items: center;
   gap: var(--space-sm);
   padding: var(--space-xl) var(--space-3xl);
-  background: var(--color-primary);
-  color: var(--color-bg);
+  background: var(--mft-goldenrod);
+  color: var(--mft-charcoal);
   text-decoration: none;
   border-radius: var(--radius-sm);
   font-weight: 600;
@@ -968,8 +970,10 @@ section {
 }
 
 .cta-large:hover {
+  background: var(--mft-saddleBrown);
+  color: var(--mft-ivory);
   transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(15, 76, 117, 0.4);
+  box-shadow: 0 12px 32px rgba(218, 165, 32, 0.3);
 }
 
 .contact-meta {
@@ -979,7 +983,7 @@ section {
 }
 
 .contact-meta a {
-  color: var(--color-primary);
+  color: var(--mft-goldenrod);
   text-decoration: none;
 }
 
