@@ -177,7 +177,7 @@ body {
 }
 
 .logo-text {
-  color: var(--color-text-primary);
+  color: #D4A017;
 }
 
 .nav-links {
@@ -199,8 +199,8 @@ body {
 
 .cta-button {
   padding: var(--space-sm) var(--space-lg);
-  background: var(--color-primary);
-  color: var(--color-bg) !important;
+  background: #D4A017;
+  color: #FFFFF0 !important;
   border-radius: var(--radius-sm);
   font-weight: 500;
   transition: transform var(--transition-fast), box-shadow var(--transition-fast);
@@ -208,7 +208,7 @@ body {
 
 .cta-button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(15, 76, 117, 0.3);
+  box-shadow: 0 4px 12px rgba(212, 160, 23, 0.3);
 }
 
 /* Weave Brand CTA Buttons */
