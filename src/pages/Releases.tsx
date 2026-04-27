@@ -18,7 +18,7 @@ interface Release {
 const releases: Release[] = [
   {
     version: '0.1.0',
-    date: '2025-12-15',
+    date: '2026-04-27',
     stable: true,
     downloads: [
       {
@@ -70,12 +70,14 @@ function ReleasesPage() {
       <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
         <div className="nav-content">
           <div className="nav-logo">
-            <span className="logo-text">MFTPlus</span>
+            <img src="/brand-assets/logo-full-dark.svg" alt="MFTPlus" className="logo-img" />
           </div>
           <div className="nav-links">
-            <a href="/">Home</a>
+            <a href="/#features">Features</a>
+            <a href="/#how-it-works">How It Works</a>
+            <a href="/#pricing">Pricing</a>
             <a href="/releases" className="active">Releases</a>
-            <a href="/" className="cta-button">Get Started</a>
+            <a href="https://dashboard.mftplus.co.za/signup" className="nav-cta-signup">Sign Up</a>
           </div>
         </div>
       </nav>
@@ -125,12 +127,12 @@ function ReleasesPage() {
       <footer className="footer">
         <div className="footer-content">
           <div className="footer-links">
-            <a href="mailto:info@mftplus.co.za">Contact</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
+            <a href={'mailto:' + ['info','mftplus.co.za'].join('@')}>Contact</a>
+            <a href="/privacy">Privacy Policy</a>
+            <a href="/terms">Terms of Service</a>
           </div>
           <div className="footer-copy">
-            <p>© 2026 MFTPlus. Built with Rust + Tauri.</p>
+            <p>&copy; 2026 MFTPlus. All rights reserved.</p>
           </div>
         </div>
       </footer>
