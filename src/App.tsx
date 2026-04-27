@@ -475,6 +475,8 @@ function App() {
         <div className="footer-content">
           <div className="footer-links">
             <a href={'mailto:' + ['info','mftplus.co.za'].join('@')}>Contact</a>
+            <a href="/privacy">Privacy Policy</a>
+            <a href="/terms">Terms of Service</a>
           </div>
           <div className="footer-copy">
             <p>&copy; 2026 MFTPlus. All rights reserved.</p>
