@@ -1,0 +1,126 @@
+/* ============================================================================
+   LEGAL PAGES - Privacy Policy & Terms of Service
+   Uses existing dark terminal theme from App.css
+   ============================================================================ */
+
+.legal-page {
+  min-height: 100vh;
+  position: relative;
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+}
+
+.legal-content {
+  position: relative;
+  z-index: 1;
+  padding-top: 100px;
+}
+
+.legal-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: var(--space-3xl) var(--space-xl) var(--space-4xl);
+}
+
+.legal-container h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: var(--space-sm);
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+}
+
+.legal-updated {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  margin-bottom: var(--space-2xl);
+  font-style: italic;
+}
+
+.legal-section {
+  margin-bottom: var(--space-3xl);
+  background: rgba(22, 27, 34, 0.5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  border-left: 3px solid var(--mft-goldenrod);
+  transition: all var(--transition-normal) ease;
+}
+
+.legal-section:hover {
+  border-color: var(--color-border-bright);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.legal-section h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: var(--space-md);
+  color: var(--mft-goldenrod);
+}
+
+.legal-section p {
+  margin-bottom: var(--space-md);
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+}
+
+.legal-section ul {
+  margin: var(--space-md) 0;
+  padding-left: var(--space-xl);
+  list-style: none;
+}
+
+.legal-section li {
+  margin-bottom: var(--space-sm);
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  position: relative;
+}
+
+.legal-section li::before {
+  content: '•';
+  position: absolute;
+  left: -1.25rem;
+  color: var(--mft-goldenrod);
+  font-weight: bold;
+}
+
+.legal-section strong {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.legal-section a {
+  color: var(--mft-goldenrod);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--transition-fast) ease;
+}
+
+.legal-section a:hover {
+  border-bottom-color: var(--mft-goldenrod);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .legal-container {
+    padding: var(--space-xl) var(--space-md) var(--space-3xl);
+  }
+
+  .legal-container h1 {
+    font-size: 2rem;
+  }
+
+  .legal-section {
+    padding: var(--space-lg);
+  }
+
+  .legal-section h2 {
+    font-size: 1.25rem;
+  }
+
+  .nav-links a:not(.nav-cta-signup):not(.active) {
+    display: none;
+  }
+}
