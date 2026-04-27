@@ -446,7 +446,7 @@ function App() {
               <li>✓ Custom integrations</li>
               <li>✓ Dedicated support & SLA</li>
             </ul>
-            <a href="mailto:enterprise@mftplus.co.za" className="pricing-cta">Contact Sales</a>
+            <a href={'mailto:' + ['enterprise','mftplus.co.za'].join('@')} className="pricing-cta">Contact Sales</a>
           </div>
         </div>
       </section>
@@ -456,13 +456,13 @@ function App() {
           <h2>Ready to Modernize Your File Transfers?</h2>
           <p>Get started with MFTPlus today and experience reliable, secure file transfers.</p>
 
-          <a href="mailto:info@mftplus.co.za?subject=MFTPlus Inquiry" className="cta-large">
+          <a href={'mailto:' + ['info','mftplus.co.za'].join('@') + '?subject=MFTPlus Inquiry'} className="cta-large">
             Get Started
             <span className="cta-arrow">→</span>
           </a>
 
           <div className="contact-meta">
-            <p>Questions? Email us at <a href="mailto:info@mftplus.co.za">info@mftplus.co.za</a></p>
+            <p>Questions? Email us at <a href={'mailto:' + ['info','mftplus.co.za'].join('@')}>{['info','mftplus.co.za'].join('@')}</a></p>
           </div>
         </div>
       </section>
@@ -470,12 +470,10 @@ function App() {
       <footer className="footer">
         <div className="footer-content">
           <div className="footer-links">
-            <a href="mailto:info@mftplus.co.za">Contact</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
+            <a href={'mailto:' + ['info','mftplus.co.za'].join('@')}>Contact</a>
           </div>
           <div className="footer-copy">
-            <p>© 2026 MFTPlus. Built with Rust + Tauri.</p>
+            <p>&copy; 2026 MFTPlus. All rights reserved.</p>
           </div>
         </div>
       </footer>
