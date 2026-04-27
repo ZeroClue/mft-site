@@ -25,11 +25,10 @@ function TermsOfServicePage() {
             <img src="/brand-assets/logo-full-dark.svg" alt="MFTPlus" className="logo-img" />
           </div>
           <div className="nav-links">
-            <a href="/">Home</a>
-            <a href="#features">Features</a>
-            <a href="#pricing">Pricing</a>
-            <a href="/privacy">Privacy</a>
-            <a href="/terms" className="active">Terms</a>
+            <a href="/#features">Features</a>
+            <a href="/#how-it-works">How It Works</a>
+            <a href="/#pricing">Pricing</a>
+            <a href="/releases">Releases</a>
             <a href="https://dashboard.mftplus.co.za/signup" className="nav-cta-signup">Sign Up</a>
           </div>
         </div>
@@ -157,7 +156,7 @@ function TermsOfServicePage() {
             <p>For questions about these Terms, contact us at:</p>
             <p>
               <strong>Email:</strong>{' '}
-              <a href="mailto:legal@mftplus.co.za">legal@mftplus.co.za</a>
+              <a href={'mailto:' + ['legal','mftplus.co.za'].join('@')}>{['legal','mftplus.co.za'].join('@')}</a>
             </p>
             <p>
               <strong>Company:</strong> CoolMinds Software (Pty) Ltd.<br />
@@ -170,9 +169,9 @@ function TermsOfServicePage() {
       <footer className="footer">
         <div className="footer-content">
           <div className="footer-links">
-            <a href="mailto:info@mftplus.co.za">Contact</a>
+            <a href={'mailto:' + ['info','mftplus.co.za'].join('@')}>Contact</a>
             <a href="/privacy">Privacy Policy</a>
-            <a href="/terms" className="active">Terms of Service</a>
+            <a href="/terms">Terms of Service</a>
           </div>
           <div className="footer-copy">
             <p>&copy; 2026 MFTPlus. All rights reserved.</p>

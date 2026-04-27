@@ -25,11 +25,10 @@ function PrivacyPolicyPage() {
             <img src="/brand-assets/logo-full-dark.svg" alt="MFTPlus" className="logo-img" />
           </div>
           <div className="nav-links">
-            <a href="/">Home</a>
-            <a href="#features">Features</a>
-            <a href="#pricing">Pricing</a>
-            <a href="/privacy" className="active">Privacy</a>
-            <a href="/terms">Terms</a>
+            <a href="/#features">Features</a>
+            <a href="/#how-it-works">How It Works</a>
+            <a href="/#pricing">Pricing</a>
+            <a href="/releases">Releases</a>
             <a href="https://dashboard.mftplus.co.za/signup" className="nav-cta-signup">Sign Up</a>
           </div>
         </div>
@@ -139,7 +138,7 @@ function PrivacyPolicyPage() {
             <p>For privacy-related inquiries, requests, or complaints, contact us at:</p>
             <p>
               <strong>Email:</strong>{' '}
-              <a href="mailto:privacy@mftplus.co.za">privacy@mftplus.co.za</a>
+              <a href={'mailto:' + ['privacy','mftplus.co.za'].join('@')}>{['privacy','mftplus.co.za'].join('@')}</a>
             </p>
           </section>
         </div>
@@ -148,8 +147,8 @@ function PrivacyPolicyPage() {
       <footer className="footer">
         <div className="footer-content">
           <div className="footer-links">
-            <a href="mailto:info@mftplus.co.za">Contact</a>
-            <a href="/privacy" className="active">Privacy Policy</a>
+            <a href={'mailto:' + ['info','mftplus.co.za'].join('@')}>Contact</a>
+            <a href="/privacy">Privacy Policy</a>
             <a href="/terms">Terms of Service</a>
           </div>
           <div className="footer-copy">
