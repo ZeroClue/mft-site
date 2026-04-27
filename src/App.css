@@ -171,13 +171,13 @@ body {
 }
 
 .nav-logo {
-  font-family: var(--font-mono);
-  font-size: 1.25rem;
-  font-weight: 600;
+  display: flex;
+  align-items: center;
 }
 
-.logo-text {
-  color: #D4A017;
+.logo-img {
+  height: 36px;
+  width: auto;
 }
 
 .nav-links {
