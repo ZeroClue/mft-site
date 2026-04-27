@@ -96,7 +96,7 @@ function App() {
             <a href="#how-it-works">How It Works</a>
             <a href="#pricing">Pricing</a>
             <a href="/releases">Releases</a>
-            <a href="#contact" className="cta-button">Get Started</a>
+            <a href="https://dashboard.mftplus.co.za/user/signup" className="nav-cta-signup">Sign Up</a>
           </div>
         </div>
       </nav>
@@ -114,8 +114,8 @@ function App() {
           </p>
 
           <div className="hero-cta">
-            <a href="#contact" className="cta-primary">
-              Get Started
+            <a href="https://dashboard.mftplus.co.za/user/signup" className="cta-primary cta-goldenrod">
+              Get Started Free
               <span className="cta-arrow">→</span>
             </a>
             <a href="#how-it-works" className="cta-secondary">
@@ -390,7 +390,7 @@ function App() {
               <li>✓ Command-line interface</li>
               <li>✓ Community support</li>
             </ul>
-            <a href="#contact" className="pricing-cta">Get Started</a>
+            <a href="https://dashboard.mftplus.co.za/user/signup" className="pricing-cta cta-goldenrod">Get Started</a>
           </div>
 
           <div className="pricing-card">
@@ -409,7 +409,7 @@ function App() {
               <li>✓ Web dashboard</li>
               <li>✓ Email support</li>
             </ul>
-            <a href="#contact" className="pricing-cta">Start Free Trial</a>
+            <a href="https://dashboard.mftplus.co.za/user/signup" className="pricing-cta cta-goldenrod">Start Free Trial</a>
           </div>
 
           <div className="pricing-card">
@@ -428,7 +428,7 @@ function App() {
               <li>✓ API access</li>
               <li>✓ Priority support</li>
             </ul>
-            <a href="#contact" className="pricing-cta">Start Free Trial</a>
+            <a href="https://dashboard.mftplus.co.za/user/signup" className="pricing-cta cta-goldenrod">Start Free Trial</a>
           </div>
 
           <div className="pricing-card coming-soon">
