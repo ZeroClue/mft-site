@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" width="48" height="48">
+  <!-- Deep forest green background -->
+  <rect width="48" height="48" fill="#1A3A2F"/>
+
+  <!-- Bracket mark - sage -->
+  <path d="M 6 4 L 6 44 L 42 44" stroke="#8B9A83" stroke-width="4" fill="none" stroke-linecap="square"/>
+
+  <!-- Plus closing element - mustard gold -->
+  <g stroke="#C4A35A" stroke-width="3" stroke-linecap="round">
+    <line x1="38" y1="44" x2="44" y2="44"/>
+    <line x1="41" y1="41" x2="41" y2="47"/>
+  </g>
+</svg>

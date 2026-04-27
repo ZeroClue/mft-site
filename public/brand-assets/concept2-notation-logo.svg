@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 56" fill="none" width="240" height="56">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@600;700&amp;display=swap');
+    </style>
+  </defs>
+
+  <!-- Bracket-Plus Mark - opens at M, extends through FT, closes as plus -->
+  <path d="M 4 4 L 4 52 L 76 52" stroke="#1A3A2F" stroke-width="4" fill="none" stroke-linecap="square"/>
+
+  <!-- MFT Text - positioned within the bracket -->
+  <text x="20" y="40" font-family="'Crimson Pro', 'Georgia', serif" font-weight="700" font-size="36" fill="#1A3A2F" letter-spacing="3">
+    MFT
+  </text>
+
+  <!-- Plus as closing element of bracket - mustard gold accent -->
+  <g stroke="#C4A35A" stroke-width="4" stroke-linecap="round">
+    <line x1="72" y1="52" x2="80" y2="52"/>
+    <line x1="76" y1="48" x2="76" y2="56"/>
+  </g>
+
+  <!-- Full "Plus" text -->
+  <text x="100" y="40" font-family="'Crimson Pro', 'Georgia', serif" font-weight="600" font-size="32" fill="#1A3A2F" letter-spacing="1">
+    Plus
+  </text>
+</svg>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 56" fill="none" width="240" height="56">
+  <!-- Weave lines - two lines that cross to create a plus -->
+  <g stroke-width="5" stroke-linecap="square">
+    <line x1="4" y1="28" x2="88" y2="28" stroke="#C8A96E"/>
+    <line x1="46" y1="4" x2="46" y2="52" stroke="#FAF8F5"/>
+  </g>
+
+  <!-- Weave effect: horizontal goes over at crossing -->
+  <rect x="41" y="23" width="10" height="10" fill="#C8A96E" stroke="none"/>
+
+  <!-- Plus emerges at crossing -->
+  <circle cx="46" cy="28" r="4" fill="#D4A843"/>
+
+  <!-- MFTPlus text - Georgia fallback works in img tags -->
+  <text x="100" y="40" font-family="Georgia, 'Times New Roman', serif" font-weight="600" font-size="32" fill="#FAF8F5" letter-spacing="1">
+    MFTPlus
+  </text>
+</svg>
