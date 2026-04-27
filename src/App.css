@@ -178,6 +178,8 @@ body {
 .logo-img {
   height: 36px;
   width: auto;
+  min-width: 160px;
+  object-fit: contain;
 }
 
 .nav-links {
