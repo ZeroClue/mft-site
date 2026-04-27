@@ -228,17 +228,18 @@ body {
 }
 
 .nav-cta-signup {
-  background: var(--mft-goldenrod);
-  color: var(--mft-charcoal);
+  background: var(--mft-goldenrod) !important;
+  color: var(--mft-ivory) !important;
   padding: var(--space-sm) var(--space-lg);
   border-radius: var(--radius-sm);
   font-weight: 600;
+  text-decoration: none !important;
   transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .nav-cta-signup:hover {
-  background: var(--mft-saddleBrown);
-  color: var(--mft-ivory);
+  background: var(--mft-saddleBrown) !important;
+  color: var(--mft-ivory) !important;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(218, 165, 32, 0.3);
 }
