@@ -14,7 +14,7 @@
   --color-border-bright: #484F58;
 
   /* Accents - MFTPlus Brand Colors */
-  --color-primary: #0F4C75;
+  --color-primary: #B8860B;
   --color-secondary: #00D9C0;
   --color-success: #10B981;
   --color-error: #EF4444;
@@ -171,13 +171,15 @@ body {
 }
 
 .nav-logo {
-  font-family: var(--font-mono);
-  font-size: 1.25rem;
-  font-weight: 600;
+  display: flex;
+  align-items: center;
 }
 
-.logo-text {
-  color: var(--color-text-primary);
+.logo-img {
+  height: 36px;
+  width: auto;
+  min-width: 175px;
+  object-fit: contain;
 }
 
 .nav-links {
@@ -199,8 +201,8 @@ body {
 
 .cta-button {
   padding: var(--space-sm) var(--space-lg);
-  background: var(--color-primary);
-  color: var(--color-bg) !important;
+  background: #D4A017;
+  color: #FFFFF0 !important;
   border-radius: var(--radius-sm);
   font-weight: 500;
   transition: transform var(--transition-fast), box-shadow var(--transition-fast);
@@ -208,7 +210,40 @@ body {
 
 .cta-button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(15, 76, 117, 0.3);
+  box-shadow: 0 4px 12px rgba(212, 160, 23, 0.3);
+}
+
+/* Weave Brand CTA Buttons */
+.cta-goldenrod {
+  background: var(--mft-goldenrod) !important;
+  color: var(--mft-charcoal) !important;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.cta-goldenrod:hover {
+  background: var(--mft-saddleBrown) !important;
+  color: var(--mft-ivory) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(218, 165, 32, 0.3);
+}
+
+.nav-cta-signup {
+  background: var(--mft-goldenrod) !important;
+  color: var(--mft-ivory) !important;
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  text-decoration: none !important;
+  transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.nav-cta-signup:hover {
+  background: var(--mft-saddleBrown) !important;
+  color: var(--mft-ivory) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(218, 165, 32, 0.3);
 }
 
 /* Weave Brand CTA Buttons */
@@ -359,7 +394,7 @@ section {
 
 .cta-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(15, 76, 117, 0.4);
+  box-shadow: 0 8px 24px rgba(184, 134, 11, 0.4);
 }
 
 .cta-secondary {
@@ -702,7 +737,7 @@ section {
 
 .comparison-table th.highlight,
 .comparison-table td.highlight {
-  background: rgba(15, 76, 117, 0.1);
+  background: rgba(184, 134, 11, 0.1);
   color: var(--color-primary);
 }
 
@@ -896,8 +931,8 @@ section {
 
 .pricing-cta {
   padding: var(--space-lg) var(--space-xl);
-  background: var(--color-primary);
-  color: var(--color-bg);
+  background: var(--mft-goldenrod);
+  color: var(--mft-charcoal);
   text-decoration: none;
   border-radius: var(--radius-sm);
   font-weight: 600;
@@ -906,8 +941,10 @@ section {
 }
 
 .pricing-cta:hover {
+  background: var(--mft-saddleBrown);
+  color: var(--mft-ivory);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(15, 76, 117, 0.4);
+  box-shadow: 0 8px 24px rgba(218, 165, 32, 0.3);
 }
 
 .pricing-cta.disabled {
@@ -955,8 +992,8 @@ section {
   align-items: center;
   gap: var(--space-sm);
   padding: var(--space-xl) var(--space-3xl);
-  background: var(--color-primary);
-  color: var(--color-bg);
+  background: var(--mft-goldenrod);
+  color: var(--mft-charcoal);
   text-decoration: none;
   border-radius: var(--radius-sm);
   font-weight: 600;
@@ -965,8 +1002,10 @@ section {
 }
 
 .cta-large:hover {
+  background: var(--mft-saddleBrown);
+  color: var(--mft-ivory);
   transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(15, 76, 117, 0.4);
+  box-shadow: 0 12px 32px rgba(218, 165, 32, 0.3);
 }
 
 .contact-meta {
@@ -976,7 +1015,7 @@ section {
 }
 
 .contact-meta a {
-  color: var(--color-primary);
+  color: var(--mft-goldenrod);
   text-decoration: none;
 }
 
