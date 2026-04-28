@@ -96,7 +96,7 @@ function App() {
             <a href="#how-it-works">How It Works</a>
             <a href="#pricing">Pricing</a>
             <a href="/releases">Releases</a>
-            <a href="https://dashboard.mftplus.co.za/user/signup" className="nav-cta-signup">Sign Up</a>
+            <a href="https://dashboard.mftplus.co.za/checkout?plan=community" className="nav-cta-signup">Sign Up</a>
           </div>
         </div>
       </nav>
@@ -114,7 +114,7 @@ function App() {
           </p>
 
           <div className="hero-cta">
-            <a href="https://dashboard.mftplus.co.za/user/signup" className="cta-primary cta-goldenrod">
+            <a href="https://dashboard.mftplus.co.za/checkout?plan=community" className="cta-primary cta-goldenrod">
               Get Started Free
               <span className="cta-arrow">→</span>
             </a>
@@ -390,7 +390,7 @@ function App() {
               <li>✓ Command-line interface</li>
               <li>✓ Community support</li>
             </ul>
-            <a href="https://dashboard.mftplus.co.za/user/signup" className="pricing-cta cta-goldenrod">Get Started</a>
+            <a href="https://dashboard.mftplus.co.za/checkout?plan=community" className="pricing-cta cta-goldenrod">Get Started</a>
           </div>
 
           <div className="pricing-card">
@@ -409,7 +409,7 @@ function App() {
               <li>✓ Web dashboard</li>
               <li>✓ Email support</li>
             </ul>
-            <a href="https://dashboard.mftplus.co.za/user/signup" className="pricing-cta cta-goldenrod">Start Free Trial</a>
+            <a href="https://dashboard.mftplus.co.za/checkout?plan=starter" className="pricing-cta cta-goldenrod">Start Free Trial</a>
           </div>
 
           <div className="pricing-card">
@@ -428,7 +428,7 @@ function App() {
               <li>✓ API access</li>
               <li>✓ Priority support</li>
             </ul>
-            <a href="https://dashboard.mftplus.co.za/user/signup" className="pricing-cta cta-goldenrod">Start Free Trial</a>
+            <a href="https://dashboard.mftplus.co.za/checkout?plan=pro" className="pricing-cta cta-goldenrod">Start Free Trial</a>
           </div>
 
           <div className="pricing-card coming-soon">
