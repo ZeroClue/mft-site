@@ -1,5 +1,18 @@
 /* ============================================================================
-   MODERN TERMINAL AESTHETIC - MFTPlus Product Landing Page
+   MFTPlus PRODUCT LANDING PAGE
+   ============================================================================ */
+
+/* ============================================================================
+   APPROVED BRAND COLORS (from dashboard)
+   ============================================================================
+   --mft-goldenrod: #D4A843
+   --mft-charcoal: #2a2522
+   --mft-saddleBrown: #8B7355
+   --mft-ivory: #F5F0E8
+   --mft-info-blue: #60A5FA
+   --color-primary: #D4A843
+
+   DO NOT introduce new hex colors without design review.
    ============================================================================ */
 
 /* ============================================================================
@@ -7,24 +20,25 @@
    ============================================================================ */
 :root {
   /* Colors - Dark Terminal Theme */
-  --color-bg: #0D1117;
-  --color-bg-secondary: #161B22;
-  --color-bg-tertiary: #21262D;
+  --color-bg: #2a2522;
+  --color-bg-secondary: #2a2522;
+  --color-bg-tertiary: #2a2522;
   --color-border: #30363D;
   --color-border-bright: #484F58;
 
   /* Accents - MFTPlus Brand Colors */
-  --color-primary: #B8860B;
+  --color-primary: #D4A843;
   --color-secondary: #00D9C0;
   --color-success: #10B981;
   --color-error: #EF4444;
   --color-warning: #F59E0B;
 
   /* Weave Brand Colors for CTAs */
-  --mft-goldenrod: #DAA520;
-  --mft-charcoal: #1C1C1C;
-  --mft-saddleBrown: #8B4513;
-  --mft-ivory: #FFFFF0;
+  --mft-goldenrod: #D4A843;
+  --mft-charcoal: #2a2522;
+  --mft-saddleBrown: #8B7355;
+  --mft-ivory: #F5F0E8;
+  --mft-info-blue: #60A5FA;
 
   /* Text */
   --color-text-primary: #ffffff;
@@ -157,7 +171,7 @@ body {
 }
 
 .nav.scrolled {
-  background: rgba(13, 17, 23, 0.95);
+  background: rgba(42, 37, 34, 0.95);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--color-border);
 }
@@ -201,8 +215,8 @@ body {
 
 .cta-button {
   padding: var(--space-sm) var(--space-lg);
-  background: #D4A017;
-  color: #FFFFF0 !important;
+  background: #D4A843;
+  color: #F5F0E8 !important;
   border-radius: var(--radius-sm);
   font-weight: 500;
   transition: transform var(--transition-fast), box-shadow var(--transition-fast);
@@ -210,7 +224,7 @@ body {
 
 .cta-button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(212, 160, 23, 0.3);
+  box-shadow: 0 4px 12px rgba(218, 165, 32, 0.3);
 }
 
 /* Weave Brand CTA Buttons */
