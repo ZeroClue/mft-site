@@ -114,11 +114,11 @@
 }
 
 .releases-page .nav-links a:hover {
-  color: #D4A843;
+  color: #DAA520;
 }
 
 .releases-page .nav-links a.active {
-  color: #D4A843;
+  color: #DAA520;
 }
 
 .releases-page .nav-cta-signup {
@@ -132,7 +132,7 @@
 }
 
 .releases-page .nav-cta-signup:hover {
-  background: #D4A843 !important;
+  background: #DAA520 !important;
 }
 
 /* Header */
@@ -281,7 +281,7 @@
 }
 
 .download-button:hover {
-  background: #D4A843;
+  background: #DAA520;
 }
 
 .download-button svg {
@@ -346,7 +346,7 @@
 }
 
 .releases-page .footer-links a:hover {
-  color: #D4A843;
+  color: #DAA520;
 }
 
 .releases-page .footer-copy {

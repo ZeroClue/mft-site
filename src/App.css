@@ -1,5 +1,17 @@
 /* ============================================================================
-   MODERN TERMINAL AESTHETIC - MFTPlus Product Landing Page
+   MFTPlus PRODUCT LANDING PAGE
+   ============================================================================ */
+
+/* ============================================================================
+   APPROVED BRAND COLORS
+   ============================================================================
+   --mft-goldenrod: #DAA520
+   --mft-charcoal: #1C1C1C
+   --mft-saddleBrown: #8B4513
+   --mft-ivory: #FFFFF0
+   --color-primary: #B8860B
+
+   DO NOT introduce new hex colors without design review.
    ============================================================================ */
 
 /* ============================================================================
@@ -7,9 +19,9 @@
    ============================================================================ */
 :root {
   /* Colors - Dark Terminal Theme */
-  --color-bg: #0D1117;
-  --color-bg-secondary: #161B22;
-  --color-bg-tertiary: #21262D;
+  --color-bg: #1C1C1C;
+  --color-bg-secondary: #1C1C1C;
+  --color-bg-tertiary: #1C1C1C;
   --color-border: #30363D;
   --color-border-bright: #484F58;
 
@@ -201,7 +213,7 @@ body {
 
 .cta-button {
   padding: var(--space-sm) var(--space-lg);
-  background: #D4A017;
+  background: #DAA520;
   color: #FFFFF0 !important;
   border-radius: var(--radius-sm);
   font-weight: 500;
@@ -210,7 +222,7 @@ body {
 
 .cta-button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(212, 160, 23, 0.3);
+  box-shadow: 0 4px 12px rgba(218, 165, 32, 0.3);
 }
 
 /* Weave Brand CTA Buttons */
