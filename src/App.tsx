@@ -89,7 +89,7 @@ function App() {
       <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
         <div className="nav-content">
           <div className="nav-logo">
-            <span className="logo-text">MFTPlus</span>
+            <img src="/brand-assets/logo-full-dark.svg" alt="MFTPlus" className="logo-img" />
           </div>
           <div className="nav-links">
             <a href="#features">Features</a>
