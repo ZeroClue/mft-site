@@ -416,10 +416,10 @@ function App() {
             <a href="https://dashboard.mftplus.co.za/signup" className="pricing-cta cta-goldenrod">Start Free Trial</a>
           </div>
 
-          <div className="pricing-card">
+          <div className="pricing-card coming-soon">
             <div className="pricing-header">
               <h3>Pro</h3>
-              <div className="pricing-status">Best Value</div>
+              <div className="pricing-status">Coming Soon</div>
             </div>
             <div className="pricing-price">
               <span className="price-value">$499</span>
@@ -432,7 +432,7 @@ function App() {
               <li>✓ API access</li>
               <li>✓ Priority support</li>
             </ul>
-            <a href="https://dashboard.mftplus.co.za/signup" className="pricing-cta cta-goldenrod">Start Free Trial</a>
+            <span className="pricing-cta">Coming Soon</span>
           </div>
 
           <div className="pricing-card coming-soon">
