@@ -303,8 +303,9 @@ function App() {
           <div className="feature-card">
             <div className="feature-icon">🔒</div>
             <h3>Enterprise Security</h3>
-            <p>AES-256-GCM encryption, OS keychain integration, private keys never transmitted, zero-knowledge architecture.</p>
-            <CodeBlock code="# Credentials stored in OS keychain\n# Never transmitted or stored in plaintext" />
+            <p>AES-256-GCM encryption, secure credential storage, private keys never transmitted, zero-knowledge architecture.</p>
+            <CodeBlock code="# Credentials encrypted at rest
+# Never transmitted or stored in plaintext" />
           </div>
 
           <div className="feature-card">
