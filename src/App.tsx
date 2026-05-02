@@ -89,14 +89,14 @@ function App() {
       <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
         <div className="nav-content">
           <div className="nav-logo">
-            <img src="/brand-assets/logo-full-dark.svg" alt="MFTPlus" className="logo-img" />
+            <span className="logo-text">MFTPlus</span>
           </div>
           <div className="nav-links">
             <a href="#features">Features</a>
             <a href="#how-it-works">How It Works</a>
             <a href="#pricing">Pricing</a>
             <a href="/releases">Releases</a>
-            <a href="https://dashboard.mftplus.co.za/signup" className="nav-cta-signup">Sign Up</a>
+            <a href="https://dashboard.mftplus.co.za/checkout?plan=community" className="nav-cta-signup">Sign Up</a>
           </div>
         </div>
       </nav>
@@ -114,7 +114,7 @@ function App() {
           </p>
 
           <div className="hero-cta">
-            <a href="https://dashboard.mftplus.co.za/signup" className="cta-primary cta-goldenrod">
+            <a href="https://dashboard.mftplus.co.za/checkout?plan=community" className="cta-primary cta-goldenrod">
               Get Started Free
               <span className="cta-arrow">→</span>
             </a>
@@ -303,10 +303,8 @@ function App() {
           <div className="feature-card">
             <div className="feature-icon">🔒</div>
             <h3>Enterprise Security</h3>
-            <p>TLS-encrypted transfers, API key authentication, private keys never stored in plaintext. Full audit trail for compliance.</p>
-            <CodeBlock code={`mftctl jobs create --agent <agent-id> \\
-  --source sftp://secure.example.com/data \\
-  --dest ./incoming --protocol sftp`} />
+            <p>AES-256-GCM encryption, OS keychain integration, private keys never transmitted, zero-knowledge architecture.</p>
+            <CodeBlock code="# Credentials stored in OS keychain\n# Never transmitted or stored in plaintext" />
           </div>
 
           <div className="feature-card">
@@ -329,10 +327,8 @@ function App() {
           <div className="feature-card">
             <div className="feature-icon">⚡</div>
             <h3>Self-Healing</h3>
-            <p>Automatic retry with exponential backoff. Network interruptions don't mean failed transfers. Configurable max attempts.</p>
-            <CodeBlock code={`mftctl jobs create --agent <agent-id> \\
-  --source sftp://partner.example.com \\
-  --dest ./backup --max-retries 5 --retry-delay 30`} />
+            <p>Automatic retry with exponential backoff. Network interruptions don't mean failed transfers. Resume partial transfers.</p>
+            <CodeBlock code="# Automatically retries on failure\n# Configurable max attempts and delays" />
           </div>
         </div>
       </section>
@@ -394,7 +390,7 @@ function App() {
               <li>✓ Command-line interface</li>
               <li>✓ Community support</li>
             </ul>
-            <a href="https://dashboard.mftplus.co.za/signup" className="pricing-cta cta-goldenrod">Get Started</a>
+            <a href="https://dashboard.mftplus.co.za/checkout?plan=community" className="pricing-cta cta-goldenrod">Get Started</a>
           </div>
 
           <div className="pricing-card">
@@ -413,7 +409,7 @@ function App() {
               <li>✓ Web dashboard</li>
               <li>✓ Email support</li>
             </ul>
-            <a href="https://dashboard.mftplus.co.za/signup" className="pricing-cta cta-goldenrod">Start Free Trial</a>
+            <a href="https://dashboard.mftplus.co.za/checkout?plan=starter" className="pricing-cta cta-goldenrod">Start Free Trial</a>
           </div>
 
           <div className="pricing-card coming-soon">
@@ -450,7 +446,7 @@ function App() {
               <li>✓ Custom integrations</li>
               <li>✓ Dedicated support & SLA</li>
             </ul>
-            <a href={'mailto:' + ['enterprise','mftplus.co.za'].join('@')} className="pricing-cta">Contact Sales</a>
+            <a href="mailto:enterprise@mftplus.co.za" className="pricing-cta">Contact Sales</a>
           </div>
         </div>
       </section>
@@ -460,13 +456,13 @@ function App() {
           <h2>Ready to Modernize Your File Transfers?</h2>
           <p>Get started with MFTPlus today and experience reliable, secure file transfers.</p>
 
-          <a href={'mailto:' + ['info','mftplus.co.za'].join('@') + '?subject=MFTPlus Inquiry'} className="cta-large">
+          <a href="mailto:info@mftplus.co.za?subject=MFTPlus Inquiry" className="cta-large">
             Get Started
             <span className="cta-arrow">→</span>
           </a>
 
           <div className="contact-meta">
-            <p>Questions? Email us at <a href={'mailto:' + ['info','mftplus.co.za'].join('@')}>{['info','mftplus.co.za'].join('@')}</a></p>
+            <p>Questions? Email us at <a href="mailto:info@mftplus.co.za">info@mftplus.co.za</a></p>
           </div>
         </div>
       </section>
@@ -474,12 +470,12 @@ function App() {
       <footer className="footer">
         <div className="footer-content">
           <div className="footer-links">
-            <a href={'mailto:' + ['info','mftplus.co.za'].join('@')}>Contact</a>
-            <a href="/privacy">Privacy Policy</a>
-            <a href="/terms">Terms of Service</a>
+            <a href="mailto:info@mftplus.co.za">Contact</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
           </div>
           <div className="footer-copy">
-            <p>&copy; 2026 MFTPlus. All rights reserved.</p>
+            <p>© 2026 MFTPlus. Built with Rust + Tauri.</p>
           </div>
         </div>
       </footer>

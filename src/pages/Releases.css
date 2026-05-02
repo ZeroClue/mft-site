@@ -114,11 +114,11 @@
 }
 
 .releases-page .nav-links a:hover {
-  color: #D4A843;
+  color: #DAA520;
 }
 
 .releases-page .nav-links a.active {
-  color: #D4A843;
+  color: #DAA520;
 }
 
 .releases-page .nav-cta-signup {
@@ -132,7 +132,7 @@
 }
 
 .releases-page .nav-cta-signup:hover {
-  background: #D4A843 !important;
+  background: #DAA520 !important;
 }
 
 /* Header */
@@ -281,7 +281,7 @@
 }
 
 .download-button:hover {
-  background: #D4A843;
+  background: #DAA520;
 }
 
 .download-button svg {
@@ -346,7 +346,7 @@
 }
 
 .releases-page .footer-links a:hover {
-  color: #D4A843;
+  color: #DAA520;
 }
 
 .releases-page .footer-copy {
@@ -357,6 +357,71 @@
   color: #78716C;
   font-size: 0.875rem;
   margin: 0;
+}
+
+/* Loading, Error, and Empty States */
+.loading-state,
+.error-state,
+.empty-state {
+  text-align: center;
+  padding: 64px 32px;
+  background: rgba(31, 26, 23, 0.6);
+  border: 1px solid rgba(184, 134, 11, 0.15);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+}
+
+.loading-spinner {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 24px;
+  border: 3px solid rgba(184, 134, 11, 0.2);
+  border-top-color: #B8860B;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-state p {
+  color: #A8A29E;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.error-state h2,
+.empty-state h2 {
+  color: #FAF8F5;
+  font-size: 1.5rem;
+  margin: 0 0 16px;
+}
+
+.error-state p,
+.empty-state p {
+  color: #A8A29E;
+  font-size: 1rem;
+  margin: 0 0 24px;
+  line-height: 1.6;
+}
+
+.error-fallback-link {
+  display: inline-block;
+  color: #D4A843;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 12px 24px;
+  border: 1px solid rgba(212, 168, 67, 0.3);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.error-fallback-link:hover {
+  background: rgba(212, 168, 67, 0.1);
+  border-color: #D4A843;
 }
 
 /* Responsive */
@@ -385,5 +450,11 @@
 
   .releases-page .footer-copy {
     text-align: center;
+  }
+
+  .loading-state,
+  .error-state,
+  .empty-state {
+    padding: 48px 24px;
   }
 }
