@@ -86,13 +86,13 @@ function PrivacyPolicyPage() {
 
           <section className="legal-section">
             <h2>5. Cookies and Analytics</h2>
-            <p>We use cookies and analytics tools (including Vercel Analytics) to:</p>
+            <p>We use privacy-friendly analytics tools (Umami Analytics and Vercel Analytics) to:</p>
             <ul>
               <li>Understand how users interact with our service.</li>
               <li>Monitor performance and diagnose technical issues.</li>
               <li>Improve features and user experience.</li>
             </ul>
-            <p>You can disable cookies in your browser settings, though this may affect some functionality.</p>
+            <p>You can disable cookies in your browser settings, though this may affect some functionality. We respect your Do Not Track preference and only collect analytics data with your consent (shown via a consent banner on your first visit).</p>
           </section>
 
           <section className="legal-section">
