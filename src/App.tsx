@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import './App.css'
+import { CookieConsent } from './CookieConsent'
 
 function Terminal({ children, title = "terminal@mftplus" }: { children: React.ReactNode; title?: string }) {
   return (
@@ -78,6 +79,7 @@ function App() {
   }, [])
 
   return (
+    <>
     <div className="app">
       <div className="background-effects">
         <div className="grid-pattern"></div>
@@ -481,6 +483,8 @@ function App() {
         </div>
       </footer>
     </div>
+    <CookieConsent />
+    </>
   )
 }
 
