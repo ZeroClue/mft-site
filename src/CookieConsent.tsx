@@ -56,7 +56,7 @@ export function CookieConsent() {
       color: '#e0e0e0',
     }}>
       <span>
-        We use privacy-friendly analytics to understand how visitors use our site. No cookies are used for advertising.
+        We use privacy-friendly analytics to understand how visitors use our site. No cookies are used for advertising. <a href="/privacy" style={{ color: '#d4a017', textDecoration: 'underline' }}>Privacy Policy</a>
       </span>
       <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
         <button
