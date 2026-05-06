@@ -98,7 +98,7 @@ function App() {
             <a href="#how-it-works">How It Works</a>
             <a href="#pricing">Pricing</a>
             <a href="/releases">Releases</a>
-            <a href="https://dashboard.mftplus.co.za/checkout?plan=community" className="nav-cta-signup">Sign Up</a>
+            <a href="https://dashboard.mftplus.co.za/checkout?plan=community&amp;utm_source=mft-site&amp;utm_medium=cta&amp;utm_campaign=signup" className="nav-cta-signup">Sign Up</a>
           </div>
         </div>
       </nav>
@@ -116,7 +116,7 @@ function App() {
           </p>
 
           <div className="hero-cta">
-            <a href="https://dashboard.mftplus.co.za/checkout?plan=community" className="cta-primary cta-goldenrod">
+            <a href="https://dashboard.mftplus.co.za/checkout?plan=community&amp;utm_source=mft-site&amp;utm_medium=cta&amp;utm_campaign=get-started" className="cta-primary cta-goldenrod">
               Get Started Free
               <span className="cta-arrow">→</span>
             </a>
@@ -313,7 +313,7 @@ function App() {
           <div className="feature-card">
             <div className="feature-icon">💻</div>
             <h3>Cross-Platform</h3>
-            <p>Windows, macOS, Linux parity. ~5MB native bundle. System tray background operation. CLI + GUI interfaces.</p>
+            <p>Linux CLI available now. Windows, macOS, and GUI coming soon. ~5MB native bundle. System tray background operation.</p>
             <CodeBlock code={`# Download installer from mftplus.co.za
 ./mftctl login <api-key> --server https://your-server.example.com`} />
           </div>
@@ -393,7 +393,7 @@ function App() {
               <li>✓ Command-line interface</li>
               <li>✓ Community support</li>
             </ul>
-            <a href="https://dashboard.mftplus.co.za/checkout?plan=community" className="pricing-cta cta-goldenrod">Get Started</a>
+            <a href="https://dashboard.mftplus.co.za/checkout?plan=community&amp;utm_source=mft-site&amp;utm_medium=cta&amp;utm_campaign=pricing" className="pricing-cta cta-goldenrod">Get Started</a>
           </div>
 
           <div className="pricing-card">
@@ -412,7 +412,7 @@ function App() {
               <li>✓ Web dashboard</li>
               <li>✓ Email support</li>
             </ul>
-            <a href="https://dashboard.mftplus.co.za/checkout?plan=starter" className="pricing-cta cta-goldenrod">Start Free Trial</a>
+            <a href="https://dashboard.mftplus.co.za/checkout?plan=starter&amp;utm_source=mft-site&amp;utm_medium=cta&amp;utm_campaign=pricing" className="pricing-cta cta-goldenrod">Start Free Trial</a>
           </div>
 
           <div className="pricing-card coming-soon">
