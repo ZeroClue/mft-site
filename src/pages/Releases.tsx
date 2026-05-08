@@ -68,7 +68,7 @@ function ReleasesPage() {
             <a href="/#how-it-works">How It Works</a>
             <a href="/#pricing">Pricing</a>
             <a href="/releases" className="active">Releases</a>
-            <a href="https://dashboard.mftplus.co.za/signup?utm_source=mft-site&amp;utm_medium=cta&amp;utm_campaign=signup" className="nav-cta-signup">Sign Up</a>
+            <a href="https://dashboard.mftplus.co.za/signup?utm_source=mft-site&amp;utm_medium=cta&amp;utm_campaign=signup" className="nav-cta-signup" data-umami-event="releases-signup">Sign Up</a>
           </div>
         </div>
       </nav>
@@ -120,7 +120,7 @@ function ReleasesPage() {
                     <span className="download-platform">{download.platform}</span>
                     <span className="download-size">{download.size}</span>
                   </div>
-                  <a href={`${download.url}${download.url.includes('?') ? '&' : '?'}utm_ref=mft-site`} className="download-button" download>
+                  <a href={`${download.url}${download.url.includes('?') ? '&' : '?'}utm_ref=mft-site`} className="download-button" download data-umami-event={`download-${download.platform.toLowerCase().replace(/\s+/g, '-')}`}>
                     Download
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>

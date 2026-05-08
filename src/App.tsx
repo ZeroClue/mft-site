@@ -98,7 +98,7 @@ function App() {
             <a href="#how-it-works">How It Works</a>
             <a href="#pricing">Pricing</a>
             <a href="/releases">Releases</a>
-            <a href="https://dashboard.mftplus.co.za/checkout?plan=community&amp;utm_source=mft-site&amp;utm_medium=cta&amp;utm_campaign=signup" className="nav-cta-signup">Sign Up</a>
+            <a href="https://dashboard.mftplus.co.za/checkout?plan=community&amp;utm_source=mft-site&amp;utm_medium=cta&amp;utm_campaign=signup" className="nav-cta-signup" data-umami-event="nav-signup">Sign Up</a>
           </div>
         </div>
       </nav>
@@ -116,11 +116,11 @@ function App() {
           </p>
 
           <div className="hero-cta">
-            <a href="https://dashboard.mftplus.co.za/checkout?plan=community&amp;utm_source=mft-site&amp;utm_medium=cta&amp;utm_campaign=get-started" className="cta-primary cta-goldenrod">
+            <a href="https://dashboard.mftplus.co.za/checkout?plan=community&amp;utm_source=mft-site&amp;utm_medium=cta&amp;utm_campaign=get-started" className="cta-primary cta-goldenrod" data-umami-event="hero-get-started">
               Get Started Free
               <span className="cta-arrow">→</span>
             </a>
-            <a href="#how-it-works" className="cta-secondary">
+            <a href="#how-it-works" className="cta-secondary" data-umami-event="hero-how-it-works">
               How It Works
             </a>
           </div>
@@ -393,7 +393,7 @@ function App() {
               <li>✓ Command-line interface</li>
               <li>✓ Community support</li>
             </ul>
-            <a href="https://dashboard.mftplus.co.za/checkout?plan=community&amp;utm_source=mft-site&amp;utm_medium=cta&amp;utm_campaign=pricing" className="pricing-cta cta-goldenrod">Get Started</a>
+            <a href="https://dashboard.mftplus.co.za/checkout?plan=community&amp;utm_source=mft-site&amp;utm_medium=cta&amp;utm_campaign=pricing" className="pricing-cta cta-goldenrod" data-umami-event="pricing-community">Get Started</a>
           </div>
 
           <div className="pricing-card">
@@ -412,7 +412,7 @@ function App() {
               <li>✓ Web dashboard</li>
               <li>✓ Email support</li>
             </ul>
-            <a href="https://dashboard.mftplus.co.za/checkout?plan=starter&amp;utm_source=mft-site&amp;utm_medium=cta&amp;utm_campaign=pricing" className="pricing-cta cta-goldenrod">Start Free Trial</a>
+            <a href="https://dashboard.mftplus.co.za/checkout?plan=starter&amp;utm_source=mft-site&amp;utm_medium=cta&amp;utm_campaign=pricing" className="pricing-cta cta-goldenrod" data-umami-event="pricing-starter">Start Free Trial</a>
           </div>
 
           <div className="pricing-card coming-soon">
@@ -449,7 +449,7 @@ function App() {
               <li>✓ Custom integrations</li>
               <li>✓ Dedicated support & SLA</li>
             </ul>
-            <a href="mailto:enterprise@mftplus.co.za" className="pricing-cta">Contact Sales</a>
+            <a href="mailto:enterprise@mftplus.co.za" className="pricing-cta" data-umami-event="pricing-enterprise">Contact Sales</a>
           </div>
         </div>
       </section>
@@ -459,7 +459,7 @@ function App() {
           <h2>Ready to Modernize Your File Transfers?</h2>
           <p>Get started with MFTPlus today and experience reliable, secure file transfers.</p>
 
-          <a href="mailto:info@mftplus.co.za?subject=MFTPlus Inquiry" className="cta-large">
+          <a href="mailto:info@mftplus.co.za?subject=MFTPlus Inquiry" className="cta-large" data-umami-event="contact-get-started">
             Get Started
             <span className="cta-arrow">→</span>
           </a>
