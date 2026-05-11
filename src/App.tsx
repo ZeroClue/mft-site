@@ -97,6 +97,7 @@ function App() {
             <a href="#features">Features</a>
             <a href="#how-it-works">How It Works</a>
             <a href="#pricing">Pricing</a>
+            <a href="/blog">Blog</a>
             <a href="/releases">Releases</a>
             <a href="https://dashboard.mftplus.co.za/checkout?plan=community&amp;utm_source=mft-site&amp;utm_medium=cta&amp;utm_campaign=signup" className="nav-cta-signup" data-umami-event="nav-signup">Sign Up</a>
           </div>
@@ -474,6 +475,7 @@ function App() {
         <div className="footer-content">
           <div className="footer-links">
             <a href="mailto:info@mftplus.co.za">Contact</a>
+            <a href="/blog">Blog</a>
             <a href="#">Privacy Policy</a>
             <a href="#">Terms of Service</a>
           </div>
