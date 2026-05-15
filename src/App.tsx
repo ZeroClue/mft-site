@@ -84,8 +84,6 @@ function App() {
       <div className="background-effects">
         <div className="grid-pattern"></div>
         <div className="noise-overlay"></div>
-        <div className="gradient-orb orb-1"></div>
-        <div className="gradient-orb orb-2"></div>
       </div>
 
       <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
