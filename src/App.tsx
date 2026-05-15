@@ -106,12 +106,11 @@ function App() {
         <div className="hero-content">
 
           <h1 className="hero-title">
-            Modern File Transfer for DevOps Teams
+            Self-Hosted Managed File Transfer for DevOps Teams
           </h1>
 
           <p className="hero-subtitle">
-            Secure, scheduled file transfers with complete audit trails.
-            A 5MB desktop agent that replaces $50,000 MFT servers.
+            MFTPlus is a self-hosted managed file transfer platform that automates file transfers between servers, SFTP endpoints, and cloud storage. A 5MB Rust agent installs in 30 seconds. Built for teams replacing IBM Sterling, Globalscape, or GoAnywhere — without the enterprise price tag.
           </p>
 
           <div className="hero-cta">
@@ -195,7 +194,7 @@ function App() {
 
       <section id="problem" className={`problem-section ${visibleSections.has('problem') ? 'visible' : ''}`}>
         <div className="section-header">
-          <span className="section-tag">// THE PROBLEM</span>
+          <span className="section-tag">The Problem</span>
           <h2>File Transfers Shouldn't Be This Hard</h2>
           <p>Most teams are stuck between expensive legacy software and fragile scripts.</p>
         </div>
@@ -238,8 +237,8 @@ function App() {
 
       <section id="solution" className={`solution-section ${visibleSections.has('solution') ? 'visible' : ''}`}>
         <div className="section-header">
-          <span className="section-tag">// THE SOLUTION</span>
-          <h2>Meet MFTPlus</h2>
+          <span className="section-tag">The Solution</span>
+          <h2>What MFTPlus Does</h2>
           <p>A modern desktop agent for secure, scheduled file transfers. No central server required.</p>
         </div>
 
@@ -280,7 +279,7 @@ function App() {
 
       <section id="features" className={`features-section ${visibleSections.has('features') ? 'visible' : ''}`}>
         <div className="section-header">
-          <span className="section-tag">// FEATURES</span>
+          <span className="section-tag">Features</span>
           <h2>Everything You Need to Transfer Files with Confidence</h2>
         </div>
 
@@ -337,8 +336,8 @@ function App() {
 
       <section id="how-it-works" className={`how-section ${visibleSections.has('how-it-works') ? 'visible' : ''}`}>
         <div className="section-header">
-          <span className="section-tag">// HOW IT WORKS</span>
-          <h2>Up and Running in Minutes</h2>
+          <span className="section-tag">How It Works</span>
+          <h2>Agent, Server, Dashboard</h2>
         </div>
 
         <div className="steps-container">
@@ -370,7 +369,7 @@ function App() {
 
       <section id="pricing" className={`pricing-section ${visibleSections.has('pricing') ? 'visible' : ''}`}>
         <div className="section-header">
-          <span className="section-tag">// PRICING</span>
+          <span className="section-tag">Pricing</span>
           <h2>Simple, Transparent Pricing</h2>
           <p>Flat monthly pricing. No per-server fees. Pick the plan that fits your needs.</p>
         </div>
@@ -450,6 +449,127 @@ function App() {
             </ul>
             <a href="mailto:enterprise@mftplus.co.za" className="pricing-cta" data-umami-event="pricing-enterprise">Contact Sales</a>
           </div>
+        </div>
+      </section>
+
+      <section id="comparison" className={`comparison-section ${visibleSections.has('comparison') ? 'visible' : ''}`}>
+        <div className="section-header">
+          <span className="section-tag">Comparison</span>
+          <h2>MFTPlus vs Legacy MFT Vendors</h2>
+          <p>See how MFTPlus compares to the leading managed file transfer platforms.</p>
+        </div>
+
+        <div className="comparison-table-wrapper">
+          <table className="vendor-comparison-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th className="highlight-col">MFTPlus</th>
+                <th>IBM Sterling</th>
+                <th>Globalscape EFT</th>
+                <th>GoAnywhere</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Starting Price</td>
+                <td className="highlight-col">$150/mo</td>
+                <td>Custom (enterprise)</td>
+                <td>~$3,000/yr</td>
+                <td>~$2,500/yr</td>
+              </tr>
+              <tr>
+                <td>Deployment</td>
+                <td className="highlight-col">Docker + 5MB agent</td>
+                <td>Java server, weeks</td>
+                <td>Windows server</td>
+                <td>Java VM required</td>
+              </tr>
+              <tr>
+                <td>Setup Time</td>
+                <td className="highlight-col">~5 minutes</td>
+                <td>2-4 weeks</td>
+                <td>1-2 days</td>
+                <td>1-3 days</td>
+              </tr>
+              <tr>
+                <td>Language</td>
+                <td className="highlight-col">Rust</td>
+                <td>Java</td>
+                <td>C# / .NET</td>
+                <td>Java</td>
+              </tr>
+              <tr>
+                <td>Self-Hosted</td>
+                <td className="highlight-col">Yes</td>
+                <td>Yes</td>
+                <td>Yes</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td>Cloud Option</td>
+                <td className="highlight-col">Docker (any host)</td>
+                <td>SaaS + on-prem</td>
+                <td>SaaS + on-prem</td>
+                <td>SaaS + on-prem</td>
+              </tr>
+              <tr>
+                <td>Protocols</td>
+                <td className="highlight-col">SFTP, FTP, FTPS, local</td>
+                <td>SFTP, FTPS, HTTPS, AS2</td>
+                <td>SFTP, FTPS, HTTPS</td>
+                <td>SFTP, FTPS, HTTPS, AS2</td>
+              </tr>
+              <tr>
+                <td>Agent Size</td>
+                <td className="highlight-col">~5MB</td>
+                <td>~2GB+</td>
+                <td>~500MB</td>
+                <td>~1GB+</td>
+              </tr>
+              <tr>
+                <td>Audit Trail</td>
+                <td className="highlight-col">Built-in, all plans</td>
+                <td>Add-on module</td>
+                <td>Built-in</td>
+                <td>Built-in</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="faq" className={`faq-section ${visibleSections.has('faq') ? 'visible' : ''}`}>
+        <div className="section-header">
+          <span className="section-tag">FAQ</span>
+          <h2>Frequently Asked Questions</h2>
+        </div>
+
+        <div className="faq-list">
+          <details className="faq-item">
+            <summary>What is managed file transfer?</summary>
+            <p>Managed file transfer (MFT) is software that automates, secures, and monitors file transfers between systems. Unlike manual FTP clients or custom scripts, MFT provides scheduling, retry logic, audit trails, and encryption — giving teams visibility and compliance without the operational overhead.</p>
+          </details>
+
+          <details className="faq-item">
+            <summary>Is MFTPlus open source?</summary>
+            <p>MFTPlus is not open source. It is a commercial product with a free Community tier that supports up to 5 managed transfers. The Starter plan ($150/month) adds unlimited transfers, scheduling, and the web dashboard. All plans include the full feature set — no gated security or protocol features.</p>
+          </details>
+
+          <details className="faq-item">
+            <summary>How is MFTPlus different from IBM Sterling?</summary>
+            <p>MFTPlus is a lightweight, self-hosted alternative to IBM Sterling. The Rust-based agent is ~5MB versus Sterling's 2GB+ Java stack. Setup takes minutes instead of weeks. MFTPlus starts at $150/month with flat pricing, while Sterling requires enterprise licensing negotiations. For teams that need reliable scheduled transfers with audit trails, MFTPlus covers the core use case at a fraction of the cost.</p>
+          </details>
+
+          <details className="faq-item">
+            <summary>Can MFTPlus replace GoAnywhere?</summary>
+            <p>For standard transfer automation — scheduled SFTP jobs, audit logging, multi-protocol support — yes. MFTPlus is self-hosted via Docker with a 5MB Rust agent, versus GoAnywhere's Java VM requirement. MFTPlus starts at $150/month versus GoAnywhere's ~$2,500/year pricing. GoAnything has broader protocol support (AS2, HTTPS) for now; MFTPlus focuses on SFTP, FTP, and FTPS with more protocols on the roadmap.</p>
+          </details>
+
+          <details className="faq-item">
+            <summary>How long does it take to deploy MFTPlus?</summary>
+            <p>The server deploys via Docker Compose in about 2 minutes. The agent is a single ~5MB binary — download, run the login command with your API key, and you're connected. Most teams complete their first file transfer within 5 minutes of starting. No Java runtime, no database setup, no firewall rule changes beyond standard SFTP ports.</p>
+          </details>
         </div>
       </section>
 
