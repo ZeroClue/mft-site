@@ -617,8 +617,8 @@ SFTP backup every night at 2am"`} />
           <div className="footer-links">
             <a href="mailto:info@mftplus.co.za">Contact</a>
             <a href="/blog">Blog</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
+            <a href="/privacy">Privacy Policy</a>
+            <a href="/terms">Terms of Service</a>
           </div>
           <div className="footer-copy">
             <p>© 2026 MFTPlus. Built with Rust + Tauri.</p>
