@@ -106,11 +106,11 @@ function App() {
         <div className="hero-content">
 
           <h1 className="hero-title">
-            Self-Hosted Managed File Transfer for DevOps Teams
+            Managed File Transfer for DevOps Teams
           </h1>
 
           <p className="hero-subtitle">
-            MFTPlus is a self-hosted managed file transfer platform that automates file transfers between servers, SFTP endpoints, and cloud storage. A 5MB Rust agent installs in 30 seconds. Built for teams replacing IBM Sterling, Globalscape, or GoAnywhere — without the enterprise price tag.
+            MFTPlus is a managed file transfer platform that automates file transfers between servers, SFTP endpoints, and cloud storage. A Rust-based agent connects to our managed server — no infrastructure to maintain. Built for teams replacing IBM Sterling, Globalscape, or GoAnywhere — without the enterprise price tag.
           </p>
 
           <div className="hero-cta">
@@ -125,8 +125,8 @@ function App() {
 
           <div className="hero-stats">
             <div className="stat-item">
-              <span className="stat-value">5MB</span>
-              <span className="stat-label">Bundle Size</span>
+              <span className="stat-value">20MB</span>
+              <span className="stat-label">Agent Binary</span>
             </div>
             <div className="stat-item">
               <span className="stat-value">&lt;5 min</span>
@@ -239,7 +239,7 @@ function App() {
         <div className="section-header">
           <span className="section-tag">The Solution</span>
           <h2>What MFTPlus Does</h2>
-          <p>A modern desktop agent for secure, scheduled file transfers. No central server required.</p>
+          <p>A modern agent for secure, scheduled file transfers. Managed server — no infrastructure to maintain.</p>
         </div>
 
         <div className="solution-comparison">
@@ -311,7 +311,7 @@ function App() {
           <div className="feature-card">
             <div className="feature-icon">💻</div>
             <h3>Cross-Platform</h3>
-            <p>Linux CLI available now. Windows, macOS, and GUI coming soon. ~5MB native bundle. System tray background operation.</p>
+            <p>Linux CLI available now. Windows, macOS, and GUI coming soon. ~20MB native binary. System tray background operation.</p>
             <CodeBlock code={`# Download installer from mftplus.co.za
 ./mftctl login <api-key> --server https://your-server.example.com`} />
           </div>
@@ -345,7 +345,7 @@ function App() {
             <div className="step-number">1</div>
             <div className="step-content">
               <h3>Download</h3>
-              <p>Get the 5MB installer for your platform. No server setup required.</p>
+              <p>Get the agent binary for your platform. No server setup required — we manage the infrastructure.</p>
             </div>
           </div>
 
@@ -480,7 +480,7 @@ function App() {
               </tr>
               <tr>
                 <td>Deployment</td>
-                <td className="highlight-col">Docker + 5MB agent</td>
+                <td className="highlight-col">Managed server + agent</td>
                 <td>Java server, weeks</td>
                 <td>Windows server</td>
                 <td>Java VM required</td>
@@ -500,18 +500,11 @@ function App() {
                 <td>Java</td>
               </tr>
               <tr>
-                <td>Self-Hosted</td>
-                <td className="highlight-col">Yes</td>
-                <td>Yes</td>
-                <td>Yes</td>
-                <td>Yes</td>
-              </tr>
-              <tr>
-                <td>Cloud Option</td>
-                <td className="highlight-col">Docker (any host)</td>
-                <td>SaaS + on-prem</td>
-                <td>SaaS + on-prem</td>
-                <td>SaaS + on-prem</td>
+                <td>Hosting</td>
+                <td className="highlight-col">Managed (self-hosted coming)</td>
+                <td>On-prem</td>
+                <td>On-prem</td>
+                <td>On-prem</td>
               </tr>
               <tr>
                 <td>Protocols</td>
@@ -522,7 +515,7 @@ function App() {
               </tr>
               <tr>
                 <td>Agent Size</td>
-                <td className="highlight-col">~5MB</td>
+                <td className="highlight-col">~20MB</td>
                 <td>~2GB+</td>
                 <td>~500MB</td>
                 <td>~1GB+</td>
@@ -558,17 +551,17 @@ function App() {
 
           <details className="faq-item">
             <summary>How is MFTPlus different from IBM Sterling?</summary>
-            <p>MFTPlus is a lightweight, self-hosted alternative to IBM Sterling. The Rust-based agent is ~5MB versus Sterling's 2GB+ Java stack. Setup takes minutes instead of weeks. MFTPlus starts at $150/month with flat pricing, while Sterling requires enterprise licensing negotiations. For teams that need reliable scheduled transfers with audit trails, MFTPlus covers the core use case at a fraction of the cost.</p>
+            <p>MFTPlus is a lightweight alternative to IBM Sterling. The Rust-based agent is ~20MB versus Sterling's 2GB+ Java stack. MFTPlus manages the server for you — no infrastructure to maintain. Setup takes minutes instead of weeks. MFTPlus starts at $150/month with flat pricing, while Sterling requires enterprise licensing negotiations. For teams that need reliable scheduled transfers with audit trails, MFTPlus covers the core use case at a fraction of the cost.</p>
           </details>
 
           <details className="faq-item">
             <summary>Can MFTPlus replace GoAnywhere?</summary>
-            <p>For standard transfer automation — scheduled SFTP jobs, audit logging, multi-protocol support — yes. MFTPlus is self-hosted via Docker with a 5MB Rust agent, versus GoAnywhere's Java VM requirement. MFTPlus starts at $150/month versus GoAnywhere's ~$2,500/year pricing. GoAnything has broader protocol support (AS2, HTTPS) for now; MFTPlus focuses on SFTP, FTP, and FTPS with more protocols on the roadmap.</p>
+            <p>For standard transfer automation — scheduled SFTP jobs, audit logging, multi-protocol support — yes. MFTPlus provides a managed server with a Rust agent, versus GoAnywhere's self-hosted Java VM requirement. MFTPlus starts at $150/month versus GoAnywhere's ~$2,500/year pricing. GoAnywhere has broader protocol support (AS2, HTTPS) for now; MFTPlus focuses on SFTP, FTP, and FTPS with more protocols on the roadmap.</p>
           </details>
 
           <details className="faq-item">
             <summary>How long does it take to deploy MFTPlus?</summary>
-            <p>The server deploys via Docker Compose in about 2 minutes. The agent is a single ~5MB binary — download, run the login command with your API key, and you're connected. Most teams complete their first file transfer within 5 minutes of starting. No Java runtime, no database setup, no firewall rule changes beyond standard SFTP ports.</p>
+            <p>The agent is a single ~20MB binary — download, run the login command with your API key, and you're connected to our managed server. Most teams complete their first file transfer within 5 minutes. No Java runtime, no database setup, no server infrastructure to configure. Self-hosted server option coming soon for teams that need on-premise deployment.</p>
           </details>
         </div>
       </section>
