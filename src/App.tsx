@@ -136,6 +136,10 @@ function App() {
               <span className="stat-value">4+</span>
               <span className="stat-label">Protocols</span>
             </div>
+            <div className="stat-item">
+              <span className="stat-value">9</span>
+              <span className="stat-label">Live Features</span>
+            </div>
           </div>
         </div>
 
@@ -287,49 +291,75 @@ function App() {
           <div className="feature-card">
             <div className="feature-icon">📅</div>
             <h3>Scheduled Transfers</h3>
-            <p>Set up recurring transfers with cron syntax. Jobs persist across restarts with full run history and error details.</p>
+            <p>Set up recurring transfers with cron syntax. Jobs persist across restarts with full run history and error details. Manage from CLI or web dashboard.</p>
             <CodeBlock code={`mftctl jobs create --agent <agent-id> \\
   --schedule '0 2 * * *' \\
   --source ./data --dest sftp://backup/`} />
           </div>
 
           <div className="feature-card">
+            <div className="feature-icon">🤖</div>
+            <h3>Natural Language Job Creation</h3>
+            <p>Describe what you want in plain English. The AI parses your intent, selects the right agent, and creates the job. No CLI syntax to remember.</p>
+            <CodeBlock code={`"Transfer daily reports from server A to
+SFTP backup every night at 2am"`} />
+          </div>
+
+          <div className="feature-card">
             <div className="feature-icon">📋</div>
-            <h3>Complete Audit Trail</h3>
-            <p>Every transfer logged with source, destination, protocol, bytes, duration, and SHA-256 checksum verification.</p>
+            <h3>Audit Trail</h3>
+            <p>Every transfer logged with source, destination, protocol, bytes, duration, and SHA-256 checksum. Export to CSV or PDF for compliance.</p>
             <CodeBlock code="mftctl transfers list --status completed --limit 50" />
           </div>
 
           <div className="feature-card">
-            <div className="feature-icon">🔒</div>
-            <h3>Enterprise Security</h3>
-            <p>AES-256-GCM encryption, secure credential storage, private keys never transmitted, zero-knowledge architecture.</p>
-            <CodeBlock code="# Credentials encrypted at rest
-# Never transmitted or stored in plaintext" />
+            <div className="feature-icon">🔄</div>
+            <h3>Automatic Retry</h3>
+            <p>Exponential backoff on transient failures. Configurable max retries and delays. Network interruptions don't mean lost transfers.</p>
+            <CodeBlock code={`mftctl jobs create --agent <agent-id> \\
+  --source sftp://files.example.com \\
+  --dest ./local --max-retries 5`} />
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-icon">🌐</div>
+            <h3>Web Dashboard</h3>
+            <p>Monitor agents, manage jobs, review transfer history, and configure webhooks from a centralized dashboard. Admin and user views.</p>
+            <CodeBlock code={`# Real-time agent heartbeat monitoring
+# Transfer queue management
+# Webhook notifications on events`} />
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-icon">🔐</div>
+            <h3>IP Allowlist</h3>
+            <p>Restrict agent access to known IP addresses. Prevent unauthorized connections even with valid credentials.</p>
+            <CodeBlock code="# IP allowlist configured per customer
+# Agents outside allowlist are rejected" />
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-icon">🔔</div>
+            <h3>Webhooks</h3>
+            <p>Receive real-time notifications on transfer events — completed, failed, retried. Integrate with Slack, PagerDuty, or custom endpoints.</p>
+            <CodeBlock code={`# Configure webhook URLs in dashboard
+# Receive POST on transfer events`} />
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-icon">📄</div>
+            <h3>Transfer Templates</h3>
+            <p>Save common transfer configurations as reusable templates. Standardize setups across agents and reduce configuration errors.</p>
+            <CodeBlock code={`# Create templates for recurring patterns
+# Apply to new jobs in one click`} />
           </div>
 
           <div className="feature-card">
             <div className="feature-icon">💻</div>
-            <h3>Cross-Platform</h3>
-            <p>Linux CLI available now. Windows, macOS, and GUI coming soon. ~20MB native binary. System tray background operation.</p>
-            <CodeBlock code={`# Download installer from mftplus.co.za
-./mftctl login <api-key> --server https://your-server.example.com`} />
-          </div>
-
-          <div className="feature-card">
-            <div className="feature-icon">🔄</div>
-            <h3>Multiple Protocols</h3>
-            <p>SFTP, FTP, FTPS, and local file sync. One tool for all your transfer needs. Automatic retry on failure.</p>
-            <CodeBlock code={`mftctl jobs create --agent <agent-id> \\
-  --source sftp://files.example.com \\
-  --dest ./local --protocol sftp`} />
-          </div>
-
-          <div className="feature-card">
-            <div className="feature-icon">⚡</div>
-            <h3>Self-Healing</h3>
-            <p>Automatic retry with exponential backoff. Network interruptions don't mean failed transfers. Resume partial transfers.</p>
-            <CodeBlock code="# Automatically retries on failure\n# Configurable max attempts and delays" />
+            <h3>Cross-Platform Agent</h3>
+            <p>Linux CLI available now. Windows and macOS coming soon. ~20MB Rust binary with heartbeat monitoring and background operation.</p>
+            <CodeBlock code={`./mftctl login <api-key>
+./mftctl jobs create --source ./data --dest sftp://server/`} />
           </div>
         </div>
       </section>
