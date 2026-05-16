@@ -1,16 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" width="48" height="48">
-  <!-- Charcoal background - brand color #2a2522 -->
-  <rect width="48" height="48" fill="#2a2522"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <defs>
+    <linearGradient id="goldGradientFav" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4A843;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+    </linearGradient>
+  </defs>
 
-  <!-- Simple geometric "M" / file transfer mark using brand colors -->
-  <g stroke-width="4" stroke-linecap="round">
-    <!-- Horizontal line - goldenrod #D4A843 -->
-    <line x1="4" y1="24" x2="44" y2="24" stroke="#D4A843"/>
+  <rect width="32" height="32" fill="#1b1b1f" rx="7"/>
 
-    <!-- Vertical line - ivory #F5F0E8 -->
-    <line x1="24" y1="4" x2="24" y2="44" stroke="#F5F0E8"/>
+  <g transform="translate(16, 16)">
+    <path d="M -12 -4 L 12 -4 L 12 4 L -12 4 Z" fill="#8B4513" stroke="none"/>
+    <path d="M -4 -12 L 4 -12 L 4 -4 L -4 -4 Z" fill="url(#goldGradientFav)" stroke="none"/>
+    <path d="M -4 -3 L -4 3 L 4 3 L 4 -3 Z" fill="url(#goldGradientFav)" stroke="none"/>
+    <path d="M -4 4 L 4 4 L 4 12 L -4 12 Z" fill="url(#goldGradientFav)" stroke="none"/>
+    <rect x="-4" y="-3" width="8" height="1" fill="#D4A843" opacity="0.4" rx="0.5"/>
   </g>
 
-  <!-- Center highlight - goldenrod circle -->
-  <circle cx="24" cy="24" r="4" fill="#D4A843"/>
+  <circle cx="26" cy="6" r="3" fill="#B8860B" opacity="0.9"/>
+  <path d="M 26 4.5 L 26 7.5 M 24.5 6 L 27.5 6" stroke="#FAF8F5" stroke-width="0.8" stroke-linecap="round"/>
 </svg>
