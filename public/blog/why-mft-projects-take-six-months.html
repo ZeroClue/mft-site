@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why MFT Projects Take 6 Months (And How to Do It in 6 Weeks) — MFTPlus</title>
+<meta name="description" content="Most MFT deployments drag for months, not because the software is complex, but because the process around it is. Here's where the time actually goes, and how to compress it.">
+<link rel="canonical" href="https://mftplus.co.za/blog/why-mft-projects-take-six-months.html">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://mftplus.co.za/blog/why-mft-projects-take-six-months.html">
+<meta property="og:site_name" content="MFTPlus">
+<meta property="og:title" content="Why MFT Projects Take 6 Months (And How to Do It in 6 Weeks)">
+<meta property="og:description" content="Most MFT deployments drag for months, not because the software is complex, but because the process around it is. Here's where the time actually goes.">
+<meta property="og:locale" content="en_ZA">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Why MFT Projects Take 6 Months (And How to Do It in 6 Weeks)">
+<meta name="twitter:description" content="Most MFT deployments drag for months, not because the software is complex, but because the process around it is. Here's where the time actually goes.">
+<meta property="article:published_time" content="2026-05-17">
+<meta property="article:author" content="Armin Marxer">
+
+<meta name="geo.region" content="ZA">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%231F1A17'/><path d='M8 12h16v8H8z' fill='%23B8860B'/></svg>">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Why MFT Projects Take 6 Months (And How to Do It in 6 Weeks)",
+  "description": "Most MFT deployments drag for months, not because the software is complex, but because the process around it is. Here's where the time actually goes, and how to compress it.",
+  "datePublished": "2026-05-17",
+  "author": {
+    "@type": "Person",
+    "name": "Armin Marxer",
+    "url": "https://mftplus.co.za"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "MFTPlus",
+    "url": "https://mftplus.co.za"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://mftplus.co.za/blog/why-mft-projects-take-six-months.html"
+  },
+  "keywords": ["MFT implementation", "file transfer deployment", "managed file transfer timeline", "MFT project management", "file transfer infrastructure", "DevOps file transfer"]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:           #1F1A17;
+    --surface:      #2A2420;
+    --border:       #3D342F;
+    --text:         #FAF8F5;
+    --text-muted:   #C4B5A0;
+    --text-dim:     #8B7355;
+    --accent:       #B8860B;
+    --accent-light: #D4A843;
+    --brown:        #8B4513;
+    --font-display: 'Source Serif 4', Georgia, serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-display);
+    font-size: 17px;
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 0;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+  }
+
+  nav.scrolled {
+    background: rgba(31,26,23,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom-color: var(--border);
+  }
+
+  nav .inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .wordmark {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .nav-link {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-link:hover { color: var(--accent); }
+
+  .nav-cta {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--bg);
+    background: var(--accent);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 2px;
+    transition: background 0.2s;
+  }
+
+  .nav-cta:hover { background: var(--accent-light); }
+
+  .container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  article {
+    padding: 160px 0 100px;
+    min-height: 100vh;
+  }
+
+  .article-back {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 24px;
+    transition: color 0.2s;
+  }
+
+  .article-back:hover { color: var(--accent); }
+
+  .article-meta {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+    margin-bottom: 24px;
+  }
+
+  .article-title {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 32px;
+    max-width: 800px;
+  }
+
+  .article-content {
+    max-width: 720px;
+    font-family: var(--font-display);
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--text-muted);
+  }
+
+  .article-content h2 {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 56px;
+    margin-bottom: 20px;
+    letter-spacing: -0.01em;
+  }
+
+  .article-content p {
+    margin-bottom: 24px;
+  }
+
+  .article-content strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .article-content a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--brown);
+    transition: border-color 0.2s;
+  }
+
+  .article-content a:hover {
+    border-bottom-color: var(--accent);
+  }
+
+  .article-content ul, .article-content ol {
+    margin-bottom: 24px;
+    padding-left: 0;
+    list-style: none;
+  }
+
+  .article-content li {
+    margin-bottom: 12px;
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .article-content li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 1px;
+  }
+
+  .article-content ol {
+    counter-reset: list;
+  }
+
+  .article-content ol li {
+    counter-increment: list;
+    padding-left: 28px;
+  }
+
+  .article-content ol li::before {
+    content: counter(list);
+    width: auto;
+    height: auto;
+    background: none;
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 14px;
+    top: 4px;
+  }
+
+  .article-content code {
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 14px;
+    background: var(--surface);
+    color: var(--accent-light);
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+
+  .article-content pre {
+    background: var(--surface);
+    padding: 20px;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin-bottom: 24px;
+    border: 1px solid var(--border);
+  }
+
+  .article-content pre code {
+    background: none;
+    padding: 0;
+    color: var(--text-muted);
+  }
+
+  .article-content blockquote {
+    border-left: 3px solid var(--accent);
+    padding-left: 20px;
+    margin: 32px 0;
+    font-style: italic;
+    color: var(--text);
+  }
+
+  .article-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 24px;
+  }
+
+  .article-content th {
+    text-align: left;
+    font-weight: 600;
+    color: var(--text);
+    padding: 12px 16px;
+    border-bottom: 2px solid var(--accent);
+    font-size: 14px;
+    letter-spacing: 0.03em;
+  }
+
+  .article-content td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+
+  .article-content tr:hover td {
+    color: var(--text);
+  }
+
+  .author-bio {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 56px;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  .author-bio-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 2px;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--bg);
+    font-weight: 600;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .author-bio-text strong {
+    color: var(--text);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .author-bio-text p {
+    font-size: 14px;
+    color: var(--text-dim);
+    margin-bottom: 0;
+  }
+
+  .faq-section {
+    margin-top: 56px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+  }
+
+  .faq-section h2 {
+    margin-bottom: 24px;
+  }
+
+  .faq-item {
+    margin-bottom: 16px;
+  }
+
+  .faq-item summary {
+    color: var(--accent);
+    font-weight: 600;
+    cursor: pointer;
+    padding: 12px 0;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .faq-item summary::before {
+    content: '+';
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--accent);
+    width: 20px;
+    flex-shrink: 0;
+  }
+
+  .faq-item[open] summary::before {
+    content: '\2212';
+  }
+
+  .faq-item summary:hover {
+    color: var(--accent-light);
+  }
+
+  .faq-item p {
+    padding-left: 28px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .article-cta {
+    margin-top: 40px;
+    padding: 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  .article-cta p {
+    color: var(--text);
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+
+  .article-cta a {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--bg);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 2px;
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    transition: background 0.2s;
+    border-bottom: none;
+  }
+
+  .article-cta a:hover { background: var(--accent-light); }
+
+  footer {
+    padding: 40px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  footer .inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  footer .wordmark { font-size: 13px; }
+
+  footer p {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  @media (max-width: 768px) {
+    .container, nav .inner, footer .inner { padding: 0 20px; }
+    .article-title { font-size: 28px; }
+    .article-content { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="inner">
+    <a href="/" class="wordmark">MFTPlus</a>
+    <div class="nav-links">
+      <a href="./" class="nav-link">Blog</a>
+      <a href="https://github.com/ZeroClue/mftplus-community" class="nav-link">GitHub</a>
+      <a href="https://mftplus.co.za" class="nav-cta">Install mftctl</a>
+    </div>
+  </div>
+</nav>
+
+<article>
+  <div class="container">
+    <a href="./" class="article-back">&larr; All posts</a>
+    <div class="article-meta">May 17, 2026 &middot; 6 min read</div>
+    <h1 class="article-title">Why MFT Projects Take 6 Months (And How to Do It in 6 Weeks)</h1>
+    <div class="article-content">
+      <p>Every MFT deployment I've been involved with started the same way. The team picks a vendor. They sign a contract. Someone draws a Gantt chart with an 8-week timeline. Then nothing happens for a month.</p>
+
+      <p>Six months later, the project is still not live. Sound familiar?</p>
+
+      <h2>Where the time actually goes</h2>
+
+      <p>The software itself is rarely the bottleneck. Here's what eats the months:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Phase</th>
+            <th>What happens</th>
+            <th>Typical duration</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Vendor selection</strong></td>
+            <td>Demos, POCs, security questionnaires, procurement</td>
+            <td>4 to 8 weeks</td>
+          </tr>
+          <tr>
+            <td><strong>Infrastructure setup</strong></td>
+            <td>Provision servers, open firewall ports, install Java runtimes, configure databases</td>
+            <td>2 to 4 weeks</td>
+          </tr>
+          <tr>
+            <td><strong>Connector development</strong></td>
+            <td>Build custom integrations to your existing systems (each one is a mini-project)</td>
+            <td>4 to 12 weeks</td>
+          </tr>
+          <tr>
+            <td><strong>Security review</strong></td>
+            <td>Compliance team audits the setup, requests changes, re-audits</td>
+            <td>2 to 4 weeks</td>
+          </tr>
+          <tr>
+            <td><strong>Testing and parallel run</strong></td>
+            <td>Run old and new systems side by side, compare results, fix discrepancies</td>
+            <td>4 to 8 weeks</td>
+          </tr>
+          <tr>
+            <td><strong>Sign-off and cutover</strong></td>
+            <td>Stakeholder approval, change management, migration window</td>
+            <td>2 to 4 weeks</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>Add it up. That's 18 to 40 weeks. Most projects land somewhere in the middle, around six months.</p>
+
+      <h2>The real blocker isn't the software</h2>
+
+      <p>The thing that slows every MFT project down is the same thing: you're bolting a new system onto an existing mess.</p>
+
+      <p>Your partner sends files via FTPS with a self-signed cert from 2022. Your internal system expects files in a specific directory structure that nobody documented. The security team wants all transfers logged to a SIEM that uses a proprietary format. And there are 14 scheduled transfers that have been running on cron for years, and nobody is sure which ones are still active.</p>
+
+      <p>Connector development eats the bulk of the time because every connection is bespoke. Each partner, each internal system, each compliance requirement needs its own configuration, its own testing, its own sign-off.</p>
+
+      <h2>How to compress the timeline</h2>
+
+      <p>The teams that deploy in weeks instead of months do three things differently:</p>
+
+      <ol>
+        <li><strong>They don't replace everything at once.</strong> Start with new transfers. Leave the existing cron jobs running. Migrate one transfer at a time, verify it works, move on. Parallel running is safer than a big-bang cutover.</li>
+        <li><strong>They skip the infrastructure overhead.</strong> If your MFT solution needs dedicated servers, a Java runtime, and a database instance before you can transfer a single file, you've already lost two weeks. An agent that runs on existing infrastructure, in the background, is faster to deploy by an order of magnitude.</li>
+        <li><strong>They automate compliance from the start.</strong> Don't wait for the security review to discover you're missing audit trails. If every transfer automatically logs who sent what, where it went, when it arrived, and what the checksum was, the compliance conversation takes a day instead of a month.</li>
+      </ol>
+
+      <h2>What a 6-week deployment actually looks like</h2>
+
+      <p>Week 1: Install agents on the servers that need to transfer files. Connect to your first destination (SFTP, FTPS, or local). Run a test transfer.</p>
+
+      <p>Week 2 to 3: Migrate your active scheduled transfers one by one. Each one takes about 20 minutes to configure. Verify each transfer lands correctly before moving on.</p>
+
+      <p>Week 4: Set up monitoring and alerting. Configure failure notifications. Export the audit log for your compliance team.</p>
+
+      <p>Week 5 to 6: Run in parallel with any remaining legacy transfers. Get compliance sign-off on the audit trail. Decommission the old system.</p>
+
+      <p>This only works if your MFT tool doesn't require infrastructure provisioning. A desktop agent that runs in the system tray, connects to existing endpoints, and logs everything centrally. That's a few days of setup, not a few months.</p>
+
+      <h2>The cost of waiting</h2>
+
+      <p>While you're spending six months deploying an MFT solution, your existing transfers are still running on whatever cobbled-together setup you have. No audit trails. No alerting on failures. Credentials in plaintext config files.</p>
+
+      <p>Every week of deployment time is a week your file transfer infrastructure stays unmonitored and non-compliant. The faster you deploy, the faster you're covered.</p>
+
+      <p><code>mftctl</code> deploys in about five minutes. Install the agent, connect your first endpoint, schedule a transfer. Audit trail is automatic. Retries are built in. The compliance conversation gets shorter because the logs are already there.</p>
+
+      <div class="author-bio">
+        <div class="author-bio-avatar">A</div>
+        <div class="author-bio-text">
+          <strong>Armin Marxer</strong>
+          <p>Building MFTPlus. Spent years managing file transfer infrastructure before deciding there had to be a better way.</p>
+        </div>
+      </div>
+
+      <div class="faq-section">
+        <h2>FAQ</h2>
+        <details class="faq-item">
+          <summary>Can I migrate from an existing MFT server without downtime?</summary>
+          <p>Yes. Run MFTPlus in parallel with your existing system. Migrate transfers one at a time, verify each one, then decommission the old setup. No cutover window needed.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What if my partners use different protocols?</summary>
+          <p>MFTPlus supports SFTP, FTP, and FTPS. Configure each partner connection independently. If a partner uses FTPS with a self-signed certificate, you can set up certificate pinning for that specific connection without affecting others.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Do I need dedicated servers for MFTPlus?</summary>
+          <p>No. MFTPlus runs as a desktop agent on your existing servers. It uses minimal resources (about 5MB) and runs in the background. No Java runtime, no database server, no Tomcat.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How long does the compliance review take?</summary>
+          <p>With automatic audit logging (timestamps, source, destination, protocol, checksum, authenticated user), most compliance teams can review and approve within a few days. The conversation shifts from "build us an audit trail" to "yes, that meets our requirements."</p>
+        </details>
+        <details class="faq-item">
+          <summary>What about transfers that have been running on cron for years?</summary>
+          <p>Start by inventorying which cron jobs are still active. Migrate the ones that matter first. You'll probably find some that haven't run in months and can be disabled entirely.</p>
+        </details>
+      </div>
+
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Can I migrate from an existing MFT server without downtime?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Run MFTPlus in parallel with your existing system. Migrate transfers one at a time, verify each one, then decommission the old setup. No cutover window needed."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What if my partners use different protocols?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "MFTPlus supports SFTP, FTP, and FTPS. Configure each partner connection independently."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do I need dedicated servers for MFTPlus?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. MFTPlus runs as a desktop agent on your existing servers. It uses minimal resources (about 5MB) and runs in the background."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How long does the compliance review take?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "With automatic audit logging, most compliance teams can review and approve within a few days."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What about transfers that have been running on cron for years?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Start by inventorying which cron jobs are still active. Migrate the ones that matter first."
+            }
+          }
+        ]
+      }
+      </script>
+
+      <div class="article-cta">
+        <p>Deploy in minutes, not months</p>
+        <a href="https://mftplus.co.za">Install mftctl &rarr;</a>
+      </div>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="inner">
+    <a href="/" class="wordmark">MFTPlus</a>
+    <p>&copy; 2026 MFTPlus. Infrastructure tooling for developers.</p>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+</script>
+
+</body>
+</html>
