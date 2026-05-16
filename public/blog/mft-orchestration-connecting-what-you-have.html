@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MFT Orchestration: Connecting What You Already Have — MFTPlus</title>
+<meta name="description" content="Most teams don't need to replace their file transfer tools. They need something to connect them. Orchestration layer for cron, SFTP, scripts, and scheduled tasks that already exist.">
+<link rel="canonical" href="https://mftplus.co.za/blog/mft-orchestration-connecting-what-you-have.html">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://mftplus.co.za/blog/mft-orchestration-connecting-what-you-have.html">
+<meta property="og:site_name" content="MFTPlus">
+<meta property="og:title" content="MFT Orchestration: Connecting What You Already Have">
+<meta property="og:description" content="Most teams don't need to replace their file transfer tools. They need something to connect them. Orchestration layer for cron, SFTP, scripts, and scheduled tasks.">
+<meta property="og:locale" content="en_ZA">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MFT Orchestration: Connecting What You Already Have">
+<meta name="twitter:description" content="Most teams don't need to replace their file transfer tools. They need something to connect them. Orchestration layer for cron, SFTP, scripts, and scheduled tasks.">
+<meta property="article:published_time" content="2026-05-17">
+<meta property="article:author" content="Armin Marxer">
+
+<meta name="geo.region" content="ZA">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%231F1A17'/><path d='M8 12h16v8H8z' fill='%23B8860B'/></svg>">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "MFT Orchestration: Connecting What You Already Have",
+  "description": "Most teams don't need to replace their file transfer tools. They need something to connect them. Orchestration layer for cron, SFTP, scripts, and scheduled tasks that already exist.",
+  "datePublished": "2026-05-17",
+  "author": {
+    "@type": "Person",
+    "name": "Armin Marxer",
+    "url": "https://mftplus.co.za"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "MFTPlus",
+    "url": "https://mftplus.co.za"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://mftplus.co.za/blog/mft-orchestration-connecting-what-you-have.html"
+  },
+  "keywords": ["MFT orchestration", "file transfer orchestration", "connect SFTP cron scripts", "managed file transfer workflow", "file transfer automation", "MFTPlus orchestration"]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:           #1F1A17;
+    --surface:      #2A2420;
+    --border:       #3D342F;
+    --text:         #FAF8F5;
+    --text-muted:   #C4B5A0;
+    --text-dim:     #8B7355;
+    --accent:       #B8860B;
+    --accent-light: #D4A843;
+    --brown:        #8B4513;
+    --font-display: 'Source Serif 4', Georgia, serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-display);
+    font-size: 17px;
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 0;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+  }
+
+  nav.scrolled {
+    background: rgba(31,26,23,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom-color: var(--border);
+  }
+
+  nav .inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .wordmark {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .nav-link {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-link:hover { color: var(--accent); }
+
+  .nav-cta {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--bg);
+    background: var(--accent);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 2px;
+    transition: background 0.2s;
+  }
+
+  .nav-cta:hover { background: var(--accent-light); }
+
+  .article {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .article-header {
+    padding: 160px 0 60px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .article-label {
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+  }
+
+  .article-header h1 {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.15;
+    margin-bottom: 24px;
+  }
+
+  .article-meta {
+    font-size: 13px;
+    color: var(--text-dim);
+    display: flex;
+    gap: 20px;
+  }
+
+  .article-body {
+    padding: 60px 0;
+  }
+
+  .article-body h2 {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 56px 0 20px;
+    padding-top: 8px;
+  }
+
+  .article-body h3 {
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 40px 0 16px;
+  }
+
+  .article-body p {
+    margin-bottom: 24px;
+    color: var(--text);
+  }
+
+  .article-body ul, .article-body ol {
+    margin-bottom: 24px;
+    padding-left: 24px;
+  }
+
+  .article-body li {
+    margin-bottom: 8px;
+    color: var(--text-muted);
+  }
+
+  .article-body strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .article-body a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    transition: border-color 0.2s;
+  }
+
+  .article-body a:hover { border-bottom-color: var(--accent); }
+
+  .article-body blockquote {
+    border-left: 2px solid var(--accent);
+    padding: 16px 0 16px 24px;
+    margin: 32px 0;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 32px 0;
+    font-size: 14px;
+  }
+
+  .comparison-table th {
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 2px solid var(--accent);
+    color: var(--text);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.03em;
+  }
+
+  .comparison-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+
+  .comparison-table tr:hover td { color: var(--text); }
+
+  .cta-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 40px;
+    margin: 48px 0;
+    text-align: center;
+  }
+
+  .cta-block p {
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    font-size: 15px;
+  }
+
+  .cta-button {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--bg);
+    background: var(--accent);
+    text-decoration: none;
+    padding: 14px 32px;
+    border-radius: 2px;
+    transition: background 0.2s;
+  }
+
+  .cta-button:hover { background: var(--accent-light); }
+
+  .author-bio {
+    padding: 32px 0;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-top: 48px;
+  }
+
+  .author-bio .author-name {
+    font-weight: 600;
+    color: var(--text);
+    font-size: 15px;
+  }
+
+  .author-bio .author-desc {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  .faq-section {
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+  }
+
+  .faq-section h2 {
+    margin-bottom: 24px;
+  }
+
+  details {
+    border-bottom: 1px solid var(--border);
+  }
+
+  details summary {
+    padding: 20px 0;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--accent-light);
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  details summary::after {
+    content: '+';
+    font-size: 18px;
+    color: var(--text-dim);
+    transition: transform 0.2s;
+  }
+
+  details[open] summary::after { transform: rotate(45deg); }
+
+  details summary::-webkit-details-marker { display: none; }
+
+  details .faq-answer {
+    padding: 0 0 20px;
+    color: var(--text-muted);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .article-footer {
+    padding: 32px 0;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .back-link {
+    font-family: var(--font-display);
+    font-size: 13px;
+    color: var(--text-dim);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s;
+  }
+
+  .back-link:hover { color: var(--accent); }
+
+  footer {
+    padding: 40px 0;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+
+  footer .inner {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  footer .wordmark { font-size: 13px; }
+
+  footer p {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  @media (max-width: 768px) {
+    .article, nav .inner, footer .inner { padding: 0 20px; }
+    .article-header { padding: 120px 0 40px; }
+    .comparison-table { font-size: 12px; }
+    .comparison-table th, .comparison-table td { padding: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="inner">
+    <a href="/" class="wordmark">MFTPlus</a>
+    <div class="nav-links">
+      <a href="/blog/" class="nav-link">Blog</a>
+      <a href="https://github.com/ZeroClue/mftplus-community" class="nav-link">GitHub</a>
+      <a href="https://mftplus.co.za" class="nav-cta">Install mftctl</a>
+    </div>
+  </div>
+</nav>
+
+<article class="article">
+  <header class="article-header">
+    <div class="article-label">File Transfer Infrastructure</div>
+    <h1>MFT Orchestration: Connecting What You Already Have</h1>
+    <div class="article-meta">
+      <span>May 2026</span>
+      <span>7 min read</span>
+      <span>Armin Marxer</span>
+    </div>
+  </header>
+
+  <div class="article-body">
+
+    <p>Here's a pattern I've seen play out at least a dozen times: a team has cron jobs pulling files from a vendor SFTP, a Windows Scheduled Task pushing reports to a client server, a couple of shell scripts someone wrote three years ago that move nightly batches between environments, and maybe a Robocopy task that syncs a shared folder to somewhere nobody remembers.</p>
+
+    <p>Each one works. Individually. The problem is nobody can see all of them at once, nobody knows what happens when one fails, and nobody can answer the question "is our data moving correctly right now?" without logging into four different machines and checking three different log formats.</p>
+
+    <p>The instinct is to rip it all out and start fresh with a single MFT platform. That's the IBM Sterling sales pitch: replace everything with one governed system. It works, if you have eight months and a six-figure budget. Most teams don't.</p>
+
+    <h2>The Orchestration Problem</h2>
+
+    <p>File transfer sprawl isn't a tool problem. It's an orchestration problem. The transfers themselves are fine. Cron runs scp. SFTP works. rsync does its job. What's missing is the layer between all of them that provides:</p>
+
+    <ul>
+      <li><strong>Visibility</strong> — a single view of every transfer, regardless of how it runs</li>
+      <li><strong>Monitoring</strong> — alerting when something fails or stalls, without checking log files manually</li>
+      <li><strong>Retry logic</strong> — automatic reconnection and backoff when a network blip kills a transfer</li>
+      <li><strong>Audit trail</strong> — who transferred what, when, and whether it succeeded</li>
+      <li><strong>Scheduling</strong> — coordinated timing so transfer B doesn't start until transfer A finishes</li>
+    </ul>
+
+    <p>You can bolt some of this together with Nagios checks and a shared spreadsheet. I've seen teams try. The spreadsheet lasts about two weeks before it's stale and the Nagios alerts get ignored because they fire too often.</p>
+
+    <h2>What Orchestration Actually Looks Like</h2>
+
+    <p>An orchestration layer sits above your existing transfers. It doesn't replace them — it wraps them. Here's what that means in practice:</p>
+
+    <h3>1. Register, don't replace</h3>
+
+    <p>Your cron job that pulls vendor files at 2 AM? Keep it. But register it with the orchestration layer so the system knows it exists, when it's supposed to run, and what success looks like. Now when someone asks "did the vendor file arrive?", you have an answer that doesn't involve SSHing into a box.</p>
+
+    <h3>2. Monitor the outcome, not the process</h3>
+
+    <p>Most teams monitor whether a script ran, not whether it did what it was supposed to. An orchestration layer checks the outcome: did the file land? Is it the right size? Did it arrive within the expected window? If not, alert. This is the difference between "cron ran successfully" and "the transfer actually worked."</p>
+
+    <h3>3. Chain transfers into workflows</h3>
+
+    <p>When transfer A finishes, start transfer B. If B fails, retry twice with backoff, then alert. If B succeeds, run the validation script. This is where most free tools fall apart — cron can't do dependencies, and Windows Task Scheduler can't chain across machines.</p>
+
+    <h3>4. Centralise credentials</h3>
+
+    <p>Instead of SSH keys scattered across six servers and passwords baked into batch files, the orchestration layer holds credentials in one place. Rotate a key once, every transfer that uses it gets the update. This alone is worth the price of admission for compliance audits.</p>
+
+    <h2>Orchestration vs. Replacement</h2>
+
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Approach</th>
+          <th>Replace Everything</th>
+          <th>Orchestrate Existing</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Timeline</strong></td>
+          <td>6-12 months</td>
+          <td>2-6 weeks</td>
+        </tr>
+        <tr>
+          <td><strong>Disruption</strong></td>
+          <td>High — rip and replace</td>
+          <td>Low — wrap and monitor</td>
+        </tr>
+        <tr>
+          <td><strong>Risk</strong></td>
+          <td>High — new system, new failures</td>
+          <td>Low — existing transfers keep running</td>
+        </tr>
+        <tr>
+          <td><strong>Visibility</strong></td>
+          <td>Immediate (once deployed)</td>
+          <td>Immediate (day one)</td>
+        </tr>
+        <tr>
+          <td><strong>Compliance gain</strong></td>
+          <td>Full</td>
+          <td>Incremental but fast</td>
+        </tr>
+        <tr>
+          <td><strong>Vendor lock-in</strong></td>
+          <td>High</td>
+          <td>Low — transfers remain portable</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>I'm not saying rip-and-replace is always wrong. If your infrastructure is a security nightmare with plaintext FTP and hardcoded credentials everywhere, you probably should start fresh. But most teams I've worked with are somewhere in the middle: their transfers work, they just can't see them, can't monitor them, and can't prove to an auditor that they work.</p>
+
+    <p>For those teams, orchestration is the right first step. Get visibility. Get monitoring. Get audit trails. Then, over time, migrate individual transfers into the platform as they come up for renewal or break.</p>
+
+    <h2>What This Looks Like in MFTPlus</h2>
+
+    <p>We built MFTPlus with this exact pattern in mind. You don't have to migrate everything on day one.</p>
+
+    <p><strong>mftctl</strong> registers existing transfers as jobs. A job can be an SFTP pull, an HTTP download, a local file copy, or a shell command. The agent runs on your server, executes the job on schedule, reports success or failure back to the dashboard, and handles retries automatically.</p>
+
+    <p>The dashboard shows every job across every server in a single view. Green means it worked. Red means it didn't. You can drill into any job to see transfer history, file sizes, duration, and error logs.</p>
+
+    <p>Credentials live in the platform, not in scripts. When you rotate an SSH key, you update it once in MFTPlus and every job that uses that credential picks it up on the next run.</p>
+
+    <h3>Making it simpler</h3>
+
+    <p>We're also working on natural language job creation. Instead of filling in form fields for protocol, host, port, credentials, and schedule, you describe what you want in plain English: "Pull the daily sales CSV from vendor.example.com every weekday at 6 AM and put it in /data/incoming." The system builds the job configuration from that description.</p>
+
+    <p>It's early. But the goal is to cut the time between "I need a new transfer" and "it's running and monitored" from hours to minutes.</p>
+
+    <h2>When Orchestration Isn't Enough</h2>
+
+    <p>There are cases where wrapping existing transfers won't cut it:</p>
+
+    <ul>
+      <li><strong>Plaintext FTP</strong> — there's no safe way to orchestrate unencrypted transfers. Replace these first.</li>
+      <li><strong>Hardcoded credentials in scripts</strong> — you can monitor the script, but the credential exposure remains until you migrate the job into the platform.</li>
+      <li><strong>Transfers with no error handling</strong> — if a script fails silently and nobody notices for three days, monitoring helps you notice faster, but the root cause is still a brittle script. Migrating it to a managed job with retry logic fixes the cause.</li>
+    </ul>
+
+    <p>The point isn't that orchestration solves everything. It's that orchestration solves <em>most</em> of the problem <em>immediately</em>, and gives you a foundation to fix the rest over time instead of in a single high-risk migration.</p>
+
+    <h2>Getting Started</h2>
+
+    <p>If you're running file transfers across multiple servers with multiple tools and no central view, start here:</p>
+
+    <ol>
+      <li><strong>Inventory what you have.</strong> List every transfer: source, destination, schedule, protocol, credentials. If you can't do this in an afternoon, you have shadow transfers. We're building a discovery tool for exactly this situation.</li>
+      <li><strong>Register them as jobs.</strong> Use mftctl to create a job for each transfer. The agent runs alongside your existing setup — nothing breaks if the registration goes wrong.</li>
+      <li><strong>Add monitoring first, migration second.</strong> Get everything visible on the dashboard before you start migrating transfers into managed jobs. You'll learn a lot about what actually runs on your network just by watching.</li>
+      <li><strong>Migrate the worst offenders.</strong> Start with the transfers that cause the most pain: the ones that fail silently, the ones with hardcoded credentials, the ones nobody wants to touch because the original author left three years ago.</li>
+    </ol>
+
+    <div class="cta-block">
+      <p>MFTPlus gives you a single dashboard for every file transfer across your network. Monitor what you have, migrate when you're ready.</p>
+      <a href="https://mftplus.co.za" class="cta-button">Try MFTPlus Free</a>
+    </div>
+
+    <div class="author-bio">
+      <div>
+        <div class="author-name">Armin Marxer</div>
+        <div class="author-desc">Building MFTPlus. File transfer infrastructure for teams that ship.</div>
+      </div>
+    </div>
+
+    <section class="faq-section">
+      <h2>FAQ</h2>
+
+      <details>
+        <summary>What is file transfer orchestration?</summary>
+        <div class="faq-answer">File transfer orchestration is a coordination layer that sits above your existing transfers — cron jobs, SFTP scripts, Windows Scheduled Tasks — and provides centralised monitoring, alerting, retry logic, and audit trails without replacing the underlying tools.</div>
+      </details>
+
+      <details>
+        <summary>How is orchestration different from managed file transfer?</summary>
+        <div class="faq-answer">Managed file transfer (MFT) typically replaces your existing transfer tools with a single platform. Orchestration wraps your existing tools instead of replacing them. In practice, MFTPlus does both: you can orchestrate what you have today and migrate individual transfers into managed jobs over time.</div>
+      </details>
+
+      <details>
+        <summary>Can I keep my existing cron jobs and SFTP scripts?</summary>
+        <div class="faq-answer">Yes. MFTPlus registers your existing transfers as jobs and monitors them. The agent runs alongside your current setup. Nothing changes about how the transfer executes — you just get visibility, alerting, and audit logs on top.</div>
+      </details>
+
+      <details>
+        <summary>How long does it take to set up MFTPlus orchestration?</summary>
+        <div class="faq-answer">Most teams register their existing transfers in 2-6 weeks, compared to 6-12 months for a full rip-and-replace MFT deployment. You get visibility and monitoring from day one, then migrate individual transfers at your own pace.</div>
+      </details>
+
+      <details>
+        <summary>What is natural language job creation?</summary>
+        <div class="faq-answer">A feature in MFTPlus that lets you describe a file transfer in plain English instead of filling in protocol, host, port, and credential fields. Say "pull the daily sales CSV from vendor.example.com every weekday at 6 AM" and the system builds the job configuration. Currently in alpha.</div>
+      </details>
+    </section>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is file transfer orchestration?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "File transfer orchestration is a coordination layer that sits above your existing transfers — cron jobs, SFTP scripts, Windows Scheduled Tasks — and provides centralised monitoring, alerting, retry logic, and audit trails without replacing the underlying tools."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is orchestration different from managed file transfer?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Managed file transfer (MFT) typically replaces your existing transfer tools with a single platform. Orchestration wraps your existing tools instead of replacing them. In practice, MFTPlus does both: you can orchestrate what you have today and migrate individual transfers into managed jobs over time."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I keep my existing cron jobs and SFTP scripts?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. MFTPlus registers your existing transfers as jobs and monitors them. The agent runs alongside your current setup. Nothing changes about how the transfer executes — you just get visibility, alerting, and audit logs on top."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How long does it take to set up MFTPlus orchestration?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Most teams register their existing transfers in 2-6 weeks, compared to 6-12 months for a full rip-and-replace MFT deployment. You get visibility and monitoring from day one, then migrate individual transfers at your own pace."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is natural language job creation?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A feature in MFTPlus that lets you describe a file transfer in plain English instead of filling in protocol, host, port, and credential fields. Say 'pull the daily sales CSV from vendor.example.com every weekday at 6 AM' and the system builds the job configuration. Currently in alpha."
+          }
+        }
+      ]
+    }
+    </script>
+
+  </div>
+
+  <div class="article-footer">
+    <a href="/blog/" class="back-link">&larr; All writing</a>
+  </div>
+</article>
+
+<footer>
+  <div class="inner">
+    <a href="/" class="wordmark">MFTPlus</a>
+    <p>&copy; 2026 MFTPlus. Infrastructure tooling for developers.</p>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+</script>
+
+</body>
+</html>
