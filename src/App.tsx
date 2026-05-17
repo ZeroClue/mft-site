@@ -369,6 +369,15 @@ SFTP backup every night at 2am"`} />
             <CodeBlock code={`# Scan enterprise networks for file transfer configurations
 # Detects SFTP, FTP, SCP, Rsync across Linux and Windows`} />
           </div>
+
+          <div className="feature-card">
+            <div className="feature-icon">👁️</div>
+            <h3>Transfer Triggers</h3>
+            <p>Watch directories and automatically transfer files when they arrive. Glob patterns, debouncing, and dynamic destination templates.</p>
+            <CodeBlock code={`mftctl trigger create --watch /data/incoming \\
+  --glob "*.csv" \\
+  --dest "sftp://partner/inbox/{{filename}}"`} />
+          </div>
         </div>
       </section>
 
