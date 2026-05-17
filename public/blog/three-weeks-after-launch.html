@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Three Weeks After Launch — What MFTPlus Has Been Building — MFTPlus</title>
+<meta name="description" content="v0.2.0 shipped three weeks ago. Seven UAT passes, 11 bugs fixed, a network discovery tool, and what's coming next.">
+<link rel="canonical" href="https://mftplus.co.za/blog/three-weeks-after-launch.html">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://mftplus.co.za/blog/three-weeks-after-launch.html">
+<meta property="og:site_name" content="MFTPlus">
+<meta property="og:title" content="Three Weeks After Launch — What MFTPlus Has Been Building">
+<meta property="og:description" content="v0.2.0 shipped three weeks ago. Seven UAT passes, 11 bugs fixed, a network discovery tool, and what's coming next.">
+<meta property="og:locale" content="en_ZA">
+<meta property="og:image" content="https://mftplus.co.za/blog/three-weeks-after-launch-og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Three Weeks After Launch — What MFTPlus Has Been Building">
+<meta name="twitter:description" content="v0.2.0 shipped three weeks ago. Seven UAT passes, 11 bugs fixed, a network discovery tool, and what's coming next.">
+<meta name="twitter:image" content="https://mftplus.co.za/blog/three-weeks-after-launch-og.png">
+<meta property="article:published_time" content="2026-05-17">
+<meta property="article:author" content="Armin Marxer">
+
+<meta name="geo.region" content="ZA">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%231F1A17'/><path d='M8 12h16v8H8z' fill='%23B8860B'/></svg>">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Three Weeks After Launch — What MFTPlus Has Been Building",
+  "description": "v0.2.0 shipped three weeks ago. Seven UAT passes, 11 bugs fixed, a network discovery tool, and what's coming next.",
+  "datePublished": "2026-05-17",
+  "author": {
+    "@type": "Person",
+    "name": "Armin Marxer",
+    "url": "https://mftplus.co.za"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "MFTPlus",
+    "url": "https://mftplus.co.za"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://mftplus.co.za/blog/three-weeks-after-launch.html"
+  },
+  "keywords": ["MFT update", "network discovery", "file transfer audit", "mft-discover", "MFTPlus release", "managed file transfer"]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:           #1F1A17;
+    --surface:      #2A2420;
+    --border:       #3D342F;
+    --text:         #FAF8F5;
+    --text-muted:   #C4B5A0;
+    --text-dim:     #8B7355;
+    --accent:       #B8860B;
+    --accent-light: #D4A843;
+    --brown:        #8B4513;
+    --font-display: 'Source Serif 4', Georgia, serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-display);
+    font-size: 17px;
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 0;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+  }
+
+  nav.scrolled {
+    background: rgba(31,26,23,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom-color: var(--border);
+  }
+
+  nav .inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .wordmark {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .nav-link {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-link:hover { color: var(--accent); }
+
+  .nav-cta {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--bg);
+    background: var(--accent);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 2px;
+    transition: background 0.2s;
+  }
+
+  .nav-cta:hover { background: var(--accent-light); }
+
+  .container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  article {
+    padding: 160px 0 100px;
+    min-height: 100vh;
+  }
+
+  .article-back {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 24px;
+    transition: color 0.2s;
+  }
+
+  .article-back:hover { color: var(--accent); }
+
+  .article-meta {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+    margin-bottom: 24px;
+  }
+
+  .article-title {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 32px;
+    max-width: 800px;
+  }
+
+  .article-content {
+    max-width: 720px;
+    font-family: var(--font-display);
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--text-muted);
+  }
+
+  .article-content h2 {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 56px;
+    margin-bottom: 20px;
+    letter-spacing: -0.01em;
+  }
+
+  .article-content p {
+    margin-bottom: 24px;
+  }
+
+  .article-content strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .article-content a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--brown);
+    transition: border-color 0.2s;
+  }
+
+  .article-content a:hover {
+    border-bottom-color: var(--accent);
+  }
+
+  .article-content ul, .article-content ol {
+    margin-bottom: 24px;
+    padding-left: 0;
+    list-style: none;
+  }
+
+  .article-content li {
+    margin-bottom: 12px;
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .article-content li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 1px;
+  }
+
+  .article-content code {
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 14px;
+    background: var(--surface);
+    color: var(--accent-light);
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+
+  .article-content blockquote {
+    border-left: 3px solid var(--accent);
+    padding-left: 20px;
+    margin: 32px 0;
+    font-style: italic;
+    color: var(--text);
+  }
+
+  .author-bio {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 56px;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  .author-bio-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 2px;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--bg);
+    font-weight: 600;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .author-bio-text strong {
+    color: var(--text);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .author-bio-text p {
+    font-size: 14px;
+    color: var(--text-dim);
+    margin-bottom: 0;
+  }
+
+  .faq-section {
+    margin-top: 56px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+  }
+
+  .faq-section h2 {
+    margin-bottom: 24px;
+  }
+
+  .faq-item {
+    margin-bottom: 16px;
+  }
+
+  .faq-item summary {
+    color: var(--accent);
+    font-weight: 600;
+    cursor: pointer;
+    padding: 12px 0;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .faq-item summary::before {
+    content: '+';
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--accent);
+    width: 20px;
+    flex-shrink: 0;
+  }
+
+  .faq-item[open] summary::before {
+    content: '\2212';
+  }
+
+  .faq-item summary:hover {
+    color: var(--accent-light);
+  }
+
+  .faq-item p {
+    padding-left: 28px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .article-cta {
+    margin-top: 40px;
+    padding: 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  .article-cta p {
+    color: var(--text);
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+
+  .article-cta a {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--bg);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 2px;
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    transition: background 0.2s;
+    border-bottom: none;
+  }
+
+  .article-cta a:hover { background: var(--accent-light); }
+
+  footer {
+    padding: 40px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  footer .inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  footer .wordmark { font-size: 13px; }
+
+  footer p {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  @media (max-width: 768px) {
+    .container, nav .inner, footer .inner { padding: 0 20px; }
+    .article-title { font-size: 28px; }
+    .article-content { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="inner">
+    <a href="/" class="wordmark">MFTPlus</a>
+    <div class="nav-links">
+      <a href="./" class="nav-link">Blog</a>
+      <a href="https://github.com/ZeroClue/mftplus-community" class="nav-link">GitHub</a>
+      <a href="https://mftplus.co.za" class="nav-cta">Install mftctl</a>
+    </div>
+  </div>
+</nav>
+
+<article>
+  <div class="container">
+    <a href="./" class="article-back">&larr; All posts</a>
+    <div class="article-meta">May 17, 2026 &middot; 5 min read</div>
+    <h1 class="article-title">Three Weeks After Launch</h1>
+    <div class="article-content">
+      <p>v0.2.0 shipped three weeks ago. Here's what happened next.</p>
+
+      <h2>Hardening what shipped</h2>
+
+      <p>Before adding anything new, we stress-tested what was already out there. Seven automated UAT passes caught 11 bugs: auth middleware mismatches, mobile overflow, React crashes on undefined data. All fixed before anyone reported them.</p>
+
+      <p>The kind of bugs you only find by running the full system end-to-end, not unit tests. Billing pages returning 401 because the wrong auth middleware was applied. Queue pages crashing because a transfer status was undefined and the filter function choked. Mobile navigation overflowing at 375px because three nav items didn't fit.</p>
+
+      <p>Each pass found progressively fewer issues. Pass 7 was clean.</p>
+
+      <p>We also shipped Polar.sh billing integration (subscription management directly in the dashboard), configurable rate limiting (admins can now tune API limits per tier), and standardized the brand across every surface. Logo, favicon, colors, all consistent now.</p>
+
+      <h2>Network discovery</h2>
+
+      <p>This is the big one.</p>
+
+      <p><strong>mft-discover</strong> is a standalone CLI tool that scans your enterprise network for file transfers you didn't know about. The ones running in cron jobs, scheduled tasks, shell scripts, and saved FTP client configs. The shadow IT of file transfer.</p>
+
+      <p>How it works:</p>
+
+      <ul>
+        <li><strong>Passive scanning only</strong> — reads local configs and crontabs, no network probing</li>
+        <li><strong>Cross-platform</strong> — SSH into Linux machines, WinRM into Windows machines, auto-detects the OS</li>
+        <li><strong>Risk flagging</strong> — every finding is analyzed for hardcoded credentials, unencrypted protocols, missing retry logic, no audit logging</li>
+        <li><strong>Dual output</strong> — JSON for automation pipelines, styled HTML for executive review</li>
+        <li><strong>Dashboard upload</strong> — scan results can be imported directly into the MFTPlus dashboard for filtering, dismissing false positives, and importing findings as transfer jobs</li>
+      </ul>
+
+      <p>What it finds: SFTP, FTP, FTPS, SCP, Rsync, HTTP, HTTPS, SMB transfers across crontabs, shell scripts, batch files, PowerShell, Windows Task Scheduler, FileZilla configs, WinSCP configs, and PuTTY sessions.</p>
+
+      <p>The output report is both a security audit and a migration planning tool. "You have 14 unencrypted transfers, 3 with hardcoded credentials" is a finding that drives action, whether that's consolidating into MFTPlus or just fixing the security gaps.</p>
+
+      <p>Built in Rust, cross-compiled for Linux and Windows in CI, released alongside the agent binaries.</p>
+
+      <p>Full docs: <a href="https://docs.mftplus.co.za/guide/network-discovery">Network Discovery documentation</a></p>
+
+      <h2>What's next</h2>
+
+      <p>Two things on the immediate roadmap:</p>
+
+      <p><strong>Transfer triggers.</strong> Event-driven transfers: file appears in a directory, auto-transfer fires. The number one ask from enterprise teams. Currently transfers are either scheduled (cron) or on-demand (CLI/API). Triggers add the third mode: reactive, real-time, zero-touch.</p>
+
+      <p><strong>Smart retry with resume.</strong> Breakpoint resume for interrupted transfers. Today a failed transfer retries from the start. With resume, it picks up where it left off. For large files on unreliable networks, this is the difference between "transfer eventually succeeds" and "transfer keeps failing at 80%."</p>
+
+      <p>Both are in design. Both will ship when they're ready, not before.</p>
+
+      <p>The pace hasn't slowed since launch. If anything, it's accelerated. We have a real product now, and every new feature builds on something that already works.</p>
+
+      <div class="author-bio">
+        <div class="author-bio-avatar">A</div>
+        <div class="author-bio-text">
+          <strong>Armin Marxer</strong>
+          <p>Building MFTPlus. Spent years managing file transfer infrastructure before deciding there had to be a better way.</p>
+        </div>
+      </div>
+
+      <div class="faq-section">
+        <h2>FAQ</h2>
+        <details class="faq-item">
+          <summary>What is mft-discover and how does it work?</summary>
+          <p>mft-discover is a standalone CLI tool that passively scans your network for file transfers. It reads cron jobs, scheduled tasks, shell scripts, and FTP client configurations across Linux and Windows machines via SSH and WinRM. It does not probe the network or send data externally.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Is the network discovery tool free to use?</summary>
+          <p>Yes. mft-discover is a free, standalone tool. You don't need an MFTPlus account to download and run it. Scan results can optionally be uploaded to the MFTPlus dashboard for guided remediation.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What protocols and tools does mft-discover detect?</summary>
+          <p>It detects SFTP, FTP, FTPS, SCP, Rsync, HTTP, HTTPS, and SMB transfers configured in crontabs, shell scripts, batch files, PowerShell scripts, Windows Task Scheduler, FileZilla, WinSCP, and PuTTY configurations.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What are transfer triggers?</summary>
+          <p>Transfer triggers are event-driven transfers. Instead of running on a schedule, a trigger watches a directory and automatically starts a transfer when a file appears. This is useful for real-time data pipelines where files arrive unpredictably.</p>
+        </details>
+        <details class="faq-item">
+          <summary>When will smart retry with resume be available?</summary>
+          <p>Smart retry with breakpoint resume is currently in design. It will allow interrupted transfers to resume from where they stopped, rather than restarting from the beginning. No ship date yet — it will be released when it's ready.</p>
+        </details>
+      </div>
+
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is mft-discover and how does it work?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "mft-discover is a standalone CLI tool that passively scans your network for file transfers. It reads cron jobs, scheduled tasks, shell scripts, and FTP client configurations across Linux and Windows machines via SSH and WinRM."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is the network discovery tool free to use?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. mft-discover is a free, standalone tool. You don't need an MFTPlus account to download and run it."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What protocols and tools does mft-discover detect?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "It detects SFTP, FTP, FTPS, SCP, Rsync, HTTP, HTTPS, and SMB transfers configured in crontabs, shell scripts, batch files, PowerShell scripts, Windows Task Scheduler, FileZilla, WinSCP, and PuTTY configurations."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What are transfer triggers?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Transfer triggers are event-driven transfers. Instead of running on a schedule, a trigger watches a directory and automatically starts a transfer when a file appears."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "When will smart retry with resume be available?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Smart retry with breakpoint resume is currently in design. No ship date yet."
+            }
+          }
+        ]
+      }
+      </script>
+
+      <div class="article-cta">
+        <p>Find the transfers you don't know about</p>
+        <a href="https://docs.mftplus.co.za/guide/network-discovery">Network Discovery docs &rarr;</a>
+      </div>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="inner">
+    <a href="/" class="wordmark">MFTPlus</a>
+    <p>&copy; 2026 MFTPlus. Infrastructure tooling for developers.</p>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+</script>
+
+</body>
+</html>
