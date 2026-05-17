@@ -318,6 +318,14 @@ function App() {
           </div>
 
           <div className="feature-card">
+            <div className="feature-icon">🔍</div>
+            <h3>Network Discovery</h3>
+            <p>Find shadow IT file transfers across your enterprise. Scans Linux and Windows machines for scheduled tasks, scripts, and saved credentials. Auto-detects SFTP, FTP, SCP, Rsync, and more. <a href="https://docs.mftplus.co.za/guide/network-discovery" target="_blank" rel="noopener noreferrer">Learn more →</a></p>
+            <CodeBlock code={`# Scans enterprise networks for file transfer configurations
+# Detects SFTP, FTP, SCP, Rsync across Linux and Windows`} />
+          </div>
+
+          <div className="feature-card">
             <div className="feature-icon">🔄</div>
             <h3>Multiple Protocols</h3>
             <p>SFTP, FTP, FTPS, and local file sync. One tool for all your transfer needs. Automatic retry on failure.</p>
