@@ -1,19 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" width="48" height="48">
-  <!-- Charcoal background for dark mode -->
-  <rect width="48" height="48" fill="#1F1A17"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="goldGradientIconDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4A843;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+    </linearGradient>
+  </defs>
 
-  <!-- Weave creates the mark -->
-  <g stroke-width="5" stroke-linecap="square">
-    <!-- Horizontal line - warm taupe for visibility -->
-    <line x1="2" y1="24" x2="46" y2="24" stroke="#C8A96E"/>
+  <rect width="48" height="48" fill="#1b1b1f" rx="10"/>
 
-    <!-- Vertical line - ivory for contrast -->
-    <line x1="24" y1="2" x2="24" y2="46" stroke="#FAF8F5"/>
+  <g transform="translate(24, 24)">
+    <path d="M -18 -6 L 18 -6 L 18 6 L -18 6 Z" fill="#8B4513" stroke="none"/>
+    <path d="M -6 -18 L 6 -18 L 6 -6 L -6 -6 Z" fill="url(#goldGradientIconDark)" stroke="none"/>
+    <path d="M -6 -4 L -6 4 L 6 4 L 6 -4 Z" fill="url(#goldGradientIconDark)" stroke="none"/>
+    <path d="M -6 6 L 6 6 L 6 18 L -6 18 Z" fill="url(#goldGradientIconDark)" stroke="none"/>
+    <path d="M -18 -6 L -6 -6 L -6 6 L -18 6 Z" fill="#7A3D10" stroke="none" opacity="0.35"/>
+    <path d="M 6 -6 L 18 -6 L 18 6 L 6 6 Z" fill="#7A3D10" stroke="none" opacity="0.35"/>
+    <rect x="-6" y="-18" width="12" height="2" fill="#D4A843" opacity="0.45" rx="1"/>
   </g>
 
-  <!-- Weave effect at crossing -->
-  <rect x="19" y="19" width="10" height="10" fill="#FAF8F5" stroke="none"/>
-
-  <!-- Plus highlight at center - lighter goldenrod for dark backgrounds -->
-  <circle cx="24" cy="24" r="5" fill="#D4A843"/>
+  <circle cx="40" cy="8" r="5" fill="#B8860B" opacity="0.9"/>
+  <path d="M 40 5.5 L 40 10.5 M 37.5 8 L 42.5 8" stroke="#FAF8F5" stroke-width="1.2" stroke-linecap="round"/>
 </svg>

@@ -1,40 +1,55 @@
 /* ============================================================================
-   MODERN TERMINAL AESTHETIC - MFTPlus Product Landing Page
+   MFTPlus PRODUCT LANDING PAGE
+   ============================================================================ */
+
+/* ============================================================================
+   THE WEAVE BRAND PALETTE (from docs.mftplus.co.za)
+   ============================================================================
+   --mft-goldenrod: #D4A843    (brand-2, highlights, links)
+   --mft-charcoal: #1b1b1f    (dark background)
+   --mft-saddleBrown: #8B4513 (brand-1, primary CTAs)
+   --mft-ivory: #FAF8F5       (text on dark)
+   --mft-warm-taupe: #C8A96E  (secondary text, labels)
+   --color-primary: #8B4513   (brand-1)
+
+   DO NOT introduce new hex colors without design review.
    ============================================================================ */
 
 /* ============================================================================
    CSS VARIABLES - Design Tokens
    ============================================================================ */
 :root {
-  /* Colors - Dark Terminal Theme */
-  --color-bg: #0D1117;
-  --color-bg-secondary: #161B22;
-  --color-bg-tertiary: #21262D;
-  --color-border: #30363D;
-  --color-border-bright: #484F58;
+  /* Colors - The Weave Brand */
+  --color-bg: #1b1b1f;
+  --color-bg-secondary: #1b1b1f;
+  --color-bg-tertiary: #1b1b1f;
+  --color-border: #333333;
+  --color-border-bright: rgba(200, 169, 110, 0.3);
 
-  /* Accents - MFTPlus Brand Colors */
-  --color-primary: #B8860B;
-  --color-secondary: #00D9C0;
+  /* Accents - The Weave Palette */
+  --color-primary: #8B4513;
+  --color-secondary: #D4A843;
   --color-success: #10B981;
   --color-error: #EF4444;
   --color-warning: #F59E0B;
 
-  /* Weave Brand Colors for CTAs */
-  --mft-goldenrod: #DAA520;
-  --mft-charcoal: #1C1C1C;
+  /* The Weave Brand Tokens */
+  --mft-goldenrod: #D4A843;
+  --mft-charcoal: #1b1b1f;
   --mft-saddleBrown: #8B4513;
-  --mft-ivory: #FFFFF0;
+  --mft-ivory: #FAF8F5;
+  --mft-info-blue: #60A5FA;
+  --mft-warm-taupe: #C8A96E;
 
   /* Text */
-  --color-text-primary: #ffffff;
-  --color-text-secondary: #b0b0b0;
-  --color-text-muted: #707070;
+  --color-text-primary: #FAF8F5;
+  --color-text-secondary: #C8A96E;
+  --color-text-muted: #888888;
   --color-text-code: #e0e0e0;
 
   /* Typography */
   --font-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Droid Sans Mono', 'Source Code Pro', monospace;
-  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  --font-sans: 'Source Serif 4', Georgia, 'Times New Roman', serif;
 
   /* Spacing */
   --space-xs: 0.25rem;
@@ -120,28 +135,6 @@ body {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
 }
 
-.gradient-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(100px);
-  opacity: 0.15;
-}
-
-.orb-1 {
-  top: 20%;
-  right: 10%;
-  width: 400px;
-  height: 400px;
-  background: var(--color-primary);
-}
-
-.orb-2 {
-  bottom: 20%;
-  left: 10%;
-  width: 300px;
-  height: 300px;
-  background: var(--color-secondary);
-}
 
 /* ============================================================================
    NAVIGATION
@@ -157,7 +150,7 @@ body {
 }
 
 .nav.scrolled {
-  background: rgba(13, 17, 23, 0.95);
+  background: rgba(27, 27, 31, 0.95);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--color-border);
 }
@@ -201,8 +194,8 @@ body {
 
 .cta-button {
   padding: var(--space-sm) var(--space-lg);
-  background: #D4A017;
-  color: #FFFFF0 !important;
+  background: #D4A843;
+  color: #F5F0E8 !important;
   border-radius: var(--radius-sm);
   font-weight: 500;
   transition: transform var(--transition-fast), box-shadow var(--transition-fast);
@@ -210,27 +203,27 @@ body {
 
 .cta-button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(212, 160, 23, 0.3);
+  box-shadow: 0 4px 12px rgba(218, 165, 32, 0.3);
 }
 
 /* Weave Brand CTA Buttons */
 .cta-goldenrod {
-  background: var(--mft-goldenrod) !important;
-  color: var(--mft-charcoal) !important;
+  background: var(--mft-saddleBrown) !important;
+  color: var(--mft-ivory) !important;
   border-radius: var(--radius-sm);
   font-weight: 600;
   transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .cta-goldenrod:hover {
-  background: var(--mft-saddleBrown) !important;
-  color: var(--mft-ivory) !important;
+  background: var(--mft-goldenrod) !important;
+  color: var(--mft-charcoal) !important;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(218, 165, 32, 0.3);
+  box-shadow: 0 4px 12px rgba(139, 69, 19, 0.3);
 }
 
 .nav-cta-signup {
-  background: var(--mft-goldenrod) !important;
+  background: var(--mft-saddleBrown) !important;
   color: var(--mft-ivory) !important;
   padding: var(--space-sm) var(--space-lg);
   border-radius: var(--radius-sm);
@@ -240,10 +233,42 @@ body {
 }
 
 .nav-cta-signup:hover {
+  background: var(--mft-goldenrod) !important;
+  color: var(--mft-charcoal) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(212, 168, 67, 0.3);
+}
+
+/* Weave Brand CTA Buttons (responsive) */
+.cta-goldenrod {
   background: var(--mft-saddleBrown) !important;
   color: var(--mft-ivory) !important;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.cta-goldenrod:hover {
+  background: var(--mft-goldenrod) !important;
+  color: var(--mft-charcoal) !important;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(218, 165, 32, 0.3);
+  box-shadow: 0 4px 12px rgba(139, 69, 19, 0.3);
+}
+
+.nav-cta-signup {
+  background: var(--mft-saddleBrown);
+  color: var(--mft-ivory);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.nav-cta-signup:hover {
+  background: var(--mft-goldenrod);
+  color: var(--mft-charcoal);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(212, 168, 67, 0.3);
 }
 
 /* ============================================================================
@@ -261,12 +286,12 @@ section {
 }
 
 .section-tag {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 0.85rem;
   color: var(--color-primary);
   display: block;
   margin-bottom: var(--space-md);
-  letter-spacing: 2px;
+  letter-spacing: 1px;
 }
 
 .section-header h2 {
@@ -405,7 +430,7 @@ section {
 }
 
 .stat-value {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 2rem;
   font-weight: 700;
   color: var(--color-primary);
@@ -799,7 +824,7 @@ section {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--color-primary);
@@ -862,7 +887,7 @@ section {
 }
 
 .pricing-status {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 0.7rem;
   padding: var(--space-xs) var(--space-sm);
   border-radius: var(--radius-sm);
@@ -875,7 +900,7 @@ section {
 }
 
 .price-value {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 2.5rem;
   font-weight: 700;
   color: var(--color-text-primary);
@@ -1078,6 +1103,18 @@ section {
     grid-template-columns: 1fr;
   }
 
+  .comparison-table-wrapper {
+    margin: 0 -var(--space-md);
+  }
+
+  .vendor-comparison-table {
+    font-size: 0.8rem;
+  }
+
+  .faq-section {
+    padding: var(--space-3xl) var(--space-md);
+  }
+
   .footer-content {
     flex-direction: column;
     text-align: center;
@@ -1086,4 +1123,114 @@ section {
   .footer-copy {
     text-align: center;
   }
+}
+
+/* ============================================================================
+   COMPARISON TABLE
+   ============================================================================ */
+.comparison-section {
+  padding: var(--space-4xl) var(--space-2xl);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.comparison-table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.vendor-comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+}
+
+.vendor-comparison-table th,
+.vendor-comparison-table td {
+  padding: var(--space-sm) var(--space-md);
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+}
+
+.vendor-comparison-table th {
+  font-weight: 600;
+  color: var(--color-text-primary);
+  font-size: 0.85rem;
+}
+
+.vendor-comparison-table th.highlight-col {
+  color: var(--mft-goldenrod);
+}
+
+.vendor-comparison-table td.highlight-col {
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.vendor-comparison-table td:first-child {
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+/* ============================================================================
+   FAQ SECTION
+   ============================================================================ */
+.faq-section {
+  padding: var(--space-4xl) var(--space-2xl);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.faq-item {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: border-color var(--transition-fast);
+}
+
+.faq-item:hover {
+  border-color: var(--color-border-bright);
+}
+
+.faq-item summary {
+  padding: var(--space-lg);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-sans);
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary::after {
+  content: '+';
+  color: var(--mft-goldenrod);
+  font-size: 1.2rem;
+  font-weight: 300;
+  transition: transform var(--transition-fast);
+}
+
+.faq-item[open] summary::after {
+  content: '−';
+}
+
+.faq-item p {
+  padding: 0 var(--space-lg) var(--space-lg);
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+  font-family: var(--font-sans);
 }

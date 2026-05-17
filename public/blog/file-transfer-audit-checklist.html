@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Audit Your File Transfer Infrastructure in 30 Minutes — MFTPlus</title>
+<meta name="description" content="A practical 30-minute audit for file transfer infrastructure. Check for unencrypted transfers, hardcoded credentials, missing retry logic, stale keys, and undocumented transfers. Printable checklist included.">
+<link rel="canonical" href="https://mftplus.co.za/blog/file-transfer-audit-checklist.html">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://mftplus.co.za/blog/file-transfer-audit-checklist.html">
+<meta property="og:site_name" content="MFTPlus">
+<meta property="og:title" content="How to Audit Your File Transfer Infrastructure in 30 Minutes">
+<meta property="og:description" content="A practical 30-minute audit for file transfer infrastructure. Check for unencrypted transfers, hardcoded credentials, missing retry logic, stale keys, and undocumented transfers.">
+<meta property="og:locale" content="en_ZA">
+<meta property="og:image" content="https://mftplus.co.za/blog/file-transfer-audit-checklist-og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How to Audit Your File Transfer Infrastructure in 30 Minutes">
+<meta name="twitter:description" content="A practical 30-minute audit for file transfer infrastructure. Check for unencrypted transfers, hardcoded credentials, missing retry logic, stale keys, and undocumented transfers.">
+<meta name="twitter:image" content="https://mftplus.co.za/blog/file-transfer-audit-checklist-og.png">
+<meta property="article:published_time" content="2026-05-17">
+<meta property="article:author" content="Armin Marxer">
+
+<meta name="geo.region" content="ZA">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%231F1A17'/><path d='M8 12h16v8H8z' fill='%23B8860B'/></svg>">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How to Audit Your File Transfer Infrastructure in 30 Minutes",
+  "description": "A practical 30-minute audit for file transfer infrastructure. Check for unencrypted transfers, hardcoded credentials, missing retry logic, stale keys, and undocumented transfers.",
+  "datePublished": "2026-05-17",
+  "author": {
+    "@type": "Person",
+    "name": "Armin Marxer",
+    "url": "https://mftplus.co.za"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "MFTPlus",
+    "url": "https://mftplus.co.za"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://mftplus.co.za/blog/file-transfer-audit-checklist.html"
+  },
+  "keywords": ["file transfer audit", "SFTP security audit", "file transfer infrastructure checklist", "transfer sprawl", "cron job audit", "FTP security check", "file transfer compliance"]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:           #1F1A17;
+    --surface:      #2A2420;
+    --border:       #3D342F;
+    --text:         #FAF8F5;
+    --text-muted:   #C4B5A0;
+    --text-dim:     #8B7355;
+    --accent:       #B8860B;
+    --accent-light: #D4A843;
+    --brown:        #8B4513;
+    --font-display: 'Source Serif 4', Georgia, serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-display);
+    font-size: 17px;
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 0;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+  }
+
+  nav.scrolled {
+    background: rgba(31,26,23,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom-color: var(--border);
+  }
+
+  nav .inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .wordmark {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .nav-link {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-link:hover { color: var(--accent); }
+
+  .nav-cta {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--bg);
+    background: var(--accent);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 2px;
+    transition: background 0.2s;
+  }
+
+  .nav-cta:hover { background: var(--accent-light); }
+
+  .article {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .article-header {
+    padding: 160px 0 60px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .article-label {
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+  }
+
+  .article-header h1 {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.15;
+    margin-bottom: 24px;
+  }
+
+  .article-meta {
+    font-size: 13px;
+    color: var(--text-dim);
+    display: flex;
+    gap: 20px;
+  }
+
+  .article-body {
+    padding: 60px 0;
+  }
+
+  .article-body h2 {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 56px 0 20px;
+    padding-top: 8px;
+  }
+
+  .article-body h3 {
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 40px 0 16px;
+  }
+
+  .article-body p {
+    margin-bottom: 24px;
+    color: var(--text);
+  }
+
+  .article-body ul, .article-body ol {
+    margin-bottom: 24px;
+    padding-left: 24px;
+  }
+
+  .article-body li {
+    margin-bottom: 8px;
+    color: var(--text-muted);
+  }
+
+  .article-body strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .article-body a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    transition: border-color 0.2s;
+  }
+
+  .article-body a:hover { border-bottom-color: var(--accent); }
+
+  .article-body blockquote {
+    border-left: 2px solid var(--accent);
+    padding: 16px 0 16px 24px;
+    margin: 32px 0;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  .checklist {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 32px;
+    margin: 32px 0;
+  }
+
+  .checklist h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: var(--accent-light);
+  }
+
+  .checklist ul {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+  }
+
+  .checklist li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+  }
+
+  .checklist li:last-child { border-bottom: none; }
+
+  .check-box {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--accent);
+    border-radius: 1px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .cli-block {
+    background: #0d0b09;
+    border: 1px solid var(--border);
+    padding: 20px 24px;
+    margin: 24px 0;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-muted);
+    overflow-x: auto;
+  }
+
+  .cli-block .comment { color: var(--text-dim); }
+  .cli-block .cmd { color: var(--accent-light); }
+
+  .cta-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 40px;
+    margin: 48px 0;
+    text-align: center;
+  }
+
+  .cta-block p {
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    font-size: 15px;
+  }
+
+  .cta-button {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--bg);
+    background: var(--accent);
+    text-decoration: none;
+    padding: 14px 32px;
+    border-radius: 2px;
+    transition: background 0.2s;
+  }
+
+  .cta-button:hover { background: var(--accent-light); }
+
+  .author-bio {
+    padding: 32px 0;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-top: 48px;
+  }
+
+  .author-bio .author-name {
+    font-weight: 600;
+    color: var(--text);
+    font-size: 15px;
+  }
+
+  .author-bio .author-desc {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  .faq-section {
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+  }
+
+  .faq-section h2 {
+    margin-bottom: 24px;
+  }
+
+  details {
+    border-bottom: 1px solid var(--border);
+  }
+
+  details summary {
+    padding: 20px 0;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--accent-light);
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  details summary::after {
+    content: '+';
+    font-size: 18px;
+    color: var(--text-dim);
+    transition: transform 0.2s;
+  }
+
+  details[open] summary::after { transform: rotate(45deg); }
+
+  details summary::-webkit-details-marker { display: none; }
+
+  details .faq-answer {
+    padding: 0 0 20px;
+    color: var(--text-muted);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .article-footer {
+    padding: 32px 0;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .back-link {
+    font-family: var(--font-display);
+    font-size: 13px;
+    color: var(--text-dim);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s;
+  }
+
+  .back-link:hover { color: var(--accent); }
+
+  footer {
+    padding: 40px 0;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+
+  footer .inner {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  footer .wordmark { font-size: 13px; }
+
+  footer p {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  @media (max-width: 768px) {
+    .article, nav .inner, footer .inner { padding: 0 20px; }
+    .article-header { padding: 120px 0 40px; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="inner">
+    <a href="/" class="wordmark">MFTPlus</a>
+    <div class="nav-links">
+      <a href="/blog/" class="nav-link">Blog</a>
+      <a href="https://github.com/ZeroClue/mftplus-community" class="nav-link">GitHub</a>
+      <a href="https://mftplus.co.za" class="nav-cta">Install mftctl</a>
+    </div>
+  </div>
+</nav>
+
+<article class="article">
+  <header class="article-header">
+    <div class="article-label">Security & Compliance</div>
+    <h1>How to Audit Your File Transfer Infrastructure in 30 Minutes</h1>
+    <div class="article-meta">
+      <span>May 2026</span>
+      <span>6 min read</span>
+      <span>Armin Marxer</span>
+    </div>
+  </header>
+
+  <div class="article-body">
+
+    <p>Every time I've walked into a new environment and asked "show me all your file transfers," the answer has been some version of "we have a pretty good idea" followed by a list that covers maybe 60% of what's actually running. The other 40% are shadow transfers: cron jobs nobody documented, batch scripts inherited from someone who left, scheduled tasks that were supposed to be temporary.</p>
+
+    <p>Here's a 30-minute audit you can run right now to find out what's actually happening on your network. You'll need SSH access to your Linux servers and RDP or admin access to your Windows boxes. A terminal and a notepad.</p>
+
+    <h2>Minutes 1-10: Find the Transfers</h2>
+
+    <h3>Linux</h3>
+
+    <div class="cli-block">
+<span class="comment"># Find all cron jobs system-wide</span>
+<span class="cmd">grep -r "" /etc/cron* /var/spool/cron/* 2>/dev/null</span>
+
+<span class="comment"># Search for common transfer commands in scripts</span>
+<span class="cmd">grep -rl "scp\|sftp\|rsync\|wget\|curl\|ncftpput\|lftp" /usr/local/bin/ /opt/ /home/ 2>/dev/null</span>
+
+<span class="comment"># Check for running transfer processes right now</span>
+<span class="cmd">ps aux | grep -E "scp|sftp|rsync|wget|curl|ftp" | grep -v grep</span>
+
+<span class="comment"># Look for SSH keys used by automated processes</span>
+<span class="cmd">find /home /root -name "id_*" -o -name "*.pem" 2>/dev/null</span>
+    </div>
+
+    <h3>Windows</h3>
+
+    <div class="cli-block">
+<span class="comment"># List all scheduled tasks (PowerShell)</span>
+<span class="cmd">Get-ScheduledTask | Where-Object {$_.Actions.Execute -match "ftp|scp|robocopy|pscp|winscp"} | Format-Table TaskName, State</span>
+
+<span class="comment"># Search for transfer scripts</span>
+<span class="cmd">Get-ChildItem -Path C:\ -Recurse -Include *.bat,*.ps1,*.cmd -ErrorAction SilentlyContinue | Select-String -Pattern "ftp|sftp|scp|robocopy|pscp" | Select-Object Path, LineNumber, Line</span>
+
+<span class="comment"># Check for WinSCP or FileZilla configs</span>
+<span class="cmd">Get-ChildItem -Path $env:APPDATA -Recurse -Include "*.ini","*.xml" -ErrorAction SilentlyContinue | Select-String -Pattern "ftp|sftp" | Select-Object Path</span>
+    </div>
+
+    <p>Write down everything you find. Server, transfer type, schedule (if you can tell), source and destination. Don't worry about whether it's still active yet — just inventory.</p>
+
+    <h2>Minutes 10-20: Check the Obvious Problems</h2>
+
+    <p>Now go through your list and check for these red flags:</p>
+
+    <div class="checklist">
+      <h3>Security Checklist</h3>
+      <ul>
+        <li><span class="check-box"></span> <strong>Plaintext FTP (port 21).</strong> Any transfer using FTP instead of SFTP or FTPS is sending credentials and data in the clear. This is a compliance failure under POPIA, GDPR, and SOC 2.</li>
+        <li><span class="check-box"></span> <strong>Hardcoded passwords in scripts.</strong> Search for password strings in your batch files and shell scripts. <code>grep -ri "password" /path/to/scripts/</code>. Every hardcoded password is an audit finding.</li>
+        <li><span class="check-box"></span> <strong>SSH keys without passphrases.</strong> Run <code>ssh-keygen -l -f &lt;keyfile&gt;</code> on every key you found. If it doesn't require a passphrase, anyone who gets that file can access the destination server.</li>
+        <li><span class="check-box"></span> <strong>Keys older than 1 year.</strong> Check key creation dates. SSH keys should be rotated annually at minimum.</li>
+        <li><span class="check-box"></span> <strong>Credentials shared across transfers.</strong> If three scripts use the same username/password to connect to the same server, that's a single point of failure and a lateral movement risk.</li>
+      </ul>
+    </div>
+
+    <div class="checklist">
+      <h3>Reliability Checklist</h3>
+      <ul>
+        <li><span class="check-box"></span> <strong>No retry logic.</strong> Most raw scp/curl/ftp commands fail permanently on first error. No retry, no backoff, no notification. The transfer just dies and nobody knows.</li>
+        <li><span class="check-box"></span> <strong>No success verification.</strong> Does the script check that the file arrived intact? Most don't. They run the command and assume it worked.</li>
+        <li><span class="check-box"></span> <strong>No alerting on failure.</strong> When a cron job fails, cron sends mail to root — which nobody reads. Check if anyone gets notified when transfers fail.</li>
+        <li><span class="check-box"></span> <strong>Overlapping schedules.</strong> If transfer A writes to a directory while transfer B reads from it, you have a race condition. Check for timing overlaps.</li>
+      </ul>
+    </div>
+
+    <h2>Minutes 20-25: Check Compliance Gaps</h2>
+
+    <div class="checklist">
+      <h3>Compliance Checklist</h3>
+      <ul>
+        <li><span class="check-box"></span> <strong>Audit trail.</strong> Can you show a compliance auditor who transferred what file, when, and whether it succeeded? If the answer is "check the log files on server 3," you don't have an audit trail.</li>
+        <li><span class="check-box"></span> <strong>Encryption in transit.</strong> Every transfer should use TLS/SSL (FTPS, HTTPS) or SSH (SFTP, scp). No exceptions.</li>
+        <li><span class="check-box"></span> <strong>Encryption at rest.</strong> Are transferred files stored encrypted on the destination? If they land in a plain directory, the encryption in transit only protected them on the wire.</li>
+        <li><span class="check-box"></span> <strong>Access controls.</strong> Who has access to the transfer credentials? Who can modify the scripts? If the answer is "everyone in the dev team," that's too broad.</li>
+        <li><span class="check-box"></span> <strong>Data residency.</strong> Do any transfers move data outside your jurisdiction? Cross-border transfers may trigger additional requirements under POPIA or GDPR.</li>
+      </ul>
+    </div>
+
+    <h2>Minutes 25-30: Score and Prioritise</h2>
+
+    <p>Count your findings. Use this rough scoring:</p>
+
+    <table style="width:100%; border-collapse:collapse; margin:24px 0; font-size:14px;">
+      <thead>
+        <tr style="border-bottom:2px solid var(--accent);">
+          <th style="text-align:left; padding:12px 16px; color:var(--text); font-weight:600;">Finding</th>
+          <th style="text-align:left; padding:12px 16px; color:var(--text); font-weight:600;">Risk Level</th>
+          <th style="text-align:left; padding:12px 16px; color:var(--text); font-weight:600;">Fix Priority</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:12px 16px; color:var(--text-muted);">Plaintext FTP</td>
+          <td style="padding:12px 16px; color:#e74c3c;">Critical</td>
+          <td style="padding:12px 16px; color:var(--text-muted);">This week</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:12px 16px; color:var(--text-muted);">Hardcoded passwords</td>
+          <td style="padding:12px 16px; color:#e74c3c;">Critical</td>
+          <td style="padding:12px 16px; color:var(--text-muted);">This week</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:12px 16px; color:var(--text-muted);">No audit trail</td>
+          <td style="padding:12px 16px; color:#e67e22;">High</td>
+          <td style="padding:12px 16px; color:var(--text-muted);">This month</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:12px 16px; color:var(--text-muted);">No retry / alerting</td>
+          <td style="padding:12px 16px; color:#e67e22;">High</td>
+          <td style="padding:12px 16px; color:var(--text-muted);">This month</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:12px 16px; color:var(--text-muted);">Stale SSH keys</td>
+          <td style="padding:12px 16px; color:#f39c12;">Medium</td>
+          <td style="padding:12px 16px; color:var(--text-muted);">Next quarter</td>
+        </tr>
+        <tr>
+          <td style="padding:12px 16px; color:var(--text-muted);">Undocumented transfers</td>
+          <td style="padding:12px 16px; color:#f39c12;">Medium</td>
+          <td style="padding:12px 16px; color:var(--text-muted);">Ongoing</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>If you found more than 10 transfers and more than 3 red flags, you're dealing with transfer sprawl. The fix isn't one script replacement at a time — it's an orchestration layer that gives you visibility and control over everything at once.</p>
+
+    <h2>What Comes After the Audit</h2>
+
+    <p>The audit tells you where you stand. The next step is closing the gaps:</p>
+
+    <ol>
+      <li><strong>Kill plaintext FTP.</strong> Replace with SFTP or FTPS. This is non-negotiable for compliance.</li>
+      <li><strong>Move credentials out of scripts.</strong> Use a credential store (MFTPlus has one built in, or use HashiCorp Vault, or even environment variables — anything but hardcoded strings in batch files).</li>
+      <li><strong>Add monitoring.</strong> Every transfer should report success or failure somewhere you actually check. A dashboard is better than email alerts, which are better than nothing.</li>
+      <li><strong>Document everything.</strong> Build a transfer catalog: source, destination, schedule, protocol, credentials, owner, business purpose. If you can't explain why a transfer exists, that's a candidate for removal.</li>
+    </ol>
+
+    <p>We're building an automated discovery tool that does steps 1-4 of this audit for you — scans your network, finds every transfer, flags the red flags, produces the report. If you want to be notified when it's ready, sign up at <a href="https://mftplus.co.za">mftplus.co.za</a>.</p>
+
+    <p>In the meantime, run this audit manually. Thirty minutes now saves you from finding out about a plaintext FTP server during a compliance review.</p>
+
+    <div class="cta-block">
+      <p>MFTPlus handles encryption, credential management, retry logic, audit trails, and monitoring out of the box. Close the gaps this audit uncovers.</p>
+      <a href="https://mftplus.co.za" class="cta-button">Try MFTPlus Free</a>
+    </div>
+
+    <div class="author-bio">
+      <div>
+        <div class="author-name">Armin Marxer</div>
+        <div class="author-desc">Building MFTPlus. File transfer infrastructure for teams that ship.</div>
+      </div>
+    </div>
+
+    <section class="faq-section">
+      <h2>FAQ</h2>
+
+      <details>
+        <summary>What is a file transfer audit?</summary>
+        <div class="faq-answer">A file transfer audit is a systematic review of all file transfer activity on your network: finding every transfer (including undocumented ones), checking for security issues like plaintext FTP and hardcoded credentials, verifying compliance with regulations like POPIA and GDPR, and assessing reliability gaps like missing retry logic and alerting.</div>
+      </details>
+
+      <details>
+        <summary>How often should I audit file transfers?</summary>
+        <div class="faq-answer">At minimum, quarterly. If you're in a regulated industry or preparing for SOC 2 certification, monthly. The audit takes 30 minutes manually. MFTPlus provides continuous monitoring that catches issues as they appear.</div>
+      </details>
+
+      <details>
+        <summary>What are shadow file transfers?</summary>
+        <div class="faq-answer">Shadow transfers are file transfers that run on your network but aren't documented or monitored. They're usually cron jobs, batch scripts, or scheduled tasks that someone set up months or years ago and forgot about. In most environments, 30-40% of transfers are shadow transfers.</div>
+      </details>
+
+      <details>
+        <summary>Is plaintext FTP still a compliance issue in 2026?</summary>
+        <div class="faq-answer">Yes. FTP transmits credentials and data without encryption, which violates POPIA (South Africa), GDPR (Europe), PCI DSS (payment data), and SOC 2 requirements. If an auditor finds FTP on port 21, it's an automatic finding.</div>
+      </details>
+
+      <details>
+        <summary>How do I find undocumented file transfers?</summary>
+        <div class="faq-answer">Search cron jobs, Windows Scheduled Tasks, and script files for transfer commands (scp, sftp, rsync, wget, curl, robocopy). Check for SSH keys used by automated processes. Look for FTP client configurations (WinSCP, FileZilla). MFTPlus is building an automated discovery tool that scans for all of these.</div>
+      </details>
+    </section>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a file transfer audit?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A file transfer audit is a systematic review of all file transfer activity on your network: finding every transfer (including undocumented ones), checking for security issues like plaintext FTP and hardcoded credentials, verifying compliance with regulations like POPIA and GDPR, and assessing reliability gaps like missing retry logic and alerting."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How often should I audit file transfers?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "At minimum, quarterly. If you're in a regulated industry or preparing for SOC 2 certification, monthly. The audit takes 30 minutes manually. MFTPlus provides continuous monitoring that catches issues as they appear."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What are shadow file transfers?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Shadow transfers are file transfers that run on your network but aren't documented or monitored. They're usually cron jobs, batch scripts, or scheduled tasks that someone set up months or years ago and forgot about. In most environments, 30-40% of transfers are shadow transfers."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is plaintext FTP still a compliance issue in 2026?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. FTP transmits credentials and data without encryption, which violates POPIA (South Africa), GDPR (Europe), PCI DSS (payment data), and SOC 2 requirements. If an auditor finds FTP on port 21, it's an automatic finding."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I find undocumented file transfers?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Search cron jobs, Windows Scheduled Tasks, and script files for transfer commands (scp, sftp, rsync, wget, curl, robocopy). Check for SSH keys used by automated processes. Look for FTP client configurations (WinSCP, FileZilla). MFTPlus is building an automated discovery tool that scans for all of these."
+          }
+        }
+      ]
+    }
+    </script>
+
+  </div>
+
+  <div class="article-footer">
+    <a href="/blog/" class="back-link">&larr; All writing</a>
+  </div>
+</article>
+
+<footer>
+  <div class="inner">
+    <a href="/" class="wordmark">MFTPlus</a>
+    <p>&copy; 2026 MFTPlus. Infrastructure tooling for developers.</p>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+</script>
+
+</body>
+</html>

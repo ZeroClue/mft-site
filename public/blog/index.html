@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Writing — MFTPlus</title>
+<meta name="description" content="Engineering writing from MFTPlus. File transfer infrastructure, compliance, and developer tooling.">
+<link rel="canonical" href="https://mftplus.co.za/blog/">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mftplus.co.za/blog/">
+<meta property="og:site_name" content="MFTPlus">
+<meta property="og:title" content="Writing — MFTPlus">
+<meta property="og:description" content="File transfer infrastructure, compliance, and developer tooling.">
+<meta property="og:locale" content="en_ZA">
+
+<meta name="geo.region" content="ZA">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%231F1A17'/><path d='M8 12h16v8H8z' fill='%23B8860B'/></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:           #1F1A17;
+    --surface:      #2A2420;
+    --border:       #3D342F;
+    --text:         #FAF8F5;
+    --text-muted:   #C4B5A0;
+    --text-dim:     #8B7355;
+    --accent:       #B8860B;
+    --accent-light: #D4A843;
+    --brown:        #8B4513;
+    --font-display: 'Source Serif 4', Georgia, serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-display);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 0;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+  }
+
+  nav.scrolled {
+    background: rgba(31,26,23,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom-color: var(--border);
+  }
+
+  nav .inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .wordmark {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .nav-link {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-link:hover { color: var(--accent); }
+
+  .nav-cta {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--bg);
+    background: var(--accent);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 2px;
+    transition: background 0.2s;
+  }
+
+  .nav-cta:hover { background: var(--accent-light); }
+
+  .container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .page-header {
+    padding: 160px 0 80px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .page-label {
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+  }
+
+  .page-header h1 {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.15;
+    max-width: 700px;
+  }
+
+  .articles {
+    padding: 80px 0 120px;
+  }
+
+  .article-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .article-card {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 40px;
+    align-items: start;
+    padding: 40px 0;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .article-card:first-child { border-top: 1px solid var(--border); }
+
+  .article-card:hover .article-title { color: var(--accent); }
+
+  .article-date {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+    padding-top: 4px;
+    line-height: 1.6;
+  }
+
+  .article-title {
+    font-family: var(--font-display);
+    font-size: clamp(20px, 2.5vw, 26px);
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.25;
+    margin-bottom: 12px;
+    transition: color 0.2s;
+  }
+
+  .article-excerpt {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.65;
+    max-width: 580px;
+    margin-bottom: 16px;
+  }
+
+  .article-read {
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .article-read::after {
+    content: '\2192';
+    transition: transform 0.2s;
+  }
+
+  .article-card:hover .article-read::after { transform: translateX(4px); }
+
+  footer {
+    padding: 40px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  footer .inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  footer .wordmark { font-size: 13px; }
+
+  footer p {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  @media (max-width: 768px) {
+    .container, nav .inner, footer .inner { padding: 0 20px; }
+    .article-card { grid-template-columns: 1fr; gap: 12px; }
+    .article-date { padding-top: 0; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="inner">
+    <a href="/" class="wordmark">MFTPlus</a>
+    <div class="nav-links">
+      <span class="nav-link">Writing</span>
+      <a href="https://github.com/ZeroClue/mftplus-community" class="nav-link">GitHub</a>
+      <a href="https://mftplus.co.za" class="nav-cta">Install mftctl</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-header">
+  <div class="container">
+    <div class="page-label">Writing</div>
+    <h1>Infrastructure patterns for developers who ship.</h1>
+  </div>
+</header>
+
+<main class="articles">
+  <div class="container">
+    <div class="article-list">
+
+      <a href="./file-transfer-audit-checklist.html" class="article-card">
+        <div class="article-date">May 2026<br>6 min read</div>
+        <div>
+          <div class="article-title">How to Audit Your File Transfer Infrastructure in 30 Minutes</div>
+          <p class="article-excerpt">Find shadow transfers, hardcoded credentials, and plaintext FTP in 30 minutes. Printable checklists for security, reliability, and compliance. Actual commands included.</p>
+          <div class="article-read">Read</div>
+        </div>
+      </a>
+
+      <a href="./mft-orchestration-connecting-what-you-have.html" class="article-card">
+        <div class="article-date">May 2026<br>7 min read</div>
+        <div>
+          <div class="article-title">MFT Orchestration: Connecting What You Already Have</div>
+          <p class="article-excerpt">Most teams don't need to replace their file transfer tools. They need something to connect them. Orchestration layer for cron, SFTP, scripts, and scheduled tasks.</p>
+          <div class="article-read">Read</div>
+        </div>
+      </a>
+
+      <a href="./hidden-cost-of-free-file-transfer-tools.html" class="article-card">
+        <div class="article-date">May 2026<br>6 min read</div>
+        <div>
+          <div class="article-title">The Hidden Cost of Free File Transfer Tools</div>
+          <p class="article-excerpt">SFTP is free until someone asks where their file went, why it took 14 hours, or why it's unreadable. Three scenarios that cost real money and how to prevent them.</p>
+          <div class="article-read">Read</div>
+        </div>
+      </a>
+
+      <a href="./why-mft-projects-take-six-months.html" class="article-card">
+        <div class="article-date">May 2026<br>6 min read</div>
+        <div>
+          <div class="article-title">Why MFT Projects Take 6 Months (And How to Do It in 6 Weeks)</div>
+          <p class="article-excerpt">Most MFT deployments drag for months, not because the software is complex, but because the process around it is. Here's where the time actually goes, and how to compress it.</p>
+          <div class="article-read">Read</div>
+        </div>
+      </a>
+
+      <a href="./file-transfer-server-compliance-liability.html" class="article-card">
+        <div class="article-date">May 2026<br>5 min read</div>
+        <div>
+          <div class="article-title">File Transfer Server Compliance Liability</div>
+          <p class="article-excerpt">What a basic audit turns up on most file transfer setups: plaintext credentials, no audit trails, FTP still on port 21. Your FTP server is failing POPIA, SOC 2, and GDPR.</p>
+          <div class="article-read">Read</div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="inner">
+    <a href="/" class="wordmark">MFTPlus</a>
+    <p>&copy; 2026 MFTPlus. Infrastructure tooling for developers.</p>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Hidden Cost of 'Free' File Transfer Tools — MFTPlus</title>
+<meta name="description" content="SFTP is free. Cron is free. rsync is free. Until someone asks where yesterday's file went, why it took four hours, or why the file is corrupted. Here's what 'free' actually costs.">
+<link rel="canonical" href="https://mftplus.co.za/blog/hidden-cost-of-free-file-transfer-tools.html">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://mftplus.co.za/blog/hidden-cost-of-free-file-transfer-tools.html">
+<meta property="og:site_name" content="MFTPlus">
+<meta property="og:title" content="The Hidden Cost of 'Free' File Transfer Tools">
+<meta property="og:description" content="SFTP is free. Cron is free. rsync is free. Until someone asks where yesterday's file went, why it took four hours, or why the file is corrupted.">
+<meta property="og:locale" content="en_ZA">
+<meta property="og:image" content="https://mftplus.co.za/blog/hidden-cost-of-free-file-transfer-tools-og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Hidden Cost of 'Free' File Transfer Tools">
+<meta name="twitter:description" content="SFTP is free. Cron is free. rsync is free. Until someone asks where yesterday's file went, why it took four hours, or why the file is corrupted.">
+<meta name="twitter:image" content="https://mftplus.co.za/blog/hidden-cost-of-free-file-transfer-tools-og.png">
+<meta property="article:published_time" content="2026-05-17">
+<meta property="article:author" content="Armin Marxer">
+
+<meta name="geo.region" content="ZA">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%231F1A17'/><path d='M8 12h16v8H8z' fill='%23B8860B'/></svg>">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "The Hidden Cost of 'Free' File Transfer Tools",
+  "description": "SFTP is free. Cron is free. rsync is free. Until someone asks where yesterday's file went, why it took four hours, or why the file is corrupted. Here's what 'free' actually costs.",
+  "datePublished": "2026-05-17",
+  "author": {
+    "@type": "Person",
+    "name": "Armin Marxer",
+    "url": "https://mftplus.co.za"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "MFTPlus",
+    "url": "https://mftplus.co.za"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://mftplus.co.za/blog/hidden-cost-of-free-file-transfer-tools.html"
+  },
+  "keywords": ["hidden cost file transfer", "free SFTP tools", "cron rsync cost", "file transfer troubleshooting", "managed file transfer vs free", "MFT total cost of ownership"]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:           #1F1A17;
+    --surface:      #2A2420;
+    --border:       #3D342F;
+    --text:         #FAF8F5;
+    --text-muted:   #C4B5A0;
+    --text-dim:     #8B7355;
+    --accent:       #B8860B;
+    --accent-light: #D4A843;
+    --brown:        #8B4513;
+    --font-display: 'Source Serif 4', Georgia, serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-display);
+    font-size: 17px;
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 0;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+  }
+
+  nav.scrolled {
+    background: rgba(31,26,23,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom-color: var(--border);
+  }
+
+  nav .inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .wordmark {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .nav-link {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-link:hover { color: var(--accent); }
+
+  .nav-cta {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--bg);
+    background: var(--accent);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 2px;
+    transition: background 0.2s;
+  }
+
+  .nav-cta:hover { background: var(--accent-light); }
+
+  .container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  article {
+    padding: 160px 0 100px;
+    min-height: 100vh;
+  }
+
+  .article-back {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 24px;
+    transition: color 0.2s;
+  }
+
+  .article-back:hover { color: var(--accent); }
+
+  .article-meta {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+    margin-bottom: 24px;
+  }
+
+  .article-title {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 32px;
+    max-width: 800px;
+  }
+
+  .article-content {
+    max-width: 720px;
+    font-family: var(--font-display);
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--text-muted);
+  }
+
+  .article-content h2 {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 56px;
+    margin-bottom: 20px;
+    letter-spacing: -0.01em;
+  }
+
+  .article-content p {
+    margin-bottom: 24px;
+  }
+
+  .article-content strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .article-content a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--brown);
+    transition: border-color 0.2s;
+  }
+
+  .article-content a:hover {
+    border-bottom-color: var(--accent);
+  }
+
+  .article-content ul, .article-content ol {
+    margin-bottom: 24px;
+    padding-left: 0;
+    list-style: none;
+  }
+
+  .article-content li {
+    margin-bottom: 12px;
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .article-content li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 1px;
+  }
+
+  .article-content ol {
+    counter-reset: list;
+  }
+
+  .article-content ol li {
+    counter-increment: list;
+    padding-left: 28px;
+  }
+
+  .article-content ol li::before {
+    content: counter(list);
+    width: auto;
+    height: auto;
+    background: none;
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 14px;
+    top: 4px;
+  }
+
+  .article-content code {
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 14px;
+    background: var(--surface);
+    color: var(--accent-light);
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+
+  .article-content pre {
+    background: var(--surface);
+    padding: 20px;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin-bottom: 24px;
+    border: 1px solid var(--border);
+  }
+
+  .article-content pre code {
+    background: none;
+    padding: 0;
+    color: var(--text-muted);
+  }
+
+  .article-content blockquote {
+    border-left: 3px solid var(--accent);
+    padding-left: 20px;
+    margin: 32px 0;
+    font-style: italic;
+    color: var(--text);
+  }
+
+  .article-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 24px;
+  }
+
+  .article-content th {
+    text-align: left;
+    font-weight: 600;
+    color: var(--text);
+    padding: 12px 16px;
+    border-bottom: 2px solid var(--accent);
+    font-size: 14px;
+    letter-spacing: 0.03em;
+  }
+
+  .article-content td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+
+  .article-content tr:hover td {
+    color: var(--text);
+  }
+
+  .author-bio {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 56px;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  .author-bio-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 2px;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--bg);
+    font-weight: 600;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .author-bio-text strong {
+    color: var(--text);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .author-bio-text p {
+    font-size: 14px;
+    color: var(--text-dim);
+    margin-bottom: 0;
+  }
+
+  .faq-section {
+    margin-top: 56px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+  }
+
+  .faq-section h2 {
+    margin-bottom: 24px;
+  }
+
+  .faq-item {
+    margin-bottom: 16px;
+  }
+
+  .faq-item summary {
+    color: var(--accent);
+    font-weight: 600;
+    cursor: pointer;
+    padding: 12px 0;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .faq-item summary::before {
+    content: '+';
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--accent);
+    width: 20px;
+    flex-shrink: 0;
+  }
+
+  .faq-item[open] summary::before {
+    content: '\2212';
+  }
+
+  .faq-item summary:hover {
+    color: var(--accent-light);
+  }
+
+  .faq-item p {
+    padding-left: 28px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .article-cta {
+    margin-top: 40px;
+    padding: 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  .article-cta p {
+    color: var(--text);
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+
+  .article-cta a {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--bg);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 2px;
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    transition: background 0.2s;
+    border-bottom: none;
+  }
+
+  .article-cta a:hover { background: var(--accent-light); }
+
+  footer {
+    padding: 40px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  footer .inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  footer .wordmark { font-size: 13px; }
+
+  footer p {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  @media (max-width: 768px) {
+    .container, nav .inner, footer .inner { padding: 0 20px; }
+    .article-title { font-size: 28px; }
+    .article-content { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="inner">
+    <a href="/" class="wordmark">MFTPlus</a>
+    <div class="nav-links">
+      <a href="./" class="nav-link">Blog</a>
+      <a href="https://github.com/ZeroClue/mftplus-community" class="nav-link">GitHub</a>
+      <a href="https://mftplus.co.za" class="nav-cta">Install mftctl</a>
+    </div>
+  </div>
+</nav>
+
+<article>
+  <div class="container">
+    <a href="./" class="article-back">&larr; All posts</a>
+    <div class="article-meta">May 17, 2026 &middot; 6 min read</div>
+    <h1 class="article-title">The Hidden Cost of "Free" File Transfer Tools</h1>
+    <div class="article-content">
+      <p>SFTP is free. Cron is free. rsync is free. scp is built into every Linux server. On paper, your file transfer infrastructure costs nothing.</p>
+
+      <p>Until someone asks where yesterday's file went.</p>
+
+      <p>Or why it took four hours when it usually takes ten minutes. Or why the file arrived but nothing can read it.</p>
+
+      <p>These three questions show up in every ops team I've worked with. They sound like minor annoyances. They're not. They're symptoms of a file transfer setup that was free to build and expensive to live with.</p>
+
+      <h2>"Where is my file?"</h2>
+
+      <p>The partner calls at 9 AM. "Did you send yesterday's daily feed?" You check the cron log. The job ran. Exit code 0. It says it succeeded.</p>
+
+      <p>But the file isn't on the partner's server.</p>
+
+      <p>Now you're grepping through syslog, checking disk space on the source server, SSHing into the destination, checking if the SFTP service is even running. Thirty minutes in, you find it: the destination server rotated its SSH host key last week. <code>scp</code> failed silently because <code>StrictHostKeyChecking</code> was set to <code>no</code> in one script and <code>yes</code> in another, and nobody remembers why.</p>
+
+      <p>The file exists on your server. It never left. Nobody knew.</p>
+
+      <p>This happens because free tools don't have monitoring. Cron logs the exit code of the command, not whether the transfer actually completed. <code>scp</code> returns 0 even on partial transfers if the connection drops at the right moment. rsync's <code>--partial</code> flag keeps incomplete files on disk, but nothing alerts you that they're incomplete.</p>
+
+      <p><strong>What this costs:</strong> 30 to 90 minutes per incident of engineer time. One to three incidents per week on a typical setup. At a loaded cost of $100/hour, that's $15,000 to $45,000 per year in "where is my file" time alone. Plus whatever the business impact is of missing data.</p>
+
+      <h2>"Why is it taking so long?"</h2>
+
+      <p>The daily file transfer usually takes 10 minutes. Today it's been running for four hours. The ops channel is getting anxious.</p>
+
+      <p>You check the usual suspects. Network bandwidth? Fine. Server load? Normal. Disk I/O? Nothing unusual.</p>
+
+      <p>Two hours of digging later: the transfer script doesn't compress data before sending it. It worked fine when the daily file was 200 MB. Last week, the upstream system started batching a week's worth of data into a single file. It's now 4 GB. The uncompressed transfer across a 10 Mbps WAN link takes four hours.</p>
+
+      <p>Nobody changed the transfer script. Nobody was supposed to. The upstream team changed their batch window without telling anyone.</p>
+
+      <p>Free tools don't have baselines or anomaly detection. There's no dashboard showing "this transfer normally takes 10 minutes, today it's taking 240." There's no alert when a transfer duration exceeds a threshold. You find out when someone complains.</p>
+
+      <p><strong>What this costs:</strong> 2 to 4 hours per investigation. Monthly occurrence as upstream systems change. $24,000 to $48,000 per year in debugging time. Plus the cost of delayed downstream processes waiting on the file.</p>
+
+      <h2>"I can't read this file!"</h2>
+
+      <p>The file arrived. The partner confirms receipt. But their system rejects it.</p>
+
+      <p>"The file is corrupted," they say. Or "the encoding is wrong." Or "there are extra characters at the end of every line."</p>
+
+      <p>This one is almost always a character encoding or line ending mismatch. The source system writes UTF-8 with LF line endings. The transfer runs through a Windows server that converts LF to CRLF. The destination system expects LF. The file is "corrupted" because it passed through a system that modified it in transit without anyone knowing.</p>
+
+      <p>Or it's worse. The file is truncated. The transfer dropped partway through, and because there was no checksum verification, both sides think it completed successfully. The destination system starts processing a partial file and errors out halfway through.</p>
+
+      <p><code>scp</code> and <code>rsync</code> don't verify file integrity after transfer. They verify that bytes were sent, not that the file on disk matches what was sent. If a network proxy modifies line endings mid-stream, or if the destination disk hits a bad sector during write, the transfer reports success and you have a corrupt file.</p>
+
+      <p><strong>What this costs:</strong> 1 to 4 hours per incident of debugging. Partner relationship friction. Potential data quality issues downstream if partial files get processed. $12,000 to $32,000 per year.</p>
+
+      <h2>The shadow transfer problem</h2>
+
+      <p>Here's the part nobody talks about. You don't actually know how many file transfers are running on your network.</p>
+
+      <p>The ones you set up? Sure. The cron jobs in <code>/etc/cron.d/</code>, the Windows Scheduled Tasks, the batch scripts in <code>C:\Scripts\</code>. Those are documented (probably).</p>
+
+      <p>But then there's the dev who set up a cron job on a staging server two years ago to sync test data. It's still running. It's sending data to a server that was decommissioned six months ago. It's been failing silently every day for six months, and the error emails go to an inbox nobody checks.</p>
+
+      <p>And the finance team's robocopy script that runs every night, moving sensitive reports to a network share with no encryption and no access logging.</p>
+
+      <p>And the integration that a contractor set up three years ago that pulls partner data via FTP (not SFTP, just FTP, port 21, plaintext credentials in a config file).</p>
+
+      <p>Most organisations have 15 to 30 file transfers they don't know about. Shadow IT, accumulated over years, invisible until something breaks or an auditor asks uncomfortable questions.</p>
+
+      <h2>What "free" actually costs</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Cost category</th>
+            <th>Annual estimate</th>
+            <th>What causes it</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Troubleshooting "where is my file"</strong></td>
+            <td>$15,000 to $45,000</td>
+            <td>No monitoring, no transfer status, silent failures</td>
+          </tr>
+          <tr>
+            <td><strong>Debugging slow transfers</strong></td>
+            <td>$24,000 to $48,000</td>
+            <td>No baselines, no duration alerts, no compression</td>
+          </tr>
+          <tr>
+            <td><strong>Fixing corrupted files</strong></td>
+            <td>$12,000 to $32,000</td>
+            <td>No checksum verification, no encoding enforcement</td>
+          </tr>
+          <tr>
+            <td><strong>Compliance gaps</strong></td>
+            <td>$10,000 to $50,000+</td>
+            <td>No audit trails, hardcoded credentials, shadow transfers</td>
+          </tr>
+          <tr>
+            <td><strong>Incident response</strong></td>
+            <td>$5,000 to $20,000</td>
+            <td>Extended outages from silent failures, manual recovery</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>Total: $66,000 to $195,000 per year. For "free" tools.</p>
+
+      <h2>The fix isn't expensive</h2>
+
+      <p>The problems above all have the same root cause: your file transfer tools were designed to move bytes, not to give you visibility into what moved, when, and whether it arrived intact.</p>
+
+      <p>What actually solves these problems:</p>
+
+      <ul>
+        <li><strong>Monitoring</strong> that shows transfer status in real time, not just exit codes</li>
+        <li><strong>Alerting</strong> on failures, duration anomalies, and missed schedules</li>
+        <li><strong>Checksum verification</strong> (SHA-256) on every transfer so you know the file arrived intact</li>
+        <li><strong>Audit trails</strong> that log who transferred what, when, to where, with what result</li>
+        <li><strong>Retry logic</strong> that handles transient network failures without manual intervention</li>
+        <li><strong>A transfer inventory</strong> so you know what's actually running on your network</li>
+      </ul>
+
+      <p>MFTPlus handles the first five out of the box. Every transfer is logged, verified, retried on failure, and visible on a dashboard. You stop asking "where is my file" because you can see where every file is, all the time.</p>
+
+      <p>The transfer inventory piece is something we're building. A tool that scans your network and tells you exactly what file transfers exist, which ones are encrypted, which ones use hardcoded credentials, and which ones haven't succeeded in 30 days. Because you can't fix what you can't see.</p>
+
+      <div class="author-bio">
+        <div class="author-bio-avatar">A</div>
+        <div class="author-bio-text">
+          <strong>Armin Marxer</strong>
+          <p>Building MFTPlus. Spent years managing file transfer infrastructure before deciding there had to be a better way.</p>
+        </div>
+      </div>
+
+      <div class="faq-section">
+        <h2>FAQ</h2>
+        <details class="faq-item">
+          <summary>Isn't SFTP secure enough for file transfers?</summary>
+          <p>SFTP encrypts data in transit. That's one piece. It doesn't give you audit trails, retry logic, monitoring, checksum verification, or alerting. SFTP is a protocol, not a file transfer management solution.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What's wrong with cron + rsync?</summary>
+          <p>Nothing, until something fails. Cron runs a command and logs the exit code. It doesn't know if the transfer completed, if the file was corrupted, or if the destination accepted it. rsync can verify files but doesn't alert you when verification fails at 2 AM.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How do I find shadow transfers on my network?</summary>
+          <p>Start by scanning for: cron jobs containing scp/rsync/sftp, Windows Scheduled Tasks with file operations, batch scripts in common locations, and open FTP/SFTP ports on your servers. MFTPlus is building an automated discovery tool for this.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How does checksum verification prevent corruption?</summary>
+          <p>MFTPlus generates a SHA-256 checksum on the source file before transfer, then verifies it on the destination after transfer. If the checksums don't match, the transfer is marked as failed and retried. This catches partial transfers, encoding changes, and disk errors.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What's a file transfer inventory?</summary>
+          <p>A complete catalogue of every scheduled file transfer on your network: source, destination, protocol, schedule, encryption status, credential method, and last successful run. Most teams don't have one. Building it is the first step to getting file transfer infrastructure under control.</p>
+        </details>
+      </div>
+
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Isn't SFTP secure enough for file transfers?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "SFTP encrypts data in transit. That's one piece. It doesn't give you audit trails, retry logic, monitoring, checksum verification, or alerting. SFTP is a protocol, not a file transfer management solution."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What's wrong with cron + rsync?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Nothing, until something fails. Cron runs a command and logs the exit code. It doesn't know if the transfer completed, if the file was corrupted, or if the destination accepted it."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I find shadow transfers on my network?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Start by scanning for cron jobs containing scp/rsync/sftp, Windows Scheduled Tasks with file operations, and open FTP/SFTP ports. MFTPlus is building an automated discovery tool for this."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does checksum verification prevent corruption?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "MFTPlus generates a SHA-256 checksum on the source file before transfer, then verifies it on the destination after transfer. If the checksums don't match, the transfer is marked as failed and retried."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What's a file transfer inventory?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A complete catalogue of every scheduled file transfer on your network: source, destination, protocol, schedule, encryption status, credential method, and last successful run."
+            }
+          }
+        ]
+      }
+      </script>
+
+      <div class="article-cta">
+        <p>Stop paying for "free" file transfers</p>
+        <a href="https://mftplus.co.za">Install mftctl &rarr;</a>
+      </div>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="inner">
+    <a href="/" class="wordmark">MFTPlus</a>
+    <p>&copy; 2026 MFTPlus. Infrastructure tooling for developers.</p>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+</script>
+
+</body>
+</html>

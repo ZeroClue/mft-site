@@ -15,47 +15,38 @@ interface Release {
   downloads: Download[]
 }
 
-const releases: Release[] = [
-  {
-    version: '0.1.0',
-    date: '2026-04-27',
-    stable: true,
-    downloads: [
-      {
-        platform: 'Windows (x64)',
-        url: 'https://releases.mftplus.co.za/v0.1.0/mftplus-0.1.0-windows-x64.exe',
-        size: '5.2 MB',
-        sha256: 'a1b2c3d4e5f6789012345678901234567890123456789012345678901234567890'
-      },
-      {
-        platform: 'macOS (Apple Silicon)',
-        url: 'https://releases.mftplus.co.za/v0.1.0/mftplus-0.1.0-macos-aarch64.dmg',
-        size: '4.8 MB',
-        sha256: 'b2c3d4e5f6789012345678901234567890123456789012345678901234567890123'
-      },
-      {
-        platform: 'macOS (Intel)',
-        url: 'https://releases.mftplus.co.za/v0.1.0/mftplus-0.1.0-macos-x64.dmg',
-        size: '5.0 MB',
-        sha256: 'c3d4e5f67890123456789012345678901234567890123456789012345678901234'
-      },
-      {
-        platform: 'Linux (x64)',
-        url: 'https://releases.mftplus.co.za/v0.1.0/mftplus-0.1.0-linux-x64.AppImage',
-        size: '5.1 MB',
-        sha256: 'd4e5f6789012345678901234567890123456789012345678901234567890123456'
-      }
-    ]
-  }
-]
+type LoadingState = 'loading' | 'success' | 'error'
 
 function ReleasesPage() {
   const [scrolled, setScrolled] = useState(false)
+  const [releases, setReleases] = useState<Release[]>([])
+  const [loadingState, setLoadingState] = useState<LoadingState>('loading')
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50)
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  useEffect(() => {
+    const fetchReleases = async () => {
+      try {
+        const response = await fetch('https://releases.mftplus.co.za/release-info.json')
+        if (!response.ok) {
+          throw new Error(`Failed to fetch releases: ${response.status} ${response.statusText}`)
+        }
+        const data = await response.json()
+        setReleases(data)
+        setLoadingState('success')
+      } catch (error) {
+        console.error('Error fetching releases:', error)
+        setErrorMessage(error instanceof Error ? error.message : 'Unknown error')
+        setLoadingState('error')
+      }
+    }
+
+    fetchReleases()
   }, [])
 
   return (
@@ -77,18 +68,42 @@ function ReleasesPage() {
             <a href="/#how-it-works">How It Works</a>
             <a href="/#pricing">Pricing</a>
             <a href="/releases" className="active">Releases</a>
-            <a href="https://dashboard.mftplus.co.za/signup" className="nav-cta-signup">Sign Up</a>
+            <a href="https://dashboard.mftplus.co.za/signup?utm_source=mft-site&amp;utm_medium=cta&amp;utm_campaign=signup" className="nav-cta-signup" data-umami-event="releases-signup">Sign Up</a>
           </div>
         </div>
       </nav>
 
       <header className="releases-header">
         <h1>Releases</h1>
-        <p>Download MFTPlus for your platform. All releases include the CLI and GUI.</p>
+        <p>Download MFTPlus for your platform. v0.2.0 Early Access — Linux CLI available now.</p>
       </header>
 
       <main className="releases-list">
-        {releases.map((release) => (
+        {loadingState === 'loading' && (
+          <div className="loading-state">
+            <div className="loading-spinner"></div>
+            <p>Loading releases...</p>
+          </div>
+        )}
+
+        {loadingState === 'error' && (
+          <div className="error-state">
+            <h2>Unable to load releases</h2>
+            <p>{errorMessage || 'Please check your connection and try again later.'}</p>
+            <a href="https://releases.mftplus.co.za" className="error-fallback-link">
+              Visit releases.mftplus.co.za directly
+            </a>
+          </div>
+        )}
+
+        {loadingState === 'success' && releases.length === 0 && (
+          <div className="empty-state">
+            <h2>No releases available</h2>
+            <p>Check back soon for the latest MFTPlus releases.</p>
+          </div>
+        )}
+
+        {loadingState === 'success' && releases.map((release) => (
           <section key={release.version} className="release-card">
             <div className="release-header">
               <div className="release-version">v{release.version}</div>
@@ -105,7 +120,7 @@ function ReleasesPage() {
                     <span className="download-platform">{download.platform}</span>
                     <span className="download-size">{download.size}</span>
                   </div>
-                  <a href={download.url} className="download-button" download>
+                  <a href={`${download.url}${download.url.includes('?') ? '&' : '?'}utm_ref=mft-site`} className="download-button" download data-umami-event={`download-${download.platform.toLowerCase().replace(/\s+/g, '-')}`}>
                     Download
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>

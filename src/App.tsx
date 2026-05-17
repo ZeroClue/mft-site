@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import './App.css'
+import { CookieConsent } from './CookieConsent'
 
 function Terminal({ children, title = "terminal@mftplus" }: { children: React.ReactNode; title?: string }) {
   return (
@@ -78,12 +79,11 @@ function App() {
   }, [])
 
   return (
+    <>
     <div className="app">
       <div className="background-effects">
         <div className="grid-pattern"></div>
         <div className="noise-overlay"></div>
-        <div className="gradient-orb orb-1"></div>
-        <div className="gradient-orb orb-2"></div>
       </div>
 
       <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
@@ -95,8 +95,9 @@ function App() {
             <a href="#features">Features</a>
             <a href="#how-it-works">How It Works</a>
             <a href="#pricing">Pricing</a>
+            <a href="/blog">Blog</a>
             <a href="/releases">Releases</a>
-            <a href="https://dashboard.mftplus.co.za/signup" className="nav-cta-signup">Sign Up</a>
+            <a href="https://dashboard.mftplus.co.za/checkout?plan=community&amp;utm_source=mft-site&amp;utm_medium=cta&amp;utm_campaign=signup" className="nav-cta-signup" data-umami-event="nav-signup">Sign Up</a>
           </div>
         </div>
       </nav>
@@ -105,28 +106,27 @@ function App() {
         <div className="hero-content">
 
           <h1 className="hero-title">
-            Modern File Transfer for DevOps Teams
+            Managed File Transfer for DevOps Teams
           </h1>
 
           <p className="hero-subtitle">
-            Secure, scheduled file transfers with complete audit trails.
-            A 5MB desktop agent that replaces $50,000 MFT servers.
+            MFTPlus is a managed file transfer platform that automates file transfers between servers, SFTP endpoints, and cloud storage. A Rust-based agent connects to our managed server — no infrastructure to maintain. Built for teams replacing IBM Sterling, Globalscape, or GoAnywhere — without the enterprise price tag.
           </p>
 
           <div className="hero-cta">
-            <a href="https://dashboard.mftplus.co.za/signup" className="cta-primary cta-goldenrod">
+            <a href="https://dashboard.mftplus.co.za/checkout?plan=community&amp;utm_source=mft-site&amp;utm_medium=cta&amp;utm_campaign=get-started" className="cta-primary cta-goldenrod" data-umami-event="hero-get-started">
               Get Started Free
               <span className="cta-arrow">→</span>
             </a>
-            <a href="#how-it-works" className="cta-secondary">
+            <a href="#how-it-works" className="cta-secondary" data-umami-event="hero-how-it-works">
               How It Works
             </a>
           </div>
 
           <div className="hero-stats">
             <div className="stat-item">
-              <span className="stat-value">5MB</span>
-              <span className="stat-label">Bundle Size</span>
+              <span className="stat-value">20MB</span>
+              <span className="stat-label">Agent Binary</span>
             </div>
             <div className="stat-item">
               <span className="stat-value">&lt;5 min</span>
@@ -135,6 +135,10 @@ function App() {
             <div className="stat-item">
               <span className="stat-value">4+</span>
               <span className="stat-label">Protocols</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-value">9</span>
+              <span className="stat-label">Live Features</span>
             </div>
           </div>
         </div>
@@ -194,7 +198,7 @@ function App() {
 
       <section id="problem" className={`problem-section ${visibleSections.has('problem') ? 'visible' : ''}`}>
         <div className="section-header">
-          <span className="section-tag">// THE PROBLEM</span>
+          <span className="section-tag">The Problem</span>
           <h2>File Transfers Shouldn't Be This Hard</h2>
           <p>Most teams are stuck between expensive legacy software and fragile scripts.</p>
         </div>
@@ -237,9 +241,9 @@ function App() {
 
       <section id="solution" className={`solution-section ${visibleSections.has('solution') ? 'visible' : ''}`}>
         <div className="section-header">
-          <span className="section-tag">// THE SOLUTION</span>
-          <h2>Meet MFTPlus</h2>
-          <p>A modern desktop agent for secure, scheduled file transfers. No central server required.</p>
+          <span className="section-tag">The Solution</span>
+          <h2>What MFTPlus Does</h2>
+          <p>A modern agent for secure, scheduled file transfers. Managed server — no infrastructure to maintain.</p>
         </div>
 
         <div className="solution-comparison">
@@ -279,7 +283,7 @@ function App() {
 
       <section id="features" className={`features-section ${visibleSections.has('features') ? 'visible' : ''}`}>
         <div className="section-header">
-          <span className="section-tag">// FEATURES</span>
+          <span className="section-tag">Features</span>
           <h2>Everything You Need to Transfer Files with Confidence</h2>
         </div>
 
@@ -287,68 +291,83 @@ function App() {
           <div className="feature-card">
             <div className="feature-icon">📅</div>
             <h3>Scheduled Transfers</h3>
-            <p>Set up recurring transfers with cron syntax. Jobs persist across restarts with full run history and error details.</p>
+            <p>Set up recurring transfers with cron syntax. Jobs persist across restarts with full run history and error details. Manage from CLI or web dashboard.</p>
             <CodeBlock code={`mftctl jobs create --agent <agent-id> \\
   --schedule '0 2 * * *' \\
   --source ./data --dest sftp://backup/`} />
           </div>
 
           <div className="feature-card">
+            <div className="feature-icon">🤖</div>
+            <h3>Natural Language Job Creation</h3>
+            <p>Describe what you want in plain English. The AI parses your intent, selects the right agent, and creates the job. No CLI syntax to remember.</p>
+            <CodeBlock code={`"Transfer daily reports from server A to
+SFTP backup every night at 2am"`} />
+          </div>
+
+          <div className="feature-card">
             <div className="feature-icon">📋</div>
-            <h3>Complete Audit Trail</h3>
-            <p>Every transfer logged with source, destination, protocol, bytes, duration, and SHA-256 checksum verification.</p>
+            <h3>Audit Trail</h3>
+            <p>Every transfer logged with source, destination, protocol, bytes, duration, and SHA-256 checksum. Export to CSV or PDF for compliance.</p>
             <CodeBlock code="mftctl transfers list --status completed --limit 50" />
           </div>
 
           <div className="feature-card">
-            <div className="feature-icon">🔒</div>
-            <h3>Enterprise Security</h3>
-            <p>TLS-encrypted transfers, API key authentication, private keys never stored in plaintext. Full audit trail for compliance.</p>
+            <div className="feature-icon">🔄</div>
+            <h3>Automatic Retry</h3>
+            <p>Exponential backoff on transient failures. Configurable max retries and delays. Network interruptions don't mean lost transfers.</p>
             <CodeBlock code={`mftctl jobs create --agent <agent-id> \\
-  --source sftp://secure.example.com/data \\
-  --dest ./incoming --protocol sftp`} />
+  --source sftp://files.example.com \\
+  --dest ./local --max-retries 5`} />
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-icon">🌐</div>
+            <h3>Web Dashboard</h3>
+            <p>Monitor agents, manage jobs, review transfer history, and configure webhooks from a centralized dashboard. Admin and user views.</p>
+            <CodeBlock code={`# Real-time agent heartbeat monitoring
+# Transfer queue management
+# Webhook notifications on events`} />
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-icon">🔐</div>
+            <h3>IP Allowlist</h3>
+            <p>Restrict agent access to known IP addresses. Prevent unauthorized connections even with valid credentials.</p>
+            <CodeBlock code="# IP allowlist configured per customer
+# Agents outside allowlist are rejected" />
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-icon">🔔</div>
+            <h3>Webhooks</h3>
+            <p>Receive real-time notifications on transfer events — completed, failed, retried. Integrate with Slack, PagerDuty, or custom endpoints.</p>
+            <CodeBlock code={`# Configure webhook URLs in dashboard
+# Receive POST on transfer events`} />
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-icon">📄</div>
+            <h3>Transfer Templates</h3>
+            <p>Save common transfer configurations as reusable templates. Standardize setups across agents and reduce configuration errors.</p>
+            <CodeBlock code={`# Create templates for recurring patterns
+# Apply to new jobs in one click`} />
           </div>
 
           <div className="feature-card">
             <div className="feature-icon">💻</div>
-            <h3>Cross-Platform</h3>
-            <p>Windows, macOS, Linux parity. ~5MB native bundle. System tray background operation. CLI + GUI interfaces.</p>
-            <CodeBlock code={`# Download installer from mftplus.co.za
-./mftctl login <api-key> --server https://your-server.example.com`} />
-          </div>
-
-          <div className="feature-card">
-            <div className="feature-icon">🔍</div>
-            <h3>Network Discovery</h3>
-            <p>Find shadow IT file transfers across your enterprise. Scans Linux and Windows machines for scheduled tasks, scripts, and saved credentials. Auto-detects SFTP, FTP, SCP, Rsync, and more. <a href="https://docs.mftplus.co.za/guide/network-discovery" target="_blank" rel="noopener noreferrer">Learn more →</a></p>
-            <CodeBlock code={`# Scans enterprise networks for file transfer configurations
-# Detects SFTP, FTP, SCP, Rsync across Linux and Windows`} />
-          </div>
-
-          <div className="feature-card">
-            <div className="feature-icon">🔄</div>
-            <h3>Multiple Protocols</h3>
-            <p>SFTP, FTP, FTPS, and local file sync. One tool for all your transfer needs. Automatic retry on failure.</p>
-            <CodeBlock code={`mftctl jobs create --agent <agent-id> \\
-  --source sftp://files.example.com \\
-  --dest ./local --protocol sftp`} />
-          </div>
-
-          <div className="feature-card">
-            <div className="feature-icon">⚡</div>
-            <h3>Self-Healing</h3>
-            <p>Automatic retry with exponential backoff. Network interruptions don't mean failed transfers. Configurable max attempts.</p>
-            <CodeBlock code={`mftctl jobs create --agent <agent-id> \\
-  --source sftp://partner.example.com \\
-  --dest ./backup --max-retries 5 --retry-delay 30`} />
+            <h3>Cross-Platform Agent</h3>
+            <p>Linux CLI available now. Windows and macOS coming soon. ~20MB Rust binary with heartbeat monitoring and background operation.</p>
+            <CodeBlock code={`./mftctl login <api-key>
+./mftctl jobs create --source ./data --dest sftp://server/`} />
           </div>
         </div>
       </section>
 
       <section id="how-it-works" className={`how-section ${visibleSections.has('how-it-works') ? 'visible' : ''}`}>
         <div className="section-header">
-          <span className="section-tag">// HOW IT WORKS</span>
-          <h2>Up and Running in Minutes</h2>
+          <span className="section-tag">How It Works</span>
+          <h2>Agent, Server, Dashboard</h2>
         </div>
 
         <div className="steps-container">
@@ -356,7 +375,7 @@ function App() {
             <div className="step-number">1</div>
             <div className="step-content">
               <h3>Download</h3>
-              <p>Get the 5MB installer for your platform. No server setup required.</p>
+              <p>Get the agent binary for your platform. No server setup required — we manage the infrastructure.</p>
             </div>
           </div>
 
@@ -380,7 +399,7 @@ function App() {
 
       <section id="pricing" className={`pricing-section ${visibleSections.has('pricing') ? 'visible' : ''}`}>
         <div className="section-header">
-          <span className="section-tag">// PRICING</span>
+          <span className="section-tag">Pricing</span>
           <h2>Simple, Transparent Pricing</h2>
           <p>Flat monthly pricing. No per-server fees. Pick the plan that fits your needs.</p>
         </div>
@@ -402,7 +421,7 @@ function App() {
               <li>✓ Command-line interface</li>
               <li>✓ Community support</li>
             </ul>
-            <a href="https://dashboard.mftplus.co.za/signup" className="pricing-cta cta-goldenrod">Get Started</a>
+            <a href="https://dashboard.mftplus.co.za/checkout?plan=community&amp;utm_source=mft-site&amp;utm_medium=cta&amp;utm_campaign=pricing" className="pricing-cta cta-goldenrod" data-umami-event="pricing-community">Get Started</a>
           </div>
 
           <div className="pricing-card">
@@ -421,13 +440,13 @@ function App() {
               <li>✓ Web dashboard</li>
               <li>✓ Email support</li>
             </ul>
-            <a href="https://dashboard.mftplus.co.za/signup" className="pricing-cta cta-goldenrod">Start Free Trial</a>
+            <a href="https://dashboard.mftplus.co.za/checkout?plan=starter&amp;utm_source=mft-site&amp;utm_medium=cta&amp;utm_campaign=pricing" className="pricing-cta cta-goldenrod" data-umami-event="pricing-starter">Start Free Trial</a>
           </div>
 
-          <div className="pricing-card">
+          <div className="pricing-card coming-soon">
             <div className="pricing-header">
               <h3>Pro</h3>
-              <div className="pricing-status">Best Value</div>
+              <div className="pricing-status">Coming Soon</div>
             </div>
             <div className="pricing-price">
               <span className="price-value">$499</span>
@@ -440,7 +459,7 @@ function App() {
               <li>✓ API access</li>
               <li>✓ Priority support</li>
             </ul>
-            <a href="https://dashboard.mftplus.co.za/signup" className="pricing-cta cta-goldenrod">Start Free Trial</a>
+            <span className="pricing-cta">Coming Soon</span>
           </div>
 
           <div className="pricing-card coming-soon">
@@ -458,8 +477,122 @@ function App() {
               <li>✓ Custom integrations</li>
               <li>✓ Dedicated support & SLA</li>
             </ul>
-            <a href={'mailto:' + ['enterprise','mftplus.co.za'].join('@')} className="pricing-cta">Contact Sales</a>
+            <a href="mailto:enterprise@mftplus.co.za" className="pricing-cta" data-umami-event="pricing-enterprise">Contact Sales</a>
           </div>
+        </div>
+      </section>
+
+      <section id="comparison" className={`comparison-section ${visibleSections.has('comparison') ? 'visible' : ''}`}>
+        <div className="section-header">
+          <span className="section-tag">Comparison</span>
+          <h2>MFTPlus vs Legacy MFT Vendors</h2>
+          <p>See how MFTPlus compares to the leading managed file transfer platforms.</p>
+        </div>
+
+        <div className="comparison-table-wrapper">
+          <table className="vendor-comparison-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th className="highlight-col">MFTPlus</th>
+                <th>IBM Sterling</th>
+                <th>Globalscape EFT</th>
+                <th>GoAnywhere</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Starting Price</td>
+                <td className="highlight-col">$150/mo</td>
+                <td>Custom (enterprise)</td>
+                <td>~$3,000/yr</td>
+                <td>~$2,500/yr</td>
+              </tr>
+              <tr>
+                <td>Deployment</td>
+                <td className="highlight-col">Managed server + agent</td>
+                <td>Java server, weeks</td>
+                <td>Windows server</td>
+                <td>Java VM required</td>
+              </tr>
+              <tr>
+                <td>Setup Time</td>
+                <td className="highlight-col">~5 minutes</td>
+                <td>2-4 weeks</td>
+                <td>1-2 days</td>
+                <td>1-3 days</td>
+              </tr>
+              <tr>
+                <td>Language</td>
+                <td className="highlight-col">Rust</td>
+                <td>Java</td>
+                <td>C# / .NET</td>
+                <td>Java</td>
+              </tr>
+              <tr>
+                <td>Hosting</td>
+                <td className="highlight-col">Managed (self-hosted coming)</td>
+                <td>On-prem</td>
+                <td>On-prem</td>
+                <td>On-prem</td>
+              </tr>
+              <tr>
+                <td>Protocols</td>
+                <td className="highlight-col">SFTP, FTP, FTPS, local</td>
+                <td>SFTP, FTPS, HTTPS, AS2</td>
+                <td>SFTP, FTPS, HTTPS</td>
+                <td>SFTP, FTPS, HTTPS, AS2</td>
+              </tr>
+              <tr>
+                <td>Agent Size</td>
+                <td className="highlight-col">~20MB</td>
+                <td>~2GB+</td>
+                <td>~500MB</td>
+                <td>~1GB+</td>
+              </tr>
+              <tr>
+                <td>Audit Trail</td>
+                <td className="highlight-col">Built-in, all plans</td>
+                <td>Add-on module</td>
+                <td>Built-in</td>
+                <td>Built-in</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="faq" className={`faq-section ${visibleSections.has('faq') ? 'visible' : ''}`}>
+        <div className="section-header">
+          <span className="section-tag">FAQ</span>
+          <h2>Frequently Asked Questions</h2>
+        </div>
+
+        <div className="faq-list">
+          <details className="faq-item">
+            <summary>What is managed file transfer?</summary>
+            <p>Managed file transfer (MFT) is software that automates, secures, and monitors file transfers between systems. Unlike manual FTP clients or custom scripts, MFT provides scheduling, retry logic, audit trails, and encryption — giving teams visibility and compliance without the operational overhead.</p>
+          </details>
+
+          <details className="faq-item">
+            <summary>Is MFTPlus open source?</summary>
+            <p>MFTPlus is not open source. It is a commercial product with a free Community tier that supports up to 5 managed transfers. The Starter plan ($150/month) adds unlimited transfers, scheduling, and the web dashboard. All plans include the full feature set — no gated security or protocol features.</p>
+          </details>
+
+          <details className="faq-item">
+            <summary>How is MFTPlus different from IBM Sterling?</summary>
+            <p>MFTPlus is a lightweight alternative to IBM Sterling. The Rust-based agent is ~20MB versus Sterling's 2GB+ Java stack. MFTPlus manages the server for you — no infrastructure to maintain. Setup takes minutes instead of weeks. MFTPlus starts at $150/month with flat pricing, while Sterling requires enterprise licensing negotiations. For teams that need reliable scheduled transfers with audit trails, MFTPlus covers the core use case at a fraction of the cost.</p>
+          </details>
+
+          <details className="faq-item">
+            <summary>Can MFTPlus replace GoAnywhere?</summary>
+            <p>For standard transfer automation — scheduled SFTP jobs, audit logging, multi-protocol support — yes. MFTPlus provides a managed server with a Rust agent, versus GoAnywhere's self-hosted Java VM requirement. MFTPlus starts at $150/month versus GoAnywhere's ~$2,500/year pricing. GoAnywhere has broader protocol support (AS2, HTTPS) for now; MFTPlus focuses on SFTP, FTP, and FTPS with more protocols on the roadmap.</p>
+          </details>
+
+          <details className="faq-item">
+            <summary>How long does it take to deploy MFTPlus?</summary>
+            <p>The agent is a single ~20MB binary — download, run the login command with your API key, and you're connected to our managed server. Most teams complete their first file transfer within 5 minutes. No Java runtime, no database setup, no server infrastructure to configure. Self-hosted server option coming soon for teams that need on-premise deployment.</p>
+          </details>
         </div>
       </section>
 
@@ -468,13 +601,13 @@ function App() {
           <h2>Ready to Modernize Your File Transfers?</h2>
           <p>Get started with MFTPlus today and experience reliable, secure file transfers.</p>
 
-          <a href={'mailto:' + ['info','mftplus.co.za'].join('@') + '?subject=MFTPlus Inquiry'} className="cta-large">
+          <a href="mailto:info@mftplus.co.za?subject=MFTPlus Inquiry" className="cta-large" data-umami-event="contact-get-started">
             Get Started
             <span className="cta-arrow">→</span>
           </a>
 
           <div className="contact-meta">
-            <p>Questions? Email us at <a href={'mailto:' + ['info','mftplus.co.za'].join('@')}>{['info','mftplus.co.za'].join('@')}</a></p>
+            <p>Questions? Email us at <a href="mailto:info@mftplus.co.za">info@mftplus.co.za</a></p>
           </div>
         </div>
       </section>
@@ -482,16 +615,19 @@ function App() {
       <footer className="footer">
         <div className="footer-content">
           <div className="footer-links">
-            <a href={'mailto:' + ['info','mftplus.co.za'].join('@')}>Contact</a>
+            <a href="mailto:info@mftplus.co.za">Contact</a>
+            <a href="/blog">Blog</a>
             <a href="/privacy">Privacy Policy</a>
             <a href="/terms">Terms of Service</a>
           </div>
           <div className="footer-copy">
-            <p>&copy; 2026 MFTPlus. All rights reserved.</p>
+            <p>© 2026 MFTPlus. Built with Rust + Tauri.</p>
           </div>
         </div>
       </footer>
     </div>
+    <CookieConsent />
+    </>
   )
 }
 
