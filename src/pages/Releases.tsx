@@ -75,7 +75,7 @@ function ReleasesPage() {
 
       <header className="releases-header">
         <h1>Releases</h1>
-        <p>Download MFTPlus for your platform. v0.2.0 Early Access — Linux CLI available now.</p>
+        <p>Download MFTPlus for your platform. Linux CLI, Windows Discovery tool, and desktop app available.</p>
       </header>
 
       <main className="releases-list">
