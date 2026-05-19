@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MFTPlus v0.3.0 — Transfer Triggers, Oneshot Retry, and Network Discovery</title>
+<meta name="description" content="MFTPlus v0.3.0 ships Transfer Triggers (event-driven file automation), oneshot retry with configurable backoff, compression wiring, and mft-discover for network scanning.">
+<link rel="canonical" href="https://mftplus.co.za/blog/mftplus-v0.3.0-transfer-triggers-release.html">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://mftplus.co.za/blog/mftplus-v0.3.0-transfer-triggers-release.html">
+<meta property="og:site_name" content="MFTPlus">
+<meta property="og:title" content="MFTPlus v0.3.0 — Transfer Triggers, Oneshot Retry, and Network Discovery">
+<meta property="og:description" content="Transfer Triggers, oneshot retry, compression wiring, and mft-discover. Four features shipping in MFTPlus v0.3.0.">
+<meta property="og:image" content="https://mftplus.co.za/blog/mftplus-v0.3.0-transfer-triggers-release-og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MFTPlus v0.3.0 — Transfer Triggers, Oneshot Retry, and Network Discovery">
+<meta name="twitter:description" content="Transfer Triggers, oneshot retry, compression wiring, and mft-discover. Four features shipping in MFTPlus v0.3.0.">
+<meta name="twitter:image" content="https://mftplus.co.za/blog/mftplus-v0.3.0-transfer-triggers-release-og.png">
+<meta property="article:published_time" content="2026-05-19">
+<meta property="article:author" content="Armin Marxer">
+<meta property="og:locale" content="en_ZA">
+
+<meta name="geo.region" content="ZA">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%231F1A17'/><path d='M8 12h16v8H8z' fill='%23B8860B'/></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:           #1F1A17;
+    --surface:      #2A2420;
+    --border:       #3D342F;
+    --text:         #FAF8F5;
+    --text-muted:   #C4B5A0;
+    --text-dim:     #8B7355;
+    --accent:       #B8860B;
+    --accent-light: #D4A843;
+    --brown:        #8B4513;
+    --font-display: 'Source Serif 4', Georgia, serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-display);
+    font-size: 17px;
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Nav */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 0;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+  }
+
+  nav.scrolled {
+    background: rgba(31,26,23,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom-color: var(--border);
+  }
+
+  nav .inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .wordmark {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .nav-link {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-link:hover { color: var(--accent); }
+
+  .nav-cta {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--bg);
+    background: var(--accent);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 2px;
+    transition: background 0.2s;
+  }
+
+  .nav-cta:hover { background: var(--accent-light); }
+
+  /* Layout */
+  .container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  /* Article */
+  article {
+    padding: 160px 0 100px;
+    min-height: 100vh;
+  }
+
+  .article-meta {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+    margin-bottom: 24px;
+  }
+
+  .article-title {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 32px;
+    max-width: 800px;
+  }
+
+  .article-content {
+    max-width: 720px;
+    font-family: var(--font-display);
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--text-muted);
+  }
+
+  .article-content h2 {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 56px;
+    margin-bottom: 20px;
+    letter-spacing: -0.01em;
+  }
+
+  .article-content h3 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 40px;
+    margin-bottom: 16px;
+  }
+
+  .article-content p {
+    margin-bottom: 24px;
+  }
+
+  .article-content a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--brown);
+    transition: border-color 0.2s;
+  }
+
+  .article-content a:hover {
+    border-bottom-color: var(--accent);
+  }
+
+  .article-content ul, .article-content ol {
+    margin-bottom: 24px;
+    padding-left: 24px;
+  }
+
+  .article-content li {
+    margin-bottom: 12px;
+  }
+
+  .article-content code {
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 14px;
+    background: var(--surface);
+    color: var(--accent-light);
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+
+  .article-content pre {
+    background: var(--surface);
+    padding: 20px;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin-bottom: 24px;
+    border: 1px solid var(--border);
+  }
+
+  .article-content pre code {
+    background: none;
+    padding: 0;
+    color: var(--text-muted);
+  }
+
+  .article-content blockquote {
+    border-left: 3px solid var(--accent);
+    padding-left: 20px;
+    margin: 32px 0;
+    font-style: italic;
+    color: var(--text);
+  }
+
+  /* FAQ */
+  .faq-section {
+    margin-top: 56px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+  }
+
+  .faq-section h2 {
+    margin-top: 0;
+  }
+
+  /* Footer */
+  footer {
+    padding: 40px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  footer .inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  footer .wordmark { font-size: 13px; }
+
+  footer p {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  @media (max-width: 768px) {
+    .container, nav .inner, footer .inner { padding: 0 20px; }
+    .article-title { font-size: 28px; }
+    .article-content { font-size: 16px; }
+  }
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is a transfer trigger?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A transfer trigger is an automated rule that watches a directory for files matching a pattern and transfers them to a destination when they appear. No manual intervention or cron scheduling required."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is a transfer trigger different from a cron job?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Cron jobs run on a schedule regardless of whether a file exists. Transfer triggers respond to file events. A trigger fires only when a matching file lands in the watched directory."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What file patterns do transfer triggers support?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Transfer triggers use glob patterns. Examples: *.csv matches all CSV files, report-*.pdf matches PDF files starting with report-, data/2026/**/*.xlsx matches all Excel files in the 2026 subdirectory tree."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can transfer triggers rename files during transfer?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Destination filenames support template variables: {{date}} for date stamps, {{uuid}} for unique identifiers, {{seq}} for sequential numbers, and {{original}} for the source filename."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens if a triggered transfer fails?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Failed triggered transfers appear in the trigger firing history with the failure reason. The trigger continues watching for new files. Failed one-shot transfers retry automatically up to 3 times with configurable backoff."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does oneshot retry work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "When a one-shot transfer fails, the system retries it automatically. You configure the maximum retry count (up to 3) and the backoff strategy (exponential by default). Transient failures resolve without manual intervention."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does mft-discover do?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "mft-discover scans a network for file transfer activity. It identifies SSH configurations, cron jobs, shell scripts, and other transfer-related artifacts. Output is available in JSON or HTML."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is compression available on all transfers?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Compression is a per-job option. Enable it in the job configuration. gzip and zlib are supported. Data compresses before transit and decompresses at the destination."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I upgrade to v0.3.0?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Existing MFTPlus installations: see the release notes for update instructions. New installations are available at mftplus.co.za."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="inner">
+    <a href="/" class="wordmark">MFTPlus</a>
+    <div class="nav-links">
+      <span class="nav-link">Writing</span>
+      <a href="https://github.com/ZeroClue/mftplus-community" class="nav-link">GitHub</a>
+      <a href="https://mftplus.co.za" class="nav-cta">Install mftctl</a>
+    </div>
+  </div>
+</nav>
+
+<article>
+  <div class="container">
+    <div class="article-meta">May 19, 2026 &middot; 6 min read</div>
+    <h1 class="article-title">MFTPlus v0.3.0 &mdash; Transfer Triggers, Oneshot Retry, and Network Discovery</h1>
+    <div class="article-content">
+      <p>MFTPlus v0.3.0 ships four features. The biggest one answers the question every enterprise prospect asks first: &ldquo;Can it watch a folder and send the file when it arrives?&rdquo;</p>
+
+      <h2>Transfer Triggers</h2>
+      <p>Transfer Triggers are event-driven file transfer automation. You configure a trigger to watch a directory, match files by glob pattern, and auto-transfer when a file appears. No cron jobs. No polling scripts. No human in the loop.</p>
+
+      <p><strong>How it works:</strong></p>
+      <ol>
+        <li>Create a trigger in the dashboard</li>
+        <li>Set the source directory and glob pattern (e.g. <code>/outgoing/*.csv</code>)</li>
+        <li>Set the destination (any configured MFTPlus agent endpoint)</li>
+        <li>Configure the destination filename using a template language: <code>report-{{date}}-{{uuid}}.csv</code></li>
+      </ol>
+
+      <p>When a file matching the pattern lands in the watched directory, the trigger fires and the transfer begins. The dashboard shows trigger firing history with full audit trail: what matched, when it fired, whether the transfer succeeded.</p>
+
+      <p><strong>Filename templates support:</strong></p>
+      <ul>
+        <li><code>{{date}}</code> &mdash; date stamp at time of firing</li>
+        <li><code>{{uuid}}</code> &mdash; unique identifier per transfer</li>
+        <li><code>{{seq}}</code> &mdash; sequential counter per trigger</li>
+        <li><code>{{original}}</code> &mdash; the original filename</li>
+      </ul>
+
+      <p><strong>Why this matters:</strong> Every enterprise file transfer workflow eventually needs &ldquo;file arrives, file transfers, nobody touches it.&rdquo; Before triggers, the answer was a cron job that checked every five minutes and a shell script that broke when the filename format changed. Triggers make it a platform feature with logging, retry, and a UI.</p>
+
+      <h2>Oneshot Retry</h2>
+      <p>Failed one-shot jobs now retry automatically. Up to 3 retries with configurable backoff.</p>
+
+      <p>Previously, a one-shot transfer that failed due to a network blip, an auth timeout, or a temporary DNS resolution failure was consumed. The job was gone. Someone had to notice the failure and manually re-submit it.</p>
+
+      <p>That&rsquo;s fine when you&rsquo;re running ten transfers a day. It breaks at scale. A five-second network interruption shouldn&rsquo;t require a human to fix it.</p>
+
+      <p>Retry backoff is configurable per job. Default: exponential. First retry after 30 seconds, second after 2 minutes, third after 8 minutes.</p>
+
+      <h2>Compression Wiring</h2>
+      <p>MFTPlus had a compression module. It existed in the codebase but wasn&rsquo;t wired into the actual transfer path. In v0.3.0 it is.</p>
+
+      <p>gzip and zlib compression are now available as per-job options. Enable it on the job configuration. Data compresses before transit, decompresses at the destination. Useful for large CSV exports, log files, and batch transfers over bandwidth-constrained links.</p>
+
+      <h2>mft-discover</h2>
+      <p>mft-discover is a CLI tool that scans a Linux network for existing file transfer activity. It finds SSH configurations, cron jobs, shell scripts, and other transfer-related artifacts, then produces a report in JSON or HTML.</p>
+
+      <p><strong>Why it exists:</strong> The hardest part of selling MFT to an enterprise isn&rsquo;t the product demo. It&rsquo;s getting the prospect to admit what they actually have. Most organisations don&rsquo;t know how many file transfers are running across their infrastructure. There&rsquo;s the scheduled SFTP job the DBA set up three years ago. The cron script that pulls nightly reports. The ad-hoc SCP command someone put in a wiki page and forgot about.</p>
+
+      <p>mft-discover gives the sales engineer a tool to walk into a meeting and say &ldquo;here&rsquo;s what&rsquo;s running on your network.&rdquo; JSON output for integration into existing tooling. HTML report for the slide deck.</p>
+
+      <p>Available as Linux and Windows binaries.</p>
+
+      <h2>What&rsquo;s next</h2>
+      <p>Four items on the near-term roadmap:</p>
+      <ul>
+        <li><strong>Smart retry with resume</strong> &mdash; breakpoint resume for interrupted transfers. Pick up where it left off instead of restarting.</li>
+        <li><strong>SFTP gateway mode</strong> &mdash; on-prem to cloud bridge. Agents on both sides, transfers flow through the gateway.</li>
+        <li><strong>Cross-tenant file sharing</strong> &mdash; transfer files between MFTPlus tenants without a shared filesystem.</li>
+        <li><strong>Cryptographic chain of custody</strong> &mdash; tamper-evident audit log for compliance. Each transfer entry chained to the previous one. Any modification to the log breaks the chain.</li>
+      </ul>
+
+      <hr>
+
+      <p>MFTPlus v0.3.0 is available now at <a href="https://mftplus.co.za">mftplus.co.za</a>. Existing installations: check the release notes for update instructions.</p>
+
+      <div class="faq-section">
+        <h2>FAQ</h2>
+
+        <h3>What is a transfer trigger?</h3>
+        <p>A transfer trigger is an automated rule that watches a directory for files matching a pattern and transfers them to a destination when they appear. No manual intervention or cron scheduling required.</p>
+
+        <h3>How is a transfer trigger different from a cron job?</h3>
+        <p>Cron jobs run on a schedule regardless of whether a file exists. Transfer triggers respond to file events. A trigger fires only when a matching file lands in the watched directory. There&rsquo;s no empty polling and no missed windows.</p>
+
+        <h3>What file patterns do transfer triggers support?</h3>
+        <p>Transfer triggers use glob patterns. Examples: <code>*.csv</code> matches all CSV files, <code>report-*.pdf</code> matches PDF files starting with &ldquo;report-&rdquo;, <code>data/2026/**/*.xlsx</code> matches all Excel files in the 2026 subdirectory tree.</p>
+
+        <h3>Can transfer triggers rename files during transfer?</h3>
+        <p>Yes. Destination filenames support template variables: <code>{{date}}</code> for date stamps, <code>{{uuid}}</code> for unique identifiers, <code>{{seq}}</code> for sequential numbers, and <code>{{original}}</code> for the source filename.</p>
+
+        <h3>What happens if a triggered transfer fails?</h3>
+        <p>Failed triggered transfers appear in the trigger firing history with the failure reason. The trigger continues watching for new files. Failed one-shot transfers retry automatically up to 3 times with configurable backoff.</p>
+
+        <h3>How does oneshot retry work?</h3>
+        <p>When a one-shot transfer fails, the system retries it automatically. You configure the maximum retry count (up to 3) and the backoff strategy (exponential by default). Transient failures like network timeouts or temporary DNS issues resolve without manual intervention.</p>
+
+        <h3>What does mft-discover do?</h3>
+        <p>mft-discover scans a network for file transfer activity. It identifies SSH configurations, cron jobs, shell scripts, and other transfer-related artifacts. Output is available in JSON (for tooling integration) or HTML (for reports and presentations).</p>
+
+        <h3>Is compression available on all transfers?</h3>
+        <p>Compression is a per-job option. Enable it in the job configuration. gzip and zlib are supported. Data compresses before transit and decompresses at the destination.</p>
+
+        <h3>How do I upgrade to v0.3.0?</h3>
+        <p>Existing MFTPlus installations: see the release notes for update instructions. New installations are available at <a href="https://mftplus.co.za">mftplus.co.za</a>.</p>
+      </div>
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="inner">
+    <a href="/" class="wordmark">MFTPlus</a>
+    <p>&copy; 2026 MFTPlus. infrastructure tooling for developers.</p>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+</script>
+
+</body>
+</html>

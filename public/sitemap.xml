@@ -14,9 +14,15 @@
   </url>
   <url>
     <loc>https://www.mftplus.co.za/blog/</loc>
-    <lastmod>2026-05-11</lastmod>
+    <lastmod>2026-05-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.mftplus.co.za/blog/mftplus-v0.3.0-transfer-triggers-release.html</loc>
+    <lastmod>2026-05-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.mftplus.co.za/blog/three-weeks-after-launch.html</loc>
