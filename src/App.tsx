@@ -137,7 +137,7 @@ function App() {
               <span className="stat-label">Protocols</span>
             </div>
             <div className="stat-item">
-              <span className="stat-value">9</span>
+              <span className="stat-value">12</span>
               <span className="stat-label">Live Features</span>
             </div>
           </div>
@@ -360,6 +360,15 @@ SFTP backup every night at 2am"`} />
             <p>Linux CLI available now. Windows and macOS coming soon. ~20MB Rust binary with heartbeat monitoring and background operation.</p>
             <CodeBlock code={`./mftctl login <api-key>
 ./mftctl jobs create --source ./data --dest sftp://server/`} />
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-icon">🔼</div>
+            <h3>HTTP Gateway</h3>
+            <p>Upload files directly via HTTP API — no agent required. Use cURL, PowerShell, or Python for programmatic uploads. FREE tier with MFTPlus storage, PRO tier with BYO cloud (S3/Azure).</p>
+            <CodeBlock code={`curl -X POST https://api.mftplus.co.za/api/gateway/upload \\
+  -H "X-Gateway-Key: mftgw_your-key-here" \\
+  -F "file=@document.pdf"`} />
           </div>
 
           <div className="feature-card">
