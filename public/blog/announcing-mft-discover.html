@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Announcing mft-discover: Free Network Discovery Tool for File Transfers</title>
+<meta name="description" content="A free Rust CLI that scans your network for hidden file transfers. Finds crontabs, scheduled tasks, scripts, and tool configs. Detects unencrypted transfers and hardcoded credentials before your auditor does.">
+<link rel="canonical" href="https://mftplus.co.za/blog/announcing-mft-discover.html">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://mftplus.co.za/blog/announcing-mft-discover.html">
+<meta property="og:site_name" content="MFTPlus">
+<meta property="og:title" content="Announcing mft-discover: Free Network Discovery Tool for File Transfers">
+<meta property="og:description" content="Ships mft-discover, a free Rust CLI that scans your network for hidden file transfers — crontabs, scheduled tasks, scripts, and tool configs.">
+<meta property="og:image" content="https://mftplus.co.za/blog/announcing-mft-discover-og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Announcing mft-discover: Free Network Discovery Tool for File Transfers">
+<meta name="twitter:description" content="A free Rust CLI for network file transfer discovery.">
+<meta name="twitter:image" content="https://mftplus.co.za/blog/announcing-mft-discover-og.png">
+<meta property="article:published_time" content="2026-05-27">
+<meta property="article:author" content="Armin Marxer">
+<meta property="og:locale" content="en_ZA">
+
+<meta name="geo.region" content="ZA">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%231F1A17'/><path d='M8 12h16v8H8z' fill='%23B8860B'/></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:           #1F1A17;
+    --surface:      #2A2420;
+    --border:       #3D342F;
+    --text:         #FAF8F5;
+    --text-muted:   #C4B5A0;
+    --text-dim:     #8B7355;
+    --accent:       #B8860B;
+    --accent-light: #D4A843;
+    --brown:        #8B4513;
+    --font-display: 'Source Serif 4', Georgia, serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-display);
+    font-size: 17px;
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% -20%, rgba(184,134,11,0.04) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 0;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+  }
+
+  nav.scrolled {
+    background: rgba(31,26,23,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom-color: var(--border);
+  }
+
+  nav .inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .wordmark {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .nav-links { display: flex; align-items: center; gap: 20px; }
+
+  .nav-link {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-link:hover { color: var(--accent); }
+
+  .nav-cta {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--bg);
+    background: var(--accent);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 2px;
+    transition: background 0.2s;
+  }
+
+  .nav-cta:hover { background: var(--accent-light); }
+
+  .container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 40px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .article-header {
+    padding: 140px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 56px;
+  }
+
+  .article-back {
+    font-size: 13px;
+    color: var(--text-dim);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 40px;
+    transition: color 0.2s;
+  }
+
+  .article-back::before { content: '\2190'; }
+  .article-back:hover { color: var(--accent); }
+
+  .article-meta {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 28px;
+  }
+
+  .article-meta span {
+    font-size: 13px;
+    color: var(--text-dim);
+    letter-spacing: 0.03em;
+  }
+
+  .article-header h1 {
+    font-size: clamp(30px, 4vw, 48px);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    max-width: 720px;
+  }
+
+  .article-body {
+    padding: 0 0 100px;
+    animation: fadeIn 0.4s ease-out;
+  }
+
+  .article-content { max-width: 680px; }
+
+  .article-content h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--accent-light);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    margin: 48px 0 16px;
+  }
+
+  .article-content h3 {
+    font-size: 19px;
+    font-weight: 500;
+    color: var(--text);
+    margin: 32px 0 12px;
+  }
+
+  .article-content p {
+    color: var(--text-muted);
+    font-size: 17px;
+    line-height: 1.75;
+    margin-bottom: 20px;
+  }
+
+  .article-content a { color: var(--accent-light); }
+
+  .article-content ul, .article-content ol {
+    margin: 0 0 20px 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .article-content li {
+    color: var(--text-muted);
+    font-size: 17px;
+    line-height: 1.7;
+    margin-bottom: 8px;
+    padding-left: 24px;
+    position: relative;
+  }
+
+  .article-content li::before {
+    content: '\2014';
+    position: absolute;
+    left: 0;
+    color: var(--text-dim);
+  }
+
+  .article-content code {
+    font-family: 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+    font-size: 15px;
+    background: var(--surface);
+    padding: 2px 6px;
+    border-radius: 2px;
+    color: var(--accent-light);
+  }
+
+  .article-content pre {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 20px;
+    margin: 24px 0;
+    overflow-x: auto;
+    border-radius: 2px;
+  }
+
+  .article-content pre code {
+    background: none;
+    padding: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+
+  .article-content blockquote {
+    border-left: 2px solid var(--accent);
+    padding: 4px 0 4px 24px;
+    margin: 32px 0;
+  }
+
+  .article-content blockquote p {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  .article-content strong { color: var(--text); font-weight: 500; }
+
+  @media (max-width: 700px) {
+    .container, nav .inner { padding: 0 24px; }
+    .article-header { padding: 120px 0 36px; }
+    .article-content { font-size: 16px; }
+  }
+
+  .article-cta {
+    margin-top: 48px;
+    padding: 32px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 2px;
+  }
+
+  .article-cta p {
+    font-size: 16px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+
+  .article-cta a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent);
+    color: var(--bg);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 2px;
+    transition: opacity 0.2s;
+  }
+
+  .article-cta a:hover { opacity: 0.88; }
+
+  footer {
+    padding: 32px 0;
+    border-top: 1px solid var(--border);
+    position: relative;
+    z-index: 1;
+  }
+
+  footer .inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  footer p {
+    font-size: 13px;
+    color: var(--text-dim);
+    letter-spacing: 0.03em;
+  }
+
+  footer a {
+    font-size: 13px;
+    color: var(--text-dim);
+    text-decoration: none;
+  }
+
+  footer a:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="inner">
+    <a href="../" class="wordmark">MFTPlus</a>
+    <div class="nav-links">
+      <a href="./" class="nav-link">Writing</a>
+      <a href="https://github.com/ZeroClue/mftplus-community" class="nav-link">GitHub</a>
+      <a href="https://mftplus.co.za" class="nav-cta">mftplus.co.za</a>
+    </div>
+  </div>
+</nav>
+
+<header class="article-header">
+  <div class="container">
+    <a href="./" class="article-back">Writing</a>
+    <div class="article-meta">
+      <span>May 2026</span>
+      <span>5 min read</span>
+    </div>
+    <h1>Announcing mft-discover: Free Network Discovery Tool for File Transfers</h1>
+  </div>
+</header>
+
+<main class="article-body">
+  <div class="container">
+    <article class="article-content">
+
+<p>Most teams don't know how many file transfers are running on their network. Not because they're negligent, but because there's no easy way to find them.</p>
+
+<p>Cron jobs on a forgotten server. Scheduled tasks on a Windows machine that the last admin set up. A script in someone's home directory that SCPs a file to a vendor every night. These exist in every organisation that's been running for more than a year.</p>
+
+<p>We built <code>mft-discover</code> to find them.</p>
+
+<h2>What It Does</h2>
+
+<p><code>mft-discover</code> is a standalone Rust CLI that scans Linux and Windows machines for file transfer activity. It connects via SSH or WinRM and looks for:</p>
+
+<ul>
+  <li><strong>Crontabs</strong> — any <code>scp</code>, <code>sftp</code>, <code>rsync</code>, <code>curl</code>, or <code>wget</code> commands</li>
+  <li><strong>Windows Scheduled Tasks</strong> — file transfer operations in Task Scheduler</li>
+  <li><strong>Shell scripts</strong> — <code>.sh</code>, <code>.bash</code>, <code>.ps1</code> files with transfer commands</li>
+  <li><strong>Tool configs</strong> — FileZilla, WinSCP, and PuTTY saved profiles</li>
+</ul>
+
+<p>It produces a self-contained HTML report that shows everything it found. Machine-readable JSON output is available for pipeline integration.</p>
+
+<pre><code>$ mft-discover scan 192.168.1.0/24 --output report.html
+
+Scanning 16 hosts...
+  10.0.1.14   &mdash; 3 crontab entries found, 2 unencrypted
+  10.0.1.22   &mdash; WinSCP profile with saved credentials
+  10.0.1.31   &mdash; PowerShell script with hardcoded SFTP password
+  10.0.1.45   &mdash; No file transfer activity detected
+  10.0.1.50   &mdash; 7 scheduled tasks, 4 using FTP (unencrypted)
+
+Scan complete. 5 of 16 hosts have active file transfers.
+3 transfers use unencrypted protocols.
+1 instance of hardcoded credentials detected.
+Report saved to report.html.</code></pre>
+
+<h2>Why We Built It</h2>
+
+<p>We kept hearing the same story from potential customers: "I think we have file transfers running somewhere, but I don't know where they all are."</p>
+
+<p>That uncertainty is a compliance risk. If you don't know where your data is moving, you can't audit it. If you can't audit it, you can't certify compliance.</p>
+
+<p><code>mft-discover</code> turns that unknown into a concrete report. You run the scan, you get a list of every file transfer on your network, organised by host and protocol. You know exactly what needs to be migrated, secured, or retired.</p>
+
+<h2>What It Doesn't Do</h2>
+
+<p>Version 1 is passive-only. It reads configs and scans scripts. It doesn't probe for open ports or test credentials.</p>
+
+<p>It also doesn't remediate. <code>mft-discover</code> finds and reports. MFTPlus handles the remediation: onboarding discovered transfers into a managed, encrypted, audited pipeline.</p>
+
+<h2>Getting Started</h2>
+
+<p><code>mft-discover</code> is free. Linux and Windows binaries are available from the MFTPlus releases page.</p>
+
+<pre><code># Download the binary
+curl -LO https://releases.mftplus.co.za/mft-discover/mft-discover-latest-linux
+
+# Make it executable
+chmod +x mft-discover-latest-linux
+
+# Run a scan
+./mft-discover-latest-linux scan 192.168.1.0/24
+
+# Or scan a single host
+./mft-discover-latest-linux scan 10.0.1.14 --ssh-key ~/.ssh/id_rsa</code></pre>
+
+<h2>FAQ</h2>
+
+<p><strong>Is it really free?</strong><br>
+Yes. No registration, no API key, no trial timer.</p>
+
+<p><strong>Does it phone home?</strong><br>
+No. The scan runs entirely on your network. The report is generated locally. The only outbound integration is optional: uploading findings to an MFTPlus dashboard if you have one.</p>
+
+<p><strong>What about Windows?</strong><br>
+WinRM transport is supported for Windows targets. The binary runs on both Linux and Windows.</p>
+
+<p><strong>Can I run it in CI/CD?</strong><br>
+Yes. JSON output mode is designed for pipeline integration. Exit codes indicate whether findings were detected.</p>
+
+<p><strong>How does it compare to a penetration test?</strong><br>
+It's not a pen test. It's asset discovery for file transfers. A pen test might find these incidentally. <code>mft-discover</code> looks specifically for them.</p>
+
+    </article>
+  </div>
+</main>
+
+<footer>
+  <div class="inner">
+    <p>&copy; 2026 MFTPlus</p>
+    <a href="https://github.com/ZeroClue/mftplus-community">GitHub</a>
+  </div>
+</footer>
+
+</body>
+</html>
