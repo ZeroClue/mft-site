@@ -387,19 +387,28 @@
 
 <p>It produces a self-contained HTML report that shows everything it found. Machine-readable JSON output is available for pipeline integration.</p>
 
-<pre><code>$ mft-discover scan 192.168.1.0/24 --output report.html
+<pre><code>$ mft-discover --targets 192.168.1.0/24 --output .
 
-Scanning 16 hosts...
-  10.0.1.14   &mdash; 3 crontab entries found, 2 unencrypted
-  10.0.1.22   &mdash; WinSCP profile with saved credentials
-  10.0.1.31   &mdash; PowerShell script with hardcoded SFTP password
-  10.0.1.45   &mdash; No file transfer activity detected
-  10.0.1.50   &mdash; 7 scheduled tasks, 4 using FTP (unencrypted)
+MFTPlus Discovery Tool v0.4.0
 
-Scan complete. 5 of 16 hosts have active file transfers.
-3 transfers use unencrypted protocols.
-1 instance of hardcoded credentials detected.
-Report saved to report.html.</code></pre>
+Scanning 16 targets...
+
+[1/16] 192.168.1.14 (Linux) via SSH
+  ✓ Cron: 2 transfers found
+[2/16] 192.168.1.22 (Linux) via SSH
+  ✓ WinSCP: profile with saved credentials
+[3/16] 192.168.1.31 (Windows) via WinRM
+  ✓ PowerShell: hardcoded_credentials
+[4/16] 192.168.1.45 (Linux) via SSH
+  — No file transfer activity
+[5/16] 192.168.1.50 (Windows) via WinRM
+  ✓ ScheduledTask: 7 jobs, 4 using FTP
+
+Summary: 5 transfers across 16 hosts
+  ⚠ 3 unencrypted
+  ⚠ 1 hardcoded_credentials
+
+Report: ./mft-discover-report-2026-05-27.html</code></pre>
 
 <h2>Why We Built It</h2>
 
@@ -426,10 +435,10 @@ curl -LO https://releases.mftplus.co.za/mft-discover/mft-discover-latest-linux
 chmod +x mft-discover-latest-linux
 
 # Run a scan
-./mft-discover-latest-linux scan 192.168.1.0/24
+./mft-discover-latest-linux --targets 192.168.1.0/24 --output .
 
-# Or scan a single host
-./mft-discover-latest-linux scan 10.0.1.14 --ssh-key ~/.ssh/id_rsa</code></pre>
+# Or scan a single host with a specific SSH key
+./mft-discover-latest-linux --targets 10.0.1.14 --ssh-key ~/.ssh/id_rsa --output .</code></pre>
 
 <h2>FAQ</h2>
 
