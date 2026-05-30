@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router'
 import App from './App.tsx'
 import ReleasesPage from './pages/Releases.tsx'
+import ShareDownloadPage from './pages/ShareDownload.tsx'
 import PrivacyPolicyPage from './pages/PrivacyPolicy'
 import TermsOfServicePage from './pages/TermsOfService'
 import { Analytics } from '@vercel/analytics/react'
@@ -12,6 +13,7 @@ createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
+        <Route path="/share/:token" element={<ShareDownloadPage />} />
         <Route path="/releases" element={<ReleasesPage />} />
         <Route path="/privacy" element={<PrivacyPolicyPage />} />
         <Route path="/terms" element={<TermsOfServicePage />} />
