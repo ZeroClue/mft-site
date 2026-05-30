@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from 'react'
 import { useParams } from 'react-router'
 import './ShareDownload.css'
 
-const API_BASE = 'https://api.mftplus.co.za'
+const API_BASE = import.meta.env.VITE_API_BASE ?? 'https://api.mftplus.co.za'
 
 interface ShareMetadata {
   fileName: string
