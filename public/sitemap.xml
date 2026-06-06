@@ -19,6 +19,30 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.mftplus.co.za/blog/why-the-audit-chain-starts-at-starter.html</loc>
+    <lastmod>2026-06-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.mftplus.co.za/blog/why-we-chose-hash-chains-over-merkle-trees.html</loc>
+    <lastmod>2026-06-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.mftplus.co.za/blog/the-hub-never-sees-plaintext.html</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.mftplus.co.za/blog/your-audit-trail-is-probably-unverifiable.html</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://www.mftplus.co.za/blog/mftplus-v0.3.0-transfer-triggers-release.html</loc>
     <lastmod>2026-05-19</lastmod>
     <changefreq>monthly</changefreq>

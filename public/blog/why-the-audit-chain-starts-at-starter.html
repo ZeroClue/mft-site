@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why the Audit Chain Starts at Starter, Not Enterprise — MFTPlus</title>
+<meta name="description" content="The SHA-256 hash chain is in the Starter tier at $150/month. Here's the reasoning behind which audit features go where, and why we didn't bury the differentiator.">
+<link rel="canonical" href="https://mftplus.co.za/blog/why-the-audit-chain-starts-at-starter.html">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://mftplus.co.za/blog/why-the-audit-chain-starts-at-starter.html">
+<meta property="og:site_name" content="MFTPlus">
+<meta property="og:title" content="Why the Audit Chain Starts at Starter, Not Enterprise">
+<meta property="og:description" content="The SHA-256 hash chain is in the Starter tier at $150/month. Here's the reasoning behind which audit features go where, and why we didn't bury the differentiator.">
+<meta property="og:locale" content="en_ZA">
+<meta property="og:image" content="https://mftplus.co.za/blog/why-the-audit-chain-starts-at-starter-og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Why the Audit Chain Starts at Starter, Not Enterprise">
+<meta name="twitter:description" content="The SHA-256 hash chain is in the Starter tier at $150/mo. Here's why we didn't reserve it for Enterprise.">
+<meta name="twitter:image" content="https://mftplus.co.za/blog/why-the-audit-chain-starts-at-starter-og.png">
+<meta property="article:published_time" content="2026-06-16">
+<meta property="article:author" content="Armin Marxer">
+
+<meta name="geo.region" content="ZA">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%231F1A17'/><path d='M8 12h16v8H8z' fill='%23B8860B'/></svg>">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Why the Audit Chain Starts at Starter, Not Enterprise",
+  "description": "The SHA-256 hash chain is in the Starter tier at $150/month. Here's the reasoning behind which audit features go where, and why we didn't bury the differentiator.",
+  "datePublished": "2026-06-16",
+  "author": {
+    "@type": "Person",
+    "name": "Armin Marxer",
+    "url": "https://mftplus.co.za"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "MFTPlus",
+    "url": "https://mftplus.co.za"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://mftplus.co.za/blog/why-the-audit-chain-starts-at-starter.html"
+  },
+  "keywords": ["MFTPlus pricing", "audit chain", "starter tier", "compliance pricing", "MFT audit features", "feature gating"]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:           #1F1A17;
+    --surface:      #2A2420;
+    --border:       #3D342F;
+    --text:         #FAF8F5;
+    --text-muted:   #C4B5A0;
+    --text-dim:     #8B7355;
+    --accent:       #B8860B;
+    --accent-light: #D4A843;
+    --brown:        #8B4513;
+    --font-display: 'Source Serif 4', Georgia, serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-display);
+    font-size: 17px;
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 0;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+  }
+
+  nav.scrolled {
+    background: rgba(31,26,23,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom-color: var(--border);
+  }
+
+  nav .inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .wordmark {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .nav-links { display: flex; align-items: center; gap: 20px; }
+
+  .nav-link {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-link:hover { color: var(--accent); }
+
+  .nav-cta {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--bg);
+    background: var(--accent);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 2px;
+    transition: background 0.2s;
+  }
+
+  .nav-cta:hover { background: var(--accent-light); }
+
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 40px; }
+
+  article { padding: 160px 0 100px; min-height: 100vh; }
+
+  .article-back {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 24px;
+    transition: color 0.2s;
+  }
+
+  .article-back:hover { color: var(--accent); }
+
+  .article-meta {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+    margin-bottom: 24px;
+  }
+
+  .article-title {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 32px;
+    max-width: 800px;
+  }
+
+  .article-content {
+    max-width: 720px;
+    font-family: var(--font-display);
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--text-muted);
+  }
+
+  .article-content h2 {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 56px;
+    margin-bottom: 20px;
+    letter-spacing: -0.01em;
+  }
+
+  .article-content p { margin-bottom: 24px; }
+  .article-content strong { color: var(--text); font-weight: 600; }
+  .article-content em { font-style: italic; }
+
+  .article-content a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--brown);
+    transition: border-color 0.2s;
+  }
+
+  .article-content a:hover { border-bottom-color: var(--accent); }
+
+  .article-content code {
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 14px;
+    background: var(--surface);
+    color: var(--accent-light);
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+
+  .tier-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 32px;
+    font-size: 14px;
+  }
+
+  .tier-table th {
+    text-align: left;
+    padding: 10px 14px;
+    background: var(--surface);
+    color: var(--text);
+    font-weight: 600;
+    border-bottom: 2px solid var(--border);
+    font-family: var(--font-display);
+    white-space: nowrap;
+  }
+
+  .tier-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+    font-family: var(--font-display);
+    vertical-align: top;
+  }
+
+  .tier-table tr:last-child td { border-bottom: none; }
+  .tier-table .yes { color: var(--accent); font-weight: 600; }
+  .tier-table .no { color: var(--text-dim); }
+  .tier-table .tier-name { color: var(--text); font-weight: 600; }
+
+  .author-bio {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 56px;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  .author-bio-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 2px;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--bg);
+    font-weight: 600;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .author-bio-text strong { color: var(--text); display: block; margin-bottom: 4px; }
+  .author-bio-text p { font-size: 14px; color: var(--text-dim); margin-bottom: 0; }
+
+  .faq-section { margin-top: 56px; padding-top: 40px; border-top: 1px solid var(--border); }
+  .faq-section h2 { margin-bottom: 24px; }
+  .faq-item { margin-bottom: 16px; }
+
+  .faq-item summary {
+    color: var(--accent);
+    font-weight: 600;
+    cursor: pointer;
+    padding: 12px 0;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .faq-item summary::before { content: '+'; font-size: 16px; font-weight: 400; color: var(--accent); width: 20px; flex-shrink: 0; }
+  .faq-item[open] summary::before { content: '\2212'; }
+  .faq-item summary:hover { color: var(--accent-light); }
+  .faq-item p { padding-left: 28px; color: var(--text-muted); margin-bottom: 8px; }
+
+  .article-cta {
+    margin-top: 40px;
+    padding: 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  .article-cta p { color: var(--text); font-weight: 600; margin-bottom: 16px; }
+
+  .article-cta a {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--bg);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 2px;
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    transition: background 0.2s;
+    border-bottom: none;
+  }
+
+  .article-cta a:hover { background: var(--accent-light); }
+
+  footer { padding: 40px 0; border-top: 1px solid var(--border); }
+
+  footer .inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  footer .wordmark { font-size: 13px; }
+  footer p { font-family: var(--font-display); font-size: 12px; color: var(--text-dim); }
+
+  @media (max-width: 768px) {
+    .container, nav .inner, footer .inner { padding: 0 20px; }
+    .article-title { font-size: 28px; }
+    .article-content { font-size: 16px; }
+    .tier-table { font-size: 12px; }
+    .tier-table th, .tier-table td { padding: 8px 8px; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="inner">
+    <a href="/" class="wordmark">MFTPlus</a>
+    <div class="nav-links">
+      <a href="./" class="nav-link">Blog</a>
+      <a href="https://github.com/ZeroClue/mftplus-community" class="nav-link">GitHub</a>
+      <a href="https://mftplus.co.za" class="nav-cta">Install mftctl</a>
+    </div>
+  </div>
+</nav>
+
+<article>
+  <div class="container">
+    <a href="./" class="article-back">&larr; All posts</a>
+    <div class="article-meta">June 16, 2026 &middot; 4 min read</div>
+    <h1 class="article-title">Why the Audit Chain Starts at Starter, Not Enterprise</h1>
+    <div class="article-content">
+
+      <p>The SHA-256 hash chain and <code>mftctl audit verify</code> are in the Starter tier. $150/month. Not Pro, not Enterprise.</p>
+
+      <p>That's a deliberate decision, and it's worth explaining — because the default move in SaaS pricing is to put anything with "cryptographic" in its description at the top of the tier list.</p>
+
+      <p>Here's the full audit feature breakdown, and the reasoning behind where each feature lands.</p>
+
+      <h2>The tier breakdown</h2>
+
+      <table class="tier-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Community</th>
+            <th>Starter ($150)</th>
+            <th>Pro ($499)</th>
+            <th>Enterprise</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Basic operational audit log</td>
+            <td class="yes">Yes</td>
+            <td class="yes">Yes</td>
+            <td class="yes">Yes</td>
+            <td class="yes">Yes</td>
+          </tr>
+          <tr>
+            <td>SHA-256 hash chain + <code>mftctl audit verify</code></td>
+            <td class="no">—</td>
+            <td class="yes">Yes</td>
+            <td class="yes">Yes</td>
+            <td class="yes">Yes</td>
+          </tr>
+          <tr>
+            <td>HMAC-SHA256 keyed hashing</td>
+            <td class="no">—</td>
+            <td class="no">—</td>
+            <td class="yes">Yes</td>
+            <td class="yes">Yes</td>
+          </tr>
+          <tr>
+            <td>Signed daily snapshots</td>
+            <td class="no">—</td>
+            <td class="no">—</td>
+            <td class="yes">Yes</td>
+            <td class="yes">Yes</td>
+          </tr>
+          <tr>
+            <td>OpenTimestamps (Bitcoin anchoring)</td>
+            <td class="no">—</td>
+            <td class="no">—</td>
+            <td class="no">—</td>
+            <td class="yes">Yes</td>
+          </tr>
+          <tr>
+            <td>Agent Ed25519 non-repudiation</td>
+            <td class="no">—</td>
+            <td class="no">—</td>
+            <td class="no">—</td>
+            <td class="yes">Yes</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Why Starter gets the hash chain</h2>
+
+      <p>A basic database-backed audit log is table stakes. Every MFT product ships one. If that's all Starter offered, there'd be little reason to pay $150/month instead of staying on Community.</p>
+
+      <p>The SHA-256 hash chain with local CLI verification is the feature that changes the value proposition. It's what separates "we have logs" from "we have verifiable evidence." Putting it at Starter makes Starter worth the price. Putting it at Pro or Enterprise would make it a feature for buyers who already have compliance requirements sophisticated enough to demand it — which is the wrong audience for where cryptographic tamper detection is most useful.</p>
+
+      <p>The hash chain is also cheap to run. The compute cost is negligible: one SHA-256 call per audit entry, serialization of a few fields. The tier reflects customer segment, not infrastructure cost.</p>
+
+      <h2>Why Pro gets HMAC and snapshots</h2>
+
+      <p>Pro customers typically have internal or external compliance auditors who want two things the basic chain doesn't provide: keyed integrity and filed attestations.</p>
+
+      <p>HMAC-SHA256 keyed hashing uses a shared secret between the customer and MFTPlus. It proves not just that the chain is intact, but that specific entries were written by a party that held the key. Signed daily snapshots are audit artifacts — documents that attest the chain state at a point in time, signable and fileable for compliance records.</p>
+
+      <p>Both require key management infrastructure on our end. That's the cost that justifies the tier jump from Starter to Pro, not the compute overhead.</p>
+
+      <h2>Why Enterprise gets OpenTimestamps and Ed25519</h2>
+
+      <p>Enterprise customers face a question that keyed hashing doesn't fully answer: can you prove the vendor didn't tamper with the log? HMAC proves the chain's integrity but requires trusting that the vendor holds the key honestly.</p>
+
+      <p>OpenTimestamps anchors the chain state to the Bitcoin blockchain. The timestamp proof is independent of MFTPlus entirely — it exists on a public ledger that neither party controls. An Enterprise customer can prove to a regulator that their chain existed in a specific state at a specific point in time, without requiring trust in the vendor.</p>
+
+      <p>Agent Ed25519 non-repudiation adds sender signatures: the initiating agent signs each transfer event with a private key, and the signature is stored in the chain entry. The agent cannot deny having initiated the transfer. This matters in regulated industries where audit trails need to prove not just that a transfer occurred, but who initiated it.</p>
+
+      <p>Both features require significant infrastructure and compliance support. OpenTimestamps anchoring involves ongoing Bitcoin transaction management. Ed25519 key management for agents adds a meaningful operational burden. The Enterprise tier reflects that complexity, not the cryptography itself.</p>
+
+      <h2>The gating principle</h2>
+
+      <p>The audit feature tiers follow a single rule: the gating reflects verification infrastructure and support complexity, not compute cost. The hash chain is cheap to provide and we give it at Starter. The expensive parts — key management, snapshot infrastructure, Bitcoin anchoring, Ed25519 agent key distribution — are what the higher tiers are actually paying for.</p>
+
+      <div class="author-bio">
+        <div class="author-bio-avatar">A</div>
+        <div class="author-bio-text">
+          <strong>Armin Marxer</strong>
+          <p>Building MFTPlus. Spent years managing file transfer infrastructure before deciding there had to be a better way.</p>
+        </div>
+      </div>
+
+      <div class="faq-section">
+        <h2>FAQ</h2>
+        <details class="faq-item">
+          <summary>Why is the SHA-256 hash chain not available on Community?</summary>
+          <p>Community is designed for individual developers and small teams evaluating MFTPlus. It includes a basic operational audit log for visibility into transfer history. The cryptographic chain with CLI verification is a Starter feature — it's part of what makes a paid plan worth $150/month over the free tier.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What's the difference between HMAC hashing (Pro) and the basic hash chain (Starter)?</summary>
+          <p>The basic chain uses SHA-256 without a key — anyone can verify it, which is the point. HMAC-SHA256 uses a shared secret between customer and MFTPlus, which proves not just integrity but that specific entries were written by a party holding the key. Pro customers use this for compliance auditors who require keyed attestation.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What is OpenTimestamps and why is it Enterprise-only?</summary>
+          <p>OpenTimestamps anchors the chain state to the Bitcoin blockchain, creating a timestamp proof that exists independently of MFTPlus. It answers the question "can you prove the vendor didn't tamper with the log?" — because the proof lives on a public ledger neither party controls. It's Enterprise-only because the ongoing Bitcoin transaction management and compliance support are operationally expensive.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What does Ed25519 non-repudiation add?</summary>
+          <p>Each transfer event is signed by the initiating agent's Ed25519 private key. The signature is stored in the chain entry. The agent cannot later deny having initiated the transfer. This provides sender non-repudiation, which is required in some regulated industries for audit trails to be legally admissible.</p>
+        </details>
+      </div>
+
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Why is the SHA-256 hash chain not available on Community?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Community includes a basic operational audit log. The cryptographic chain with CLI verification is a Starter feature — it's part of what makes a paid plan worth $150/month."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What's the difference between HMAC hashing and the basic hash chain?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The basic chain uses SHA-256 without a key. HMAC-SHA256 uses a shared secret that proves not just integrity but that specific entries were written by a party holding the key."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is OpenTimestamps and why is it Enterprise-only?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "OpenTimestamps anchors the chain state to the Bitcoin blockchain, creating a timestamp proof independent of MFTPlus. It's Enterprise-only because the ongoing Bitcoin transaction management and compliance support are operationally expensive."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What does Ed25519 non-repudiation add?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Each transfer event is signed by the initiating agent's Ed25519 private key. The agent cannot later deny having initiated the transfer. Required in some regulated industries for legally admissible audit trails."
+            }
+          }
+        ]
+      }
+      </script>
+
+      <div class="article-cta">
+        <p>See the full pricing breakdown</p>
+        <a href="https://mftplus.co.za/pricing">Pricing &rarr;</a>
+      </div>
+
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="inner">
+    <a href="/" class="wordmark">MFTPlus</a>
+    <p>&copy; 2026 MFTPlus. Infrastructure tooling for developers.</p>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+</script>
+
+</body>
+</html>

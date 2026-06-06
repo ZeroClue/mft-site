@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why We Chose a Hash Chain Over a Merkle Tree — MFTPlus</title>
+<meta name="description" content="Merkle trees are elegant. We didn't use one. Here's the specific reason hash chains are better for MFT audit, and why the boring algorithm was the right call.">
+<link rel="canonical" href="https://mftplus.co.za/blog/why-we-chose-hash-chains-over-merkle-trees.html">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://mftplus.co.za/blog/why-we-chose-hash-chains-over-merkle-trees.html">
+<meta property="og:site_name" content="MFTPlus">
+<meta property="og:title" content="Why We Chose a Hash Chain Over a Merkle Tree">
+<meta property="og:description" content="Merkle trees are elegant. We didn't use one. Here's why hash chains are better for MFT audit, and why the boring algorithm was the right call.">
+<meta property="og:locale" content="en_ZA">
+<meta property="og:image" content="https://mftplus.co.za/blog/why-we-chose-hash-chains-over-merkle-trees-og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Why We Chose a Hash Chain Over a Merkle Tree">
+<meta name="twitter:description" content="Merkle trees are elegant. We didn't use one. Here's why boring was the right call for MFT audit.">
+<meta name="twitter:image" content="https://mftplus.co.za/blog/why-we-chose-hash-chains-over-merkle-trees-og.png">
+<meta property="article:published_time" content="2026-06-12">
+<meta property="article:author" content="Armin Marxer">
+
+<meta name="geo.region" content="ZA">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%231F1A17'/><path d='M8 12h16v8H8z' fill='%23B8860B'/></svg>">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Why We Chose a Hash Chain Over a Merkle Tree",
+  "description": "Merkle trees are elegant. We didn't use one. Here's why hash chains are better for MFT audit, and why the boring algorithm was the right call.",
+  "datePublished": "2026-06-12",
+  "author": {
+    "@type": "Person",
+    "name": "Armin Marxer",
+    "url": "https://mftplus.co.za"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "MFTPlus",
+    "url": "https://mftplus.co.za"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://mftplus.co.za/blog/why-we-chose-hash-chains-over-merkle-trees.html"
+  },
+  "keywords": ["Merkle tree", "hash chain", "SHA-256", "audit chain", "MFT audit", "MFTPlus", "cryptography"]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:           #1F1A17;
+    --surface:      #2A2420;
+    --border:       #3D342F;
+    --text:         #FAF8F5;
+    --text-muted:   #C4B5A0;
+    --text-dim:     #8B7355;
+    --accent:       #B8860B;
+    --accent-light: #D4A843;
+    --brown:        #8B4513;
+    --font-display: 'Source Serif 4', Georgia, serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-display);
+    font-size: 17px;
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 0;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+  }
+
+  nav.scrolled {
+    background: rgba(31,26,23,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom-color: var(--border);
+  }
+
+  nav .inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .wordmark {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .nav-links { display: flex; align-items: center; gap: 20px; }
+
+  .nav-link {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-link:hover { color: var(--accent); }
+
+  .nav-cta {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--bg);
+    background: var(--accent);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 2px;
+    transition: background 0.2s;
+  }
+
+  .nav-cta:hover { background: var(--accent-light); }
+
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 40px; }
+
+  article { padding: 160px 0 100px; min-height: 100vh; }
+
+  .article-back {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 24px;
+    transition: color 0.2s;
+  }
+
+  .article-back:hover { color: var(--accent); }
+
+  .article-meta {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+    margin-bottom: 24px;
+  }
+
+  .article-title {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 32px;
+    max-width: 800px;
+  }
+
+  .article-content {
+    max-width: 720px;
+    font-family: var(--font-display);
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--text-muted);
+  }
+
+  .article-content h2 {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 56px;
+    margin-bottom: 20px;
+    letter-spacing: -0.01em;
+  }
+
+  .article-content p { margin-bottom: 24px; }
+  .article-content strong { color: var(--text); font-weight: 600; }
+  .article-content em { font-style: italic; }
+
+  .article-content a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--brown);
+    transition: border-color 0.2s;
+  }
+
+  .article-content a:hover { border-bottom-color: var(--accent); }
+
+  .article-content ul, .article-content ol {
+    margin-bottom: 24px;
+    padding-left: 0;
+    list-style: none;
+  }
+
+  .article-content li {
+    margin-bottom: 12px;
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .article-content li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 1px;
+  }
+
+  .article-content code {
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 14px;
+    background: var(--surface);
+    color: var(--accent-light);
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+
+  .article-content pre {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px 24px;
+    overflow-x: auto;
+    margin-bottom: 24px;
+  }
+
+  .article-content pre code {
+    background: none;
+    padding: 0;
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .article-content blockquote {
+    border-left: 3px solid var(--accent);
+    padding-left: 20px;
+    margin: 32px 0;
+    font-style: italic;
+    color: var(--text);
+  }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 32px;
+    font-size: 15px;
+  }
+
+  .comparison-table th {
+    text-align: left;
+    padding: 12px 16px;
+    background: var(--surface);
+    color: var(--text);
+    font-weight: 600;
+    border-bottom: 2px solid var(--border);
+    font-family: var(--font-display);
+  }
+
+  .comparison-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+    font-family: var(--font-display);
+    vertical-align: top;
+  }
+
+  .comparison-table tr:last-child td { border-bottom: none; }
+
+  .comparison-table .winner { color: var(--accent); font-weight: 600; }
+
+  .author-bio {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 56px;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  .author-bio-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 2px;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--bg);
+    font-weight: 600;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .author-bio-text strong { color: var(--text); display: block; margin-bottom: 4px; }
+  .author-bio-text p { font-size: 14px; color: var(--text-dim); margin-bottom: 0; }
+
+  .faq-section { margin-top: 56px; padding-top: 40px; border-top: 1px solid var(--border); }
+  .faq-section h2 { margin-bottom: 24px; }
+  .faq-item { margin-bottom: 16px; }
+
+  .faq-item summary {
+    color: var(--accent);
+    font-weight: 600;
+    cursor: pointer;
+    padding: 12px 0;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .faq-item summary::before { content: '+'; font-size: 16px; font-weight: 400; color: var(--accent); width: 20px; flex-shrink: 0; }
+  .faq-item[open] summary::before { content: '\2212'; }
+  .faq-item summary:hover { color: var(--accent-light); }
+  .faq-item p { padding-left: 28px; color: var(--text-muted); margin-bottom: 8px; }
+
+  .article-cta {
+    margin-top: 40px;
+    padding: 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  .article-cta p { color: var(--text); font-weight: 600; margin-bottom: 16px; }
+
+  .article-cta a {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--bg);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 2px;
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    transition: background 0.2s;
+    border-bottom: none;
+  }
+
+  .article-cta a:hover { background: var(--accent-light); }
+
+  footer { padding: 40px 0; border-top: 1px solid var(--border); }
+
+  footer .inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  footer .wordmark { font-size: 13px; }
+  footer p { font-family: var(--font-display); font-size: 12px; color: var(--text-dim); }
+
+  @media (max-width: 768px) {
+    .container, nav .inner, footer .inner { padding: 0 20px; }
+    .article-title { font-size: 28px; }
+    .article-content { font-size: 16px; }
+    .comparison-table { font-size: 13px; }
+    .comparison-table th, .comparison-table td { padding: 8px 10px; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="inner">
+    <a href="/" class="wordmark">MFTPlus</a>
+    <div class="nav-links">
+      <a href="./" class="nav-link">Blog</a>
+      <a href="https://github.com/ZeroClue/mftplus-community" class="nav-link">GitHub</a>
+      <a href="https://mftplus.co.za" class="nav-cta">Install mftctl</a>
+    </div>
+  </div>
+</nav>
+
+<article>
+  <div class="container">
+    <a href="./" class="article-back">&larr; All posts</a>
+    <div class="article-meta">June 12, 2026 &middot; 5 min read</div>
+    <h1 class="article-title">Why We Chose a Hash Chain Over a Merkle Tree</h1>
+    <div class="article-content">
+
+      <p>When we designed the MFTPlus audit chain, Merkle trees were the obvious choice. They're elegant. They're used in Bitcoin, in certificate transparency logs, in distributed databases. If you're building anything with "cryptographic audit" in the requirements, the Merkle tree is the first thing you reach for.</p>
+
+      <p>We didn't use one.</p>
+
+      <p>The reason is specific: Merkle trees solve a problem that MFT audit doesn't have.</p>
+
+      <h2>What Merkle trees are actually for</h2>
+
+      <p>A Merkle tree lets you prove that a single leaf belongs to a large set without fetching the whole set. You get a root hash and a proof path — a small number of sibling hashes — and you can verify inclusion without downloading all the data.</p>
+
+      <p>This matters for Bitcoin light clients: you have a 80-byte block header and you want to verify a specific transaction is in that block without downloading the full 1MB. The Merkle proof is ~230 bytes. The same logic applies to certificate transparency logs, where browsers verify certificate inclusion without fetching the entire log.</p>
+
+      <p>That's the use case: sparse verification at scale. Prove one leaf without fetching the tree.</p>
+
+      <h2>What MFT audit actually needs</h2>
+
+      <p>When you run <code>mftctl audit verify TXFR-2847</code>, you fetch the full chain for that transfer. Not a proof path. Not a subset. The complete sequence of entries, from the genesis entry to the latest append.</p>
+
+      <p>There is no sparse verification problem in MFT audit. You're not trying to prove one transfer exists in a set of a billion. You're verifying that a specific chain of 30, 50, or 500 entries is internally consistent and unmodified. The verifier needs all of it.</p>
+
+      <p>A Merkle tree optimizes for a constraint that doesn't exist. What you get in return is significant complexity: tree construction, sibling proof generation, proof serialization, root hash management, tree reconstruction on verify. That complexity has to live in both the server (TypeScript) and the CLI verifier (Go) and stay identical across both.</p>
+
+      <h2>The hash chain alternative</h2>
+
+      <p>A linear SHA-256 hash chain is simpler by an order of magnitude. Each entry computes a hash over its own fields plus the previous entry's hash. The genesis entry uses a fixed 64-character zero string as its prevHash. That's the entire data structure.</p>
+
+      <p>Verification: fetch entries in sequence, recompute each hash, compare to stored value. If every hash matches, output PROVEN. If any hash doesn't match, output TAMPERED at seq N. The sequence number is the location of the tamper.</p>
+
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Merkle Tree</th>
+            <th class="winner">Hash Chain</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Verification output</td>
+            <td>"Proof verified against root"</td>
+            <td class="winner">PROVEN or TAMPERED at seq N</td>
+          </tr>
+          <tr>
+            <td>Sparse verification</td>
+            <td>Yes (the point)</td>
+            <td class="winner">Not needed for MFT audit</td>
+          </tr>
+          <tr>
+            <td>Implementation complexity</td>
+            <td>Tree construction, sibling proofs, proof serialization</td>
+            <td class="winner">10 lines of canonical serialization + SHA-256</td>
+          </tr>
+          <tr>
+            <td>Cross-language verification</td>
+            <td>Hard to keep identical</td>
+            <td class="winner">Feasible: same field order, same SHA-256</td>
+          </tr>
+          <tr>
+            <td>Tamper localization</td>
+            <td>Root hash changes; proof paths for each entry</td>
+            <td class="winner">Exact sequence number of tamper</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Why simpler matters for a verifiable system</h2>
+
+      <p>The MFTPlus audit chain is verified by an independent CLI client written in Go. The server is TypeScript. Both implement the same canonical serialization: pipe-separated fields in a fixed order, the same genesis convention, SHA-256 throughout.</p>
+
+      <p>For a Merkle tree, keeping both implementations identical across two languages and two development timelines is a real maintenance burden. A bug in one sibling proof implementation produces silent divergence: the server says verified, the client rejects it, or vice versa. Debugging which implementation is wrong requires understanding the full tree construction.</p>
+
+      <p>For a hash chain: canonical serialization is a list of fields and a separator. SHA-256 is the same everywhere. If the implementations diverge, the verification fails on any entry where they do, and the mismatch is immediately visible.</p>
+
+      <p>Simpler is more auditable. Not just for us — for anyone who wants to implement their own verifier. The serialization format is documented. SHA-256 runs on every platform. An auditor can verify the chain with nothing but the spec and a SHA-256 implementation.</p>
+
+      <h2>Two other properties worth noting</h2>
+
+      <p><strong>PII separation.</strong> The chain stores only opaque transfer references and content hashes. Sender email, recipient, filename, and IP address live in a separate <code>AuditChainContext</code> table that can be deleted independently. Deleting PII doesn't break the chain. GDPR right-to-erasure compliance doesn't require modifying the audit record.</p>
+
+      <p><strong>Per-org advisory locking.</strong> PostgreSQL <code>pg_advisory_xact_lock(hashtext(companyId))</code> serializes chain appends per organization. Concurrent transfers within one org append in order, no chain fork possible. Across organizations, appends run fully parallel. The lock is scoped to the org, not the table.</p>
+
+      <h2>Boring is better for your audit trail</h2>
+
+      <p>Merkle trees are the right tool for proving leaf inclusion in large sets. Certificate transparency needs them. Bitcoin needs them. MFT audit doesn't.</p>
+
+      <p>The hash chain gives you O(n) verification, a single unambiguous output, a 10-line implementation that any developer can audit, and cross-language verification that actually holds up. That's the right trade for what <code>mftctl audit verify</code> needs to do.</p>
+
+      <div class="author-bio">
+        <div class="author-bio-avatar">A</div>
+        <div class="author-bio-text">
+          <strong>Armin Marxer</strong>
+          <p>Building MFTPlus. Spent years managing file transfer infrastructure before deciding there had to be a better way.</p>
+        </div>
+      </div>
+
+      <div class="faq-section">
+        <h2>FAQ</h2>
+        <details class="faq-item">
+          <summary>Why not use a Merkle tree for the audit chain?</summary>
+          <p>Merkle trees optimize for sparse verification: proving a single leaf belongs to a large set without fetching the whole set. MFT audit always fetches the full chain for a transfer. The Merkle tree solves a constraint that doesn't exist in this use case, and adds significant implementation complexity in return.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How does tamper detection work with a hash chain?</summary>
+          <p>Each entry's hash is computed over its own fields plus the previous entry's hash. Any modification to any entry changes that entry's hash, which cascades to every subsequent entry. The verifier recomputes all hashes in sequence and reports the exact sequence number where the first mismatch occurs.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Can I verify the chain without MFTPlus tooling?</summary>
+          <p>Yes. The canonical serialization format is documented: pipe-separated fields in a fixed order, 64-character zero string as prevHash for the genesis entry, SHA-256 throughout. Any SHA-256 implementation can verify the chain given a chain export.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How does GDPR erasure work if names are in the chain?</summary>
+          <p>PII (sender email, recipient, filename, IP) is stored in a separate <code>AuditChainContext</code> table, not in the chain entries themselves. The chain stores only opaque transfer references and content hashes. Deleting the context table satisfies right-to-erasure without modifying the chain.</p>
+        </details>
+      </div>
+
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Why not use a Merkle tree for the audit chain?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Merkle trees optimize for sparse verification. MFT audit always fetches the full chain. The Merkle tree solves a constraint that doesn't exist, and adds significant implementation complexity in return."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does tamper detection work with a hash chain?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Each entry's hash is computed over its own fields plus the previous entry's hash. Any modification cascades to every subsequent entry. The verifier reports the exact sequence number of the first mismatch."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I verify the chain without MFTPlus tooling?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. The canonical serialization format is documented. Any SHA-256 implementation can verify the chain given a chain export."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does GDPR erasure work if names are in the chain?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "PII is stored in a separate AuditChainContext table, not in the chain entries. Deleting the context table satisfies right-to-erasure without modifying the chain."
+            }
+          }
+        ]
+      }
+      </script>
+
+      <div class="article-cta">
+        <p>Read the audit chain documentation</p>
+        <a href="https://docs.mftplus.co.za/guide/audit-chain">Audit chain docs &rarr;</a>
+      </div>
+
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="inner">
+    <a href="/" class="wordmark">MFTPlus</a>
+    <p>&copy; 2026 MFTPlus. Infrastructure tooling for developers.</p>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+</script>
+
+</body>
+</html>

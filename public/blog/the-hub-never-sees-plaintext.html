@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Hub Never Sees Plaintext — MFTPlus</title>
+<meta name="description" content="Most encrypted MFT platforms use TLS. The server can still read every file it routes. Here's the architecture that removes the vendor from your trust chain.">
+<link rel="canonical" href="https://mftplus.co.za/blog/the-hub-never-sees-plaintext.html">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://mftplus.co.za/blog/the-hub-never-sees-plaintext.html">
+<meta property="og:site_name" content="MFTPlus">
+<meta property="og:title" content="The Hub Never Sees Plaintext">
+<meta property="og:description" content="Most encrypted MFT platforms use TLS. The server can still read every file it routes. Here's the architecture that removes the vendor from your trust chain.">
+<meta property="og:locale" content="en_ZA">
+<meta property="og:image" content="https://mftplus.co.za/blog/the-hub-never-sees-plaintext-og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Hub Never Sees Plaintext">
+<meta name="twitter:description" content="Most encrypted MFT platforms use TLS. The server can still read every file. Here's how end-to-end encryption removes the vendor from your trust chain.">
+<meta name="twitter:image" content="https://mftplus.co.za/blog/the-hub-never-sees-plaintext-og.png">
+<meta property="article:published_time" content="2026-06-09">
+<meta property="article:author" content="Armin Marxer">
+
+<meta name="geo.region" content="ZA">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%231F1A17'/><path d='M8 12h16v8H8z' fill='%23B8860B'/></svg>">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "The Hub Never Sees Plaintext",
+  "description": "Most encrypted MFT platforms use TLS. The server can still read every file it routes. Here's the architecture that removes the vendor from your trust chain.",
+  "datePublished": "2026-06-09",
+  "author": {
+    "@type": "Person",
+    "name": "Armin Marxer",
+    "url": "https://mftplus.co.za"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "MFTPlus",
+    "url": "https://mftplus.co.za"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://mftplus.co.za/blog/the-hub-never-sees-plaintext.html"
+  },
+  "keywords": ["MFT encryption", "end-to-end encryption", "file transfer compliance", "X25519", "AES-256-GCM", "MFTPlus", "protocol bridging"]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:           #1F1A17;
+    --surface:      #2A2420;
+    --border:       #3D342F;
+    --text:         #FAF8F5;
+    --text-muted:   #C4B5A0;
+    --text-dim:     #8B7355;
+    --accent:       #B8860B;
+    --accent-light: #D4A843;
+    --brown:        #8B4513;
+    --font-display: 'Source Serif 4', Georgia, serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-display);
+    font-size: 17px;
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 0;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+  }
+
+  nav.scrolled {
+    background: rgba(31,26,23,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom-color: var(--border);
+  }
+
+  nav .inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .wordmark {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .nav-links { display: flex; align-items: center; gap: 20px; }
+
+  .nav-link {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-link:hover { color: var(--accent); }
+
+  .nav-cta {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--bg);
+    background: var(--accent);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 2px;
+    transition: background 0.2s;
+  }
+
+  .nav-cta:hover { background: var(--accent-light); }
+
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 40px; }
+
+  article { padding: 160px 0 100px; min-height: 100vh; }
+
+  .article-back {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 24px;
+    transition: color 0.2s;
+  }
+
+  .article-back:hover { color: var(--accent); }
+
+  .article-meta {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+    margin-bottom: 24px;
+  }
+
+  .article-title {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 32px;
+    max-width: 800px;
+  }
+
+  .article-content {
+    max-width: 720px;
+    font-family: var(--font-display);
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--text-muted);
+  }
+
+  .article-content h2 {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 56px;
+    margin-bottom: 20px;
+    letter-spacing: -0.01em;
+  }
+
+  .article-content p { margin-bottom: 24px; }
+
+  .article-content strong { color: var(--text); font-weight: 600; }
+
+  .article-content em { font-style: italic; }
+
+  .article-content a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--brown);
+    transition: border-color 0.2s;
+  }
+
+  .article-content a:hover { border-bottom-color: var(--accent); }
+
+  .article-content ul, .article-content ol {
+    margin-bottom: 24px;
+    padding-left: 0;
+    list-style: none;
+  }
+
+  .article-content li {
+    margin-bottom: 12px;
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .article-content li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 1px;
+  }
+
+  .article-content code {
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 14px;
+    background: var(--surface);
+    color: var(--accent-light);
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+
+  .article-content pre {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px 24px;
+    overflow-x: auto;
+    margin-bottom: 24px;
+  }
+
+  .article-content pre code {
+    background: none;
+    padding: 0;
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .article-content blockquote {
+    border-left: 3px solid var(--accent);
+    padding-left: 20px;
+    margin: 32px 0;
+    font-style: italic;
+    color: var(--text);
+  }
+
+  .stat-row {
+    display: flex;
+    gap: 32px;
+    margin: 40px 0;
+    padding: 28px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  .stat-item { text-align: center; flex: 1; }
+
+  .stat-number {
+    font-size: 36px;
+    font-weight: 600;
+    color: var(--accent);
+    display: block;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+  }
+
+  .author-bio {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 56px;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  .author-bio-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 2px;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--bg);
+    font-weight: 600;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .author-bio-text strong { color: var(--text); display: block; margin-bottom: 4px; }
+  .author-bio-text p { font-size: 14px; color: var(--text-dim); margin-bottom: 0; }
+
+  .faq-section { margin-top: 56px; padding-top: 40px; border-top: 1px solid var(--border); }
+  .faq-section h2 { margin-bottom: 24px; }
+  .faq-item { margin-bottom: 16px; }
+
+  .faq-item summary {
+    color: var(--accent);
+    font-weight: 600;
+    cursor: pointer;
+    padding: 12px 0;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .faq-item summary::before { content: '+'; font-size: 16px; font-weight: 400; color: var(--accent); width: 20px; flex-shrink: 0; }
+  .faq-item[open] summary::before { content: '\2212'; }
+  .faq-item summary:hover { color: var(--accent-light); }
+  .faq-item p { padding-left: 28px; color: var(--text-muted); margin-bottom: 8px; }
+
+  .article-cta {
+    margin-top: 40px;
+    padding: 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  .article-cta p { color: var(--text); font-weight: 600; margin-bottom: 16px; }
+
+  .article-cta a {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--bg);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 2px;
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    transition: background 0.2s;
+    border-bottom: none;
+  }
+
+  .article-cta a:hover { background: var(--accent-light); }
+
+  footer { padding: 40px 0; border-top: 1px solid var(--border); }
+
+  footer .inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  footer .wordmark { font-size: 13px; }
+  footer p { font-family: var(--font-display); font-size: 12px; color: var(--text-dim); }
+
+  @media (max-width: 768px) {
+    .container, nav .inner, footer .inner { padding: 0 20px; }
+    .article-title { font-size: 28px; }
+    .article-content { font-size: 16px; }
+    .stat-row { flex-wrap: wrap; gap: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="inner">
+    <a href="/" class="wordmark">MFTPlus</a>
+    <div class="nav-links">
+      <a href="./" class="nav-link">Blog</a>
+      <a href="https://github.com/ZeroClue/mftplus-community" class="nav-link">GitHub</a>
+      <a href="https://mftplus.co.za" class="nav-cta">Install mftctl</a>
+    </div>
+  </div>
+</nav>
+
+<article>
+  <div class="container">
+    <a href="./" class="article-back">&larr; All posts</a>
+    <div class="article-meta">June 9, 2026 &middot; 6 min read</div>
+    <h1 class="article-title">The Hub Never Sees Plaintext</h1>
+    <div class="article-content">
+
+      <p>When most MFT vendors say "encrypted," they mean TLS. The connection between your agent and the server is encrypted in transit. The server decrypts at the boundary, reads the payload, stores or forwards it, then re-encrypts for the next hop.</p>
+
+      <p>The server sees everything. It has to — because it's responsible for routing.</p>
+
+      <p>MFTPlus Phase 1 shipped a different model. The source agent encrypts before the data leaves the machine. The hub relays ciphertext. The destination decrypts. The hub is a dumb pipe: it never holds a key and never sees content.</p>
+
+      <h2>How the encryption works</h2>
+
+      <p>Key agreement uses X25519 ECDH. Each transfer session negotiates a shared secret between source and destination agents directly. The hub is not part of that negotiation.</p>
+
+      <p>Payload encryption is AES-256-GCM via RustCrypto, streaming. Files are encrypted as they leave the source agent, not after they arrive at the hub. The hub receives and forwards authenticated ciphertext.</p>
+
+      <p>This matters for compliance in a specific way. Under SOC 2, HIPAA, and PCI-DSS, the question isn't only whether data is encrypted in transit. It's whether the vendor can access the data at all. "We use TLS" means the vendor's infrastructure sees every file that passes through it. "The hub never sees plaintext" means the vendor is architecturally excluded from the data.</p>
+
+      <p>An auditor can review a security policy. They cannot review what a vendor actually does with your files after decryption. Architecture is the answer to that question — not documentation.</p>
+
+      <h2>Protocol bridging: the shortest path wins</h2>
+
+      <p>Alongside the encryption work, Phase 1 shipped agent-to-agent direct transfer. Agents attempt a direct connection first. If that fails, they fall through to hub-pipe with 64KB chunked streaming.</p>
+
+      <p>No store-and-forward. Data is not written to disk on the hub, even as ciphertext. The hub is a relay, not a staging area.</p>
+
+      <p>For most enterprise transfers, direct agent-to-agent means the data never touches the MFTPlus infrastructure at all. Hub fallback exists for network topologies where direct connections aren't possible — NAT, firewalls, isolated segments. When it's used, the hub sees only ciphertext it can't read.</p>
+
+      <h2>Phase 1 by the numbers</h2>
+
+      <div class="stat-row">
+        <div class="stat-item">
+          <span class="stat-number">30</span>
+          <span class="stat-label">PRs shipped</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">11</span>
+          <span class="stat-label">Autonomous engineering cycles</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">0</span>
+          <span class="stat-label">Human interventions needed</span>
+        </div>
+      </div>
+
+      <p>Phase 1 covered protocol bridging, the encryption pipeline, agent model migration (all 4 agents moved to OpenCode multi-provider runtime, 20x token efficiency on common operations), and the ops-lead coordinator that ran the engineering workstream autonomously.</p>
+
+      <p>Dispatch, review, merge: the engineering loop ran 11 full cycles without a human in the path. Human review only enters for auth changes, billing, and security decisions. Everything else, the machine runs.</p>
+
+      <h2>What this means for Phase 2</h2>
+
+      <p>The encryption and bridging work in Phase 1 is the foundation for the audit chain released in the same period. A transfer that's end-to-end encrypted and never stored in plaintext on the hub still generates a full SHA-256 audit chain. The chain records the transfer without recording the content.</p>
+
+      <p>Privacy-preserving audit: you can prove a transfer happened, who initiated it, when, and that the record hasn't been altered — without the audit trail containing the files themselves.</p>
+
+      <p>That's the architecture we're building toward. Verifiable transfers where the vendor is not in the trust chain at any point.</p>
+
+      <div class="author-bio">
+        <div class="author-bio-avatar">A</div>
+        <div class="author-bio-text">
+          <strong>Armin Marxer</strong>
+          <p>Building MFTPlus. Spent years managing file transfer infrastructure before deciding there had to be a better way.</p>
+        </div>
+      </div>
+
+      <div class="faq-section">
+        <h2>FAQ</h2>
+        <details class="faq-item">
+          <summary>What's the difference between TLS encryption and end-to-end encryption in MFT?</summary>
+          <p>TLS encrypts the connection. The server decrypts at the boundary and sees the file contents. End-to-end encryption (as in MFTPlus Phase 1) means the source agent encrypts before sending and only the destination agent can decrypt. The hub relays ciphertext it cannot read.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What key exchange algorithm does MFTPlus use?</summary>
+          <p>X25519 ECDH for session key agreement between source and destination agents. AES-256-GCM via RustCrypto for payload encryption. Key negotiation happens directly between agents — the hub is not involved.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Does data get stored on the hub during transfer?</summary>
+          <p>No. With protocol bridging, agents attempt direct transfer first. When the hub-pipe is used as fallback, it relays streaming ciphertext. Data is not written to disk on the hub.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Does end-to-end encryption affect the audit trail?</summary>
+          <p>No. The SHA-256 audit chain records transfer metadata (transfer reference, file hash, timestamp, operator) without recording file contents. You get a verifiable audit trail even when the hub never sees the plaintext.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What was shipped in Phase 1?</summary>
+          <p>Protocol bridging (direct agent-to-agent with hub fallback), the X25519/AES-256-GCM encryption pipeline, agent model migration to OpenCode runtime, and the ops-lead autonomous coordinator. 30 PRs across 11 engineering cycles.</p>
+        </details>
+      </div>
+
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What's the difference between TLS encryption and end-to-end encryption in MFT?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "TLS encrypts the connection. The server decrypts at the boundary and sees the file contents. End-to-end encryption means the source agent encrypts before sending and only the destination agent can decrypt. The hub relays ciphertext it cannot read."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What key exchange algorithm does MFTPlus use?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "X25519 ECDH for session key agreement between source and destination agents. AES-256-GCM via RustCrypto for payload encryption."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does data get stored on the hub during transfer?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. With protocol bridging, agents attempt direct transfer first. When the hub-pipe is used as fallback, it relays streaming ciphertext. Data is not written to disk on the hub."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does end-to-end encryption affect the audit trail?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. The SHA-256 audit chain records transfer metadata without recording file contents. You get a verifiable audit trail even when the hub never sees the plaintext."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What was shipped in Phase 1?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Protocol bridging, the X25519/AES-256-GCM encryption pipeline, agent model migration to OpenCode runtime, and the ops-lead autonomous coordinator. 30 PRs across 11 engineering cycles."
+            }
+          }
+        ]
+      }
+      </script>
+
+      <div class="article-cta">
+        <p>See how MFTPlus handles encryption</p>
+        <a href="https://docs.mftplus.co.za/guide/encryption">Encryption documentation &rarr;</a>
+      </div>
+
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="inner">
+    <a href="/" class="wordmark">MFTPlus</a>
+    <p>&copy; 2026 MFTPlus. Infrastructure tooling for developers.</p>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+</script>
+
+</body>
+</html>
