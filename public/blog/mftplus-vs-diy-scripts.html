@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MFTPlus vs. DIY File Transfer Scripts — The Real Cost | MFTPlus</title>
+<meta name="description" content="Everyone starts with a cron job and a bash script. Here's when that stops being the right call — and what the math actually looks like when you run the missing columns.">
+<link rel="canonical" href="https://mftplus.co.za/blog/mftplus-vs-diy-scripts">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://mftplus.co.za/blog/mftplus-vs-diy-scripts">
+<meta property="og:site_name" content="MFTPlus">
+<meta property="og:title" content="MFTPlus vs. DIY File Transfer Scripts — The Real Cost">
+<meta property="og:description" content="Everyone starts with a cron job and a bash script. Here's when that stops being the right call — and what the math actually looks like when you run the missing columns.">
+<meta property="og:locale" content="en_ZA">
+<meta property="og:image" content="https://mftplus.co.za/blog/mftplus-vs-diy-scripts-og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MFTPlus vs. DIY File Transfer Scripts — The Real Cost">
+<meta name="twitter:description" content="Everyone starts with a cron job and a bash script. Here's when that stops being the right call.">
+<meta name="twitter:image" content="https://mftplus.co.za/blog/mftplus-vs-diy-scripts-og.png">
+<meta property="article:published_time" content="2026-06-13">
+<meta property="article:author" content="Armin Marxer">
+
+<meta name="geo.region" content="ZA">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%231F1A17'/><path d='M8 12h16v8H8z' fill='%23B8860B'/></svg>">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "MFTPlus vs. DIY File Transfer Scripts — The Real Cost",
+  "description": "Everyone starts with a cron job and a bash script. Here's when that stops being the right call — and what the math actually looks like when you run the missing columns.",
+  "datePublished": "2026-06-13",
+  "author": {
+    "@type": "Person",
+    "name": "Armin Marxer",
+    "url": "https://mftplus.co.za"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "MFTPlus",
+    "url": "https://mftplus.co.za"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://mftplus.co.za/blog/mftplus-vs-diy-scripts"
+  },
+  "keywords": ["file transfer automation", "MFT vs bash scripts", "managed file transfer cost", "DIY file transfer", "mftplus", "cron job file transfer", "SFTP automation"]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:           #1F1A17;
+    --surface:      #2A2420;
+    --border:       #3D342F;
+    --text:         #FAF8F5;
+    --text-muted:   #C4B5A0;
+    --text-dim:     #8B7355;
+    --accent:       #B8860B;
+    --accent-light: #D4A843;
+    --brown:        #8B4513;
+    --font-display: 'Source Serif 4', Georgia, serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-display);
+    font-size: 17px;
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 0;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+  }
+
+  nav.scrolled {
+    background: rgba(31,26,23,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom-color: var(--border);
+  }
+
+  nav .inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .wordmark {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .nav-links { display: flex; align-items: center; gap: 20px; }
+
+  .nav-link {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-link:hover { color: var(--accent); }
+
+  .nav-cta {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--bg);
+    background: var(--accent);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 2px;
+    transition: background 0.2s;
+  }
+
+  .nav-cta:hover { background: var(--accent-light); }
+
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 40px; }
+
+  article { padding: 160px 0 100px; min-height: 100vh; }
+
+  .article-back {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 24px;
+    transition: color 0.2s;
+  }
+
+  .article-back:hover { color: var(--accent); }
+
+  .article-meta {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+    margin-bottom: 24px;
+  }
+
+  .article-title {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 32px;
+    max-width: 800px;
+  }
+
+  .article-content {
+    max-width: 720px;
+    font-family: var(--font-display);
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--text-muted);
+  }
+
+  .article-content h2 {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 56px;
+    margin-bottom: 20px;
+    letter-spacing: -0.01em;
+  }
+
+  .article-content p { margin-bottom: 24px; }
+  .article-content strong { color: var(--text); font-weight: 600; }
+  .article-content em { font-style: italic; }
+
+  .article-content a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--brown);
+    transition: border-color 0.2s;
+  }
+
+  .article-content a:hover { border-bottom-color: var(--accent); }
+
+  .article-content ul, .article-content ol {
+    margin-bottom: 24px;
+    padding-left: 0;
+    list-style: none;
+  }
+
+  .article-content li {
+    margin-bottom: 12px;
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .article-content li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 1px;
+  }
+
+  .article-content code {
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 14px;
+    background: var(--surface);
+    color: var(--accent-light);
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+
+  .article-content pre {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px 24px;
+    overflow-x: auto;
+    margin-bottom: 24px;
+  }
+
+  .article-content pre code {
+    background: none;
+    padding: 0;
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .article-content blockquote {
+    border-left: 3px solid var(--accent);
+    padding-left: 20px;
+    margin: 32px 0;
+    font-style: italic;
+    color: var(--text);
+  }
+
+  .article-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 32px;
+    font-size: 15px;
+  }
+
+  .article-content th {
+    text-align: left;
+    padding: 10px 14px;
+    background: var(--surface);
+    color: var(--text);
+    font-weight: 600;
+    border: 1px solid var(--border);
+    font-size: 13px;
+    letter-spacing: 0.02em;
+  }
+
+  .article-content td {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    vertical-align: top;
+  }
+
+  .article-content tr:nth-child(even) td { background: rgba(42,36,32,0.4); }
+
+  .author-bio {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 56px;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  .author-bio-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 2px;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--bg);
+    font-weight: 600;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .author-bio-text strong { color: var(--text); display: block; margin-bottom: 4px; }
+  .author-bio-text p { font-size: 14px; color: var(--text-dim); margin-bottom: 0; }
+
+  .faq-section {
+    margin-top: 56px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+  }
+
+  .faq-section h2 { margin-bottom: 24px; }
+
+  .faq-item { margin-bottom: 16px; }
+
+  .faq-item summary {
+    color: var(--accent);
+    font-weight: 600;
+    cursor: pointer;
+    padding: 12px 0;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .faq-item summary::before {
+    content: '+';
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--accent);
+    width: 20px;
+    flex-shrink: 0;
+  }
+
+  .faq-item[open] summary::before { content: '\2212'; }
+  .faq-item summary:hover { color: var(--accent-light); }
+  .faq-item p { padding-left: 28px; color: var(--text-muted); margin-bottom: 8px; }
+
+  footer { padding: 40px 0; border-top: 1px solid var(--border); }
+
+  footer .inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  footer .wordmark { font-size: 13px; }
+  footer p { font-family: var(--font-display); font-size: 12px; color: var(--text-dim); }
+
+  @media (max-width: 768px) {
+    .container, nav .inner, footer .inner { padding: 0 20px; }
+    .article-title { font-size: 28px; }
+    .article-content { font-size: 16px; }
+    .article-content table { font-size: 13px; }
+    .article-content th, .article-content td { padding: 8px 10px; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="inner">
+    <a href="/" class="wordmark">MFTPlus</a>
+    <div class="nav-links">
+      <a href="./" class="nav-link">Blog</a>
+      <a href="https://github.com/ZeroClue/mftplus-community" class="nav-link">GitHub</a>
+      <a href="https://mftplus.co.za" class="nav-cta">Install mftctl</a>
+    </div>
+  </div>
+</nav>
+
+<article>
+  <div class="container">
+    <a href="./" class="article-back">&larr; All posts</a>
+    <div class="article-meta">June 13, 2026 &middot; 6 min read</div>
+    <h1 class="article-title">MFTPlus vs. DIY File Transfer Scripts — The Real Cost</h1>
+    <div class="article-content">
+
+      <p>Your bash script is probably running 847 transfers a month. You have no idea.</p>
+
+      <p>That's not an insult. It's what a fresh installation of mft-discover typically finds in environments where file transfers grew organically over years. Cron jobs added by engineers who are no longer on the team. SFTP credentials baked into scripts checked into a private repo that six people have access to. A transfer to a partner FTP server that the finance team set up in 2019 and nobody has touched since.</p>
+
+      <p>Everyone starts with a cron job and a bash script. That's the right call. It's cheap, it works, and it runs on whatever you already have. The problem isn't the decision — it's not noticing when the decision stopped being right.</p>
+
+      <h2>What DIY actually costs</h2>
+
+      <p>The engineer-hours argument usually wins the debate on paper. Your team already knows bash. The script takes a day to write. Managed file transfer software costs $150 to $199 a month. The arithmetic is obvious until you add the columns everyone skips.</p>
+
+      <p><strong>Maintenance.</strong> Every time a server changes hostname, a partner rotates credentials, or someone upgrades the SFTP server to a version with different key exchange requirements, someone touches the script. Five minutes if they know the history. Three hours if they're new. Multiply that by however many scripts you have, across however many servers, over the years.</p>
+
+      <p><strong>Failures at 2am.</strong> Bash doesn't alert you when it fails silently. If your transfer script produces no output and cron doesn't capture stderr, you find out the file didn't arrive when the finance team can't close the month-end report. The investigation usually takes longer than the fix — you need the logs, but there aren't any.</p>
+
+      <p><strong>Audit gaps.</strong> SOC 2, ISO 27001, and POPIA all require demonstrable audit trails for data movement. A cron log showing "exit code 0" is a record. It is not a verifiable audit trail. When an auditor asks which files transferred, by which process, verified by which checksum, at exactly what timestamp, the cron log doesn't answer the question.</p>
+
+      <p><strong>Credential sprawl.</strong> Passwords in environment variables. SSH keys without expiry. SFTP credentials in plaintext in a config file that's been copied between three servers over five years. Your transfer scripts are probably holding credentials your security team doesn't know about.</p>
+
+      <h2>What changes with managed transfer</h2>
+
+      <p>Here's what a failed transfer looks like with <code>mftctl</code>:</p>
+
+<pre><code>$ mftctl jobs list
+ID   NAME              SCHEDULE      STATUS    LAST RUN         NEXT RUN
+j1   billing-export    0 2 * * *     OK        2026-06-12 02:00 2026-06-13 02:00
+j2   partner-sync      */15 * * * *  FAILED    2026-06-12 14:45 2026-06-12 15:00
+
+$ mftctl jobs logs j2 --last 1
+[2026-06-12 14:45:02] Starting transfer: partner-sync
+[2026-06-12 14:45:03] Connecting to sftp.partner.co.za:22
+[2026-06-12 14:45:13] ERROR: Connection timeout after 10s (attempt 1/3)
+[2026-06-12 14:45:23] ERROR: Connection timeout after 10s (attempt 2/3)
+[2026-06-12 14:45:33] ERROR: Connection timeout after 10s (attempt 3/3)
+[2026-06-12 14:45:33] Transfer FAILED — alert sent to ops@yourcompany.com</code></pre>
+
+      <p>Three retry attempts. Alert on failure. Structured log with timestamps and a transfer reference. SHA-256 checksum verification before and after. You get this without writing any of it.</p>
+
+      <p>The audit trail is cryptographically chained. Every transfer event links to the previous one through a hash. You can run <code>mftctl audit verify</code> from a terminal with no network access and get <code>PROVEN</code> or <code>TAMPERED at seq X</code>. Not a dashboard screenshot — a verifiable proof.</p>
+
+      <p>Credentials live in MFTPlus, not in your scripts. When a partner rotates their key, you update it in one place. Shell completions, YAML config, job management from the terminal if that's how you work.</p>
+
+      <h2>The honest comparison</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>DIY scripts</th>
+            <th>MFTPlus Starter ($150/mo)</th>
+            <th>MFTPlus Pro ($199/mo)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Setup time</td>
+            <td>1–3 days</td>
+            <td>5 minutes</td>
+            <td>5 minutes</td>
+          </tr>
+          <tr>
+            <td>Audit trail</td>
+            <td>cron logs</td>
+            <td>hash-chained, verifiable</td>
+            <td>hash-chained, verifiable</td>
+          </tr>
+          <tr>
+            <td>Failure handling</td>
+            <td>silent unless you build it</td>
+            <td>retry + alert</td>
+            <td>retry + alert + SLA</td>
+          </tr>
+          <tr>
+            <td>Compliance coverage</td>
+            <td>manual documentation required</td>
+            <td>SOC 2 / ISO / POPIA ready</td>
+            <td>SOC 2 / ISO / POPIA ready</td>
+          </tr>
+          <tr>
+            <td>On-call burden</td>
+            <td>your team</td>
+            <td>none</td>
+            <td>none</td>
+          </tr>
+          <tr>
+            <td>Credential management</td>
+            <td>scattered across servers</td>
+            <td>centralised, no plaintext</td>
+            <td>centralised, no plaintext</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Who should stay on scripts</h2>
+
+      <p>If you have one transfer job, a bash script that works, and no compliance requirements, stay where you are. Adding managed file transfer software for a single scheduled rsync is overhead that doesn't pay off. The script is fine.</p>
+
+      <p>Same if your team is comfortable with the operational burden and you're early enough that audit trails aren't yet a requirement. The time will come, but it's not always now.</p>
+
+      <p>Where it stops making sense to stay on scripts: when you have more transfer jobs than you can name from memory. When the question "what ran last night?" requires checking three servers. When a compliance questionnaire asks for audit logs and you have to build something before you can answer.</p>
+
+      <p>That's when the $150 a month math works out differently.</p>
+
+      <div class="author-bio">
+        <div class="author-bio-avatar">A</div>
+        <div class="author-bio-text">
+          <strong>Armin Marxer</strong>
+          <p>Building MFTPlus. Spent years managing file transfer infrastructure before deciding there had to be a better way.</p>
+        </div>
+      </div>
+
+      <div class="faq-section">
+        <h2>FAQ</h2>
+        <details class="faq-item">
+          <summary>How does MFTPlus handle transfers that were previously managed by bash scripts?</summary>
+          <p>You migrate jobs one at a time. Define the job in YAML or through the dashboard, point it at the same source and destination, and cut over. The existing bash script can run in parallel during a transition period if you need it. Most jobs take under 10 minutes to migrate.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Does MFTPlus support SFTP, FTPS, and SCP?</summary>
+          <p>Yes. SFTP (SSH file transfer protocol) and FTPS (FTP over TLS) are fully supported. SCP is supported for transfers. FTP without TLS is supported for inbound compatibility with legacy partners, but we recommend migrating legacy FTP sources to SFTP when possible.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What does the audit trail actually prove for a compliance audit?</summary>
+          <p>The hash-chained audit trail proves that the transfer records haven't been altered since they were written. An auditor can run <code>mftctl audit verify</code> independently, offline, with no access to your infrastructure, and confirm that the chain is intact. This satisfies the "demonstrable, tamper-evident" requirement in SOC 2 and ISO 27001 frameworks.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Is there a free tier for evaluating MFTPlus?</summary>
+          <p>Yes. The Community tier is free and includes basic job scheduling, SFTP/FTPS support, and operational logs. It doesn't include hash-chained audit trails or the compliance reporting features. Most teams use Community to evaluate the deployment and operational workflow before upgrading.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What does mft-discover actually find?</summary>
+          <p>mft-discover scans your network for active file transfer activity — SFTP sessions, FTP connections, scheduled jobs touching common transfer paths. It identifies transfer endpoints, credential exposure patterns, and protocol usage. The output is a structured report you can use as an onboarding checklist. It's free to run independently of MFTPlus.</p>
+        </details>
+      </div>
+
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How does MFTPlus handle transfers that were previously managed by bash scripts?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "You migrate jobs one at a time. Define the job in YAML or through the dashboard, point it at the same source and destination, and cut over. Most jobs take under 10 minutes to migrate."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does MFTPlus support SFTP, FTPS, and SCP?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. SFTP and FTPS are fully supported. SCP is supported for transfers. FTP without TLS is supported for inbound compatibility with legacy partners."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What does the audit trail actually prove for a compliance audit?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The hash-chained audit trail proves that the transfer records haven't been altered since they were written. An auditor can run mftctl audit verify independently, offline, and confirm the chain is intact. This satisfies SOC 2 and ISO 27001 requirements for tamper-evident audit trails."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is there a free tier for evaluating MFTPlus?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. The Community tier is free and includes basic job scheduling, SFTP/FTPS support, and operational logs. It doesn't include hash-chained audit trails or compliance reporting."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What does mft-discover actually find?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "mft-discover scans your network for active file transfer activity — SFTP sessions, FTP connections, scheduled jobs touching common transfer paths. It identifies transfer endpoints, credential exposure patterns, and protocol usage. The output is a structured report you can use as an onboarding checklist."
+            }
+          }
+        ]
+      }
+      </script>
+
+    </div>
+  </div>
+</article>
+
+<footer>
+  <div class="inner">
+    <a href="/" class="wordmark">MFTPlus</a>
+    <p>© 2026 MFTPlus</p>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+</script>
+
+</body>
+</html>

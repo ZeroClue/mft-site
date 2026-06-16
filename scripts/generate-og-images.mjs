@@ -16,6 +16,7 @@ const ARTICLES = [
   { slug: 'the-hub-never-sees-plaintext',                    title: 'The Hub Never\nSees Plaintext',                          tag: 'Security' },
   { slug: 'why-we-chose-hash-chains-over-merkle-trees',      title: 'Why We Chose a Hash Chain\nOver a Merkle Tree',          tag: 'Architecture' },
   { slug: 'why-the-audit-chain-starts-at-starter',           title: 'Why the Audit Chain\nStarts at Starter',                 tag: 'Audit Tiers' },
+  { slug: 'mftplus-vs-diy-scripts',                           title: 'MFTPlus vs. DIY\nFile Transfer Scripts',                  tag: 'Comparison' },
 ];
 
 function buildHtml(title, tag) {
