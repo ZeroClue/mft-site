@@ -32,8 +32,6 @@
     }
   ],
   "rewrites": [
-    { "source": "/privacy", "destination": "/index.html" },
-    { "source": "/terms", "destination": "/index.html" },
-    { "source": "/releases", "destination": "/index.html" }
+    { "source": "/((?!(?:\\.(?:json|txt|xml|ico|svg|png|jpg|webp)$|assets|brand-assets|blog)).*)", "destination": "/index.html" }
   ]
 }
