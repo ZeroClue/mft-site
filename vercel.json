@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "npm run build:prerender",
   "outputDirectory": "dist",
   "framework": "vite",
   "installCommand": "npm install",
@@ -32,6 +32,8 @@
     }
   ],
   "rewrites": [
-    { "source": "/((?!(?:\\.(?:json|txt|xml|ico|svg|png|jpg|webp)$|assets|brand-assets|blog)).*)", "destination": "/index.html" }
+    { "source": "/privacy", "destination": "/index.html" },
+    { "source": "/terms", "destination": "/index.html" },
+    { "source": "/releases", "destination": "/index.html" }
   ]
 }
