@@ -147,6 +147,14 @@ function App() {
           <Terminal title="mftplus@demo:~">
             <div className="terminal-line">
               <span className="prompt">$</span>
+              <span className="command">curl -fsSL https://releases.mftplus.co.za/install.sh | sh</span>
+            </div>
+            <div className="terminal-line output">
+              <span className="success">✓</span>
+              <span> mftctl installed</span>
+            </div>
+            <div className="terminal-line">
+              <span className="prompt">$</span>
               <span className="command">mftctl jobs create \</span>
             </div>
             <div className="terminal-line">
@@ -357,9 +365,10 @@ SFTP backup every night at 2am"`} />
           <div className="feature-card">
             <div className="feature-icon">💻</div>
             <h3>Cross-Platform Agent</h3>
-            <p>Linux CLI available now. Windows and macOS coming soon. ~20MB Rust binary with heartbeat monitoring and background operation.</p>
-            <CodeBlock code={`./mftctl login <api-key>
-./mftctl jobs create --source ./data --dest sftp://server/`} />
+            <p>Linux CLI available now. Install with a single curl command. Windows and macOS coming soon. ~20MB Rust binary with heartbeat monitoring and background operation.</p>
+            <CodeBlock code={`curl -fsSL https://releases.mftplus.co.za/install.sh | sh
+mftctl login <api-key>
+mftctl jobs create --source ./data --dest sftp://server/`} />
           </div>
 
           <div className="feature-card">
