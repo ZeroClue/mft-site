@@ -75,10 +75,29 @@ function ReleasesPage() {
 
       <header className="releases-header">
         <h1>Releases</h1>
-        <p>Download MFTPlus for your platform. Linux CLI, Windows Discovery tool, and desktop app available.</p>
+        <p>Download MFTPlus for your platform. v0.6.1 — mftctl CLI, MFT.Agent, and mft-discover available now.</p>
       </header>
 
       <main className="releases-list">
+
+        <div className="mftctl-callout">
+          <div className="mftctl-callout-header">
+            <h2>mftctl CLI</h2>
+            <span className="release-badge stable">Stable</span>
+          </div>
+          <p>The mftctl command-line interface for managing transfers, agents, and jobs. Install with a single command:</p>
+          <div className="install-command">
+            <code>curl -fsSL https://releases.mftplus.co.za/install.sh | sh</code>
+            <button className="copy-install-btn" onClick={() => { navigator.clipboard.writeText('curl -fsSL https://releases.mftplus.co.za/install.sh | sh'); }}>Copy</button>
+          </div>
+          <div className="mftctl-platforms">
+            <span className="platform-tag">Linux x64</span>
+            <span className="platform-tag">Linux aarch64</span>
+            <span className="platform-tag">Windows x64</span>
+          </div>
+          <p className="mftctl-note">Binaries for each platform appear in the release cards below. macOS support coming soon.</p>
+        </div>
+
         {loadingState === 'loading' && (
           <div className="loading-state">
             <div className="loading-spinner"></div>

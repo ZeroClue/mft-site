@@ -160,6 +160,96 @@
   line-height: 1.6;
 }
 
+/* mftctl Callout */
+.mftctl-callout {
+  background: linear-gradient(135deg, rgba(184, 134, 11, 0.08) 0%, rgba(139, 69, 19, 0.05) 100%);
+  border: 1px solid rgba(184, 134, 11, 0.25);
+  border-radius: 16px;
+  padding: 32px;
+  backdrop-filter: blur(10px);
+}
+
+.mftctl-callout-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.mftctl-callout-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #FAF8F5;
+  margin: 0;
+}
+
+.mftctl-callout > p {
+  color: #A8A29E;
+  font-size: 1rem;
+  margin: 0 0 20px;
+  line-height: 1.6;
+}
+
+.install-command {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(31, 26, 23, 0.8);
+  border: 1px solid rgba(184, 134, 11, 0.15);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+}
+
+.install-command code {
+  flex: 1;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+  font-size: 0.9rem;
+  color: #D4A843;
+  word-break: break-all;
+}
+
+.copy-install-btn {
+  background: #B8860B;
+  color: #FAF8F5;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  flex-shrink: 0;
+}
+
+.copy-install-btn:hover {
+  background: #D4A843;
+}
+
+.mftctl-platforms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.platform-tag {
+  display: inline-block;
+  padding: 4px 12px;
+  background: rgba(184, 134, 11, 0.1);
+  border: 1px solid rgba(184, 134, 11, 0.2);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: #D4A843;
+  font-weight: 500;
+}
+
+.mftctl-note {
+  color: #78716C !important;
+  font-size: 0.9rem !important;
+  margin: 0 !important;
+}
+
 /* Release List */
 .releases-list {
   position: relative;
