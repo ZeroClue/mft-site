@@ -33,7 +33,7 @@
   ],
   "rewrites": [
     {
-      "source": "/((?!api|health|_next/image|_next/static|_next/data|assets|favicon\\.svg|og-image\\.png|twitter-image\\.png|icons\\.svg).*)",
+      "source": "/((?!assets|brand-assets|blog|icons|favicon|og-image|twitter-image|share|api).*)",
       "destination": "/index.html"
     }
   ]
