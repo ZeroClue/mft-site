@@ -31,10 +31,29 @@
       ]
     }
   ],
-  "rewrites": [
-    { "source": "/privacy", "destination": "/index.html" },
-    { "source": "/terms", "destination": "/index.html" },
-    { "source": "/releases", "destination": "/index.html" },
-    { "source": "/share/:path*", "destination": "/index.html" }
+  "routes": [
+    {
+      "src": "/privacy",
+      "dest": "/index.html",
+      "status": 200
+    },
+    {
+      "src": "/terms",
+      "dest": "/index.html",
+      "status": 200
+    },
+    {
+      "src": "/releases",
+      "dest": "/index.html",
+      "status": 200
+    },
+    {
+      "src": "/share/(.*)",
+      "dest": "/index.html",
+      "status": 200
+    },
+    {
+      "handle": "filesystem"
+    }
   ]
 }
