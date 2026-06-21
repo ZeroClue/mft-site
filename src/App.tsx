@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router'
 import './App.css'
 import { CookieConsent } from './CookieConsent'
+import ReleasesPage from './pages/Releases'
 
 function Terminal({ children, title = "terminal@mftplus" }: { children: React.ReactNode; title?: string }) {
   return (
@@ -79,8 +81,10 @@ function App() {
   }, [])
 
   return (
-    <>
-    <div className="app">
+    <Router>
+      <Routes>
+        <Route path="/" element={
+          <div className="app">
       <div className="background-effects">
         <div className="grid-pattern"></div>
         <div className="noise-overlay"></div>
@@ -661,8 +665,11 @@ mftctl jobs create --source ./data --dest sftp://server/`} />
         </div>
       </footer>
     </div>
+        } />
+        <Route path="/releases" element={<ReleasesPage />} />
+      </Routes>
     <CookieConsent />
-    </>
+    </Router>
   )
 }
 
