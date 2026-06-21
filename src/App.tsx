@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router'
+import { BrowserRouter, Routes, Route } from 'react-router'
 import './App.css'
 import { CookieConsent } from './CookieConsent'
 import ReleasesPage from './pages/Releases'
@@ -81,9 +81,10 @@ function App() {
   }, [])
 
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
         <Route path="/" element={
+          <>
           <div className="app">
       <div className="background-effects">
         <div className="grid-pattern"></div>
@@ -665,11 +666,12 @@ mftctl jobs create --source ./data --dest sftp://server/`} />
         </div>
       </footer>
     </div>
+          <CookieConsent />
+          </>
         } />
         <Route path="/releases" element={<ReleasesPage />} />
       </Routes>
-    <CookieConsent />
-    </Router>
+    </BrowserRouter>
   )
 }
 
