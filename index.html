@@ -49,7 +49,11 @@
         if (consentGiven === 'rejected') {
           return;
         }
-        showBanner();
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', showBanner);
+        } else {
+          showBanner();
+        }
         function showBanner() {
           const banner = document.createElement('div');
           banner.id = BANNER_ID;
