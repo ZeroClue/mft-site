@@ -29,6 +29,32 @@ const ARCHIVED_RELEASES: ArchivedRelease[] = [
   { version: '0.1.0', date: 'April 26, 2026', url: 'https://releases.mftplus.co.za/archive/v0.1.0/' },
 ]
 
+// Expected binary counts for a complete release
+const EXPECTED_BINARIES = {
+  gui: 5,        // MFT.Agent: rpm, AppImage, deb, setup.exe, msi
+  mftctl: 6,     // Linux (aarch64, amd64), macOS (universal, amd64, arm64), Windows
+  agentCli: 4,   // Linux (aarch64, amd64), macOS (universal), Windows
+  discover: 2,   // Linux amd64, Windows
+}
+
+const TOTAL_EXPECTED = Object.values(EXPECTED_BINARIES).reduce((a, b) => a + b, 0) // 17
+
+function isIncomplete(release: Release): boolean {
+  return release.downloads.length < TOTAL_EXPECTED
+}
+
+function getMissingBinaries(release: Release): string[] {
+  const groups = groupDownloadsByBinary(release.downloads)
+  const missing: string[] = []
+
+  if (groups.gui.length < EXPECTED_BINARIES.gui) missing.push('MFT.Agent')
+  if (groups.mftctl.length < EXPECTED_BINARIES.mftctl) missing.push('mftctl')
+  if (groups.agentCli.length < EXPECTED_BINARIES.agentCli) missing.push('mft-agent-cli')
+  if (groups.discover.length < EXPECTED_BINARIES.discover) missing.push('mft-discover')
+
+  return missing
+}
+
 function groupDownloadsByBinary(downloads: Download[]) {
   const groups = {
     gui: [] as Download[],
@@ -360,8 +386,8 @@ function ReleasesPage() {
           )
         })()}
 
-        {/* Previous Release (v0.6.1 with warning) */}
-        {loadingState === 'success' && previousRelease && previousRelease.version === '0.6.1' && (
+        {/* Previous Release (with warning if incomplete) */}
+        {loadingState === 'success' && previousRelease && isIncomplete(previousRelease) && (
           <section className="release-card partial-release">
             <div className="release-header">
               <div className="release-version">v{previousRelease.version}</div>
@@ -372,8 +398,15 @@ function ReleasesPage() {
             </div>
             <div className="partial-release-note">
               <p>
-                <strong>This release is incomplete.</strong> Missing mftctl binaries and some platform builds.
-                For the complete experience, please use v{latestRelease?.version || '0.7.0'}.
+                <strong>This release is incomplete.</strong> Expected {TOTAL_EXPECTED} binaries, found {previousRelease.downloads.length}.
+                {(() => {
+                  const missing = getMissingBinaries(previousRelease)
+                  if (missing.length > 0) {
+                    return <> Missing: {missing.join(', ')}.</>
+                  }
+                  return null
+                })()}
+                For the complete experience, please use v{latestRelease?.version || 'latest'}.
               </p>
               <a href={`https://releases.mftplus.co.za/v${previousRelease.version}/`} className="view-files-link" target="_blank" rel="noopener">
                 View available files →
@@ -381,6 +414,120 @@ function ReleasesPage() {
             </div>
           </section>
         )}
+
+        {/* Complete Previous Releases */}
+        {loadingState === 'success' && previousRelease && !isIncomplete(previousRelease) && (() => {
+          const groups = groupDownloadsByBinary(previousRelease.downloads)
+          return (
+            <section className="release-card">
+              <div className="release-header">
+                <div className="release-version">v{previousRelease.version}</div>
+                <div className="release-meta">
+                  {previousRelease.stable && <span className="release-badge stable">Stable</span>}
+                  <span className="release-date">{new Date(previousRelease.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                </div>
+              </div>
+
+              <div className="downloads-section">
+                {groups.gui.length > 0 && (
+                  <div className="binary-group">
+                    <h3>MFT.Agent (Desktop App)</h3>
+                    <div className="downloads-grid">
+                      {groups.gui.map((download) => (
+                        <div key={download.platform} className="download-item">
+                          <div className="download-header">
+                            <span className="download-platform">{download.platform}</span>
+                            <span className="download-size">{download.size}</span>
+                          </div>
+                          <a href={`${download.url}${download.url.includes('?') ? '&' : '?'}utm_ref=mft-site`} className="download-button" download data-umami-event={`download-${download.platform.toLowerCase().replace(/\s+/g, '-')}`}>
+                            Download
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                              <polyline points="7 10 12 15 17 10"></polyline>
+                              <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                          </a>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {groups.mftctl.length > 0 && (
+                  <div className="binary-group">
+                    <h3>mftctl (Admin CLI)</h3>
+                    <div className="downloads-grid">
+                      {groups.mftctl.map((download) => (
+                        <div key={download.platform} className="download-item">
+                          <div className="download-header">
+                            <span className="download-platform">{download.platform}</span>
+                            <span className="download-size">{download.size}</span>
+                          </div>
+                          <a href={`${download.url}${download.url.includes('?') ? '&' : '?'}utm_ref=mft-site`} className="download-button" download data-umami-event={`download-${download.platform.toLowerCase().replace(/\s+/g, '-')}`}>
+                            Download
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                              <polyline points="7 10 12 15 17 10"></polyline>
+                              <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                          </a>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {groups.agentCli.length > 0 && (
+                  <div className="binary-group">
+                    <h3>mft-agent-cli (Agent CLI)</h3>
+                    <div className="downloads-grid">
+                      {groups.agentCli.map((download) => (
+                        <div key={download.platform} className="download-item">
+                          <div className="download-header">
+                            <span className="download-platform">{download.platform}</span>
+                            <span className="download-size">{download.size}</span>
+                          </div>
+                          <a href={`${download.url}${download.url.includes('?') ? '&' : '?'}utm_ref=mft-site`} className="download-button" download data-umami-event={`download-${download.platform.toLowerCase().replace(/\s+/g, '-')}`}>
+                            Download
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                              <polyline points="7 10 12 15 17 10"></polyline>
+                              <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                          </a>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {groups.discover.length > 0 && (
+                  <div className="binary-group">
+                    <h3>mft-discover (Discovery Tool)</h3>
+                    <div className="downloads-grid">
+                      {groups.discover.map((download) => (
+                        <div key={download.platform} className="download-item">
+                          <div className="download-header">
+                            <span className="download-platform">{download.platform}</span>
+                            <span className="download-size">{download.size}</span>
+                          </div>
+                          <a href={`${download.url}${download.url.includes('?') ? '&' : '?'}utm_ref=mft-site`} className="download-button" download data-umami-event={`download-${download.platform.toLowerCase().replace(/\s+/g, '-')}`}>
+                            Download
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                              <polyline points="7 10 12 15 17 10"></polyline>
+                              <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                          </a>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </section>
+          )
+        })()}
 
         {/* Archive Section */}
         <details className="archive-section">
