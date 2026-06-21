@@ -31,29 +31,10 @@
       ]
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/privacy",
-      "dest": "/index.html",
-      "status": 200
-    },
-    {
-      "src": "/terms",
-      "dest": "/index.html",
-      "status": 200
-    },
-    {
-      "src": "/releases",
-      "dest": "/index.html",
-      "status": 200
-    },
-    {
-      "src": "/share/(.*)",
-      "dest": "/index.html",
-      "status": 200
-    },
-    {
-      "handle": "filesystem"
+      "source": "/((?!api|health|_next/image|_next/static|_next/data|assets|favicon\\.svg|og-image\\.png|twitter-image\\.png|icons\\.svg).*)",
+      "destination": "/index.html"
     }
   ]
 }
