@@ -33,11 +33,7 @@
   ],
   "rewrites": [
     {
-      "source": "/releases",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/((?!assets|brand-assets|blog|icons|favicon|og-image|twitter-image|privacy|terms|share|api).*)",
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ]
