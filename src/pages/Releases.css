@@ -160,6 +160,99 @@
   line-height: 1.6;
 }
 
+/* Install Section */
+.install-section {
+  background: linear-gradient(135deg, rgba(184, 134, 11, 0.08) 0%, rgba(139, 69, 19, 0.05) 100%);
+  border: 1px solid rgba(184, 134, 11, 0.25);
+  border-radius: 16px;
+  padding: 32px;
+  backdrop-filter: blur(10px);
+}
+
+.install-section h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #FAF8F5;
+  margin: 0 0 20px;
+}
+
+.install-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.install-tab {
+  background: rgba(31, 26, 23, 0.6);
+  border: 1px solid rgba(184, 134, 11, 0.2);
+  color: #A8A29E;
+  padding: 8px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.install-tab:hover {
+  border-color: rgba(184, 134, 11, 0.4);
+  color: #D4A843;
+}
+
+.install-tab.active {
+  background: rgba(184, 134, 11, 0.15);
+  border-color: #B8860B;
+  color: #D4A843;
+}
+
+.install-content {
+  margin-top: 16px;
+}
+
+.install-content > p {
+  color: #A8A29E;
+  font-size: 1rem;
+  margin: 0 0 12px;
+}
+
+.install-examples {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.install-example {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(31, 26, 23, 0.6);
+  border: 1px solid rgba(184, 134, 11, 0.1);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.install-example > span {
+  color: #D4A843;
+  font-weight: 600;
+  font-size: 0.9rem;
+  min-width: 120px;
+}
+
+.install-example code {
+  flex: 1;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+  font-size: 0.85rem;
+  color: #A8A29E;
+  word-break: break-all;
+}
+
+.install-note {
+  color: #78716C !important;
+  font-size: 0.9rem !important;
+  margin: 12px 0 !important;
+}
+
 /* mftctl Callout */
 .mftctl-callout {
   background: linear-gradient(135deg, rgba(184, 134, 11, 0.08) 0%, rgba(139, 69, 19, 0.05) 100%);
@@ -320,6 +413,161 @@
 .release-date {
   color: #78716C;
   font-size: 0.9rem;
+}
+
+/* Downloads Section */
+.downloads-section {
+  margin-top: 24px;
+}
+
+.binary-group {
+  margin-top: 32px;
+}
+
+.binary-group:first-child {
+  margin-top: 0;
+}
+
+.binary-group h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #FAF8F5;
+  margin: 0 0 8px;
+}
+
+.binary-description {
+  color: #A8A29E;
+  font-size: 0.95rem;
+  margin: 0 0 16px;
+}
+
+/* Latest Release Badge */
+.latest-release {
+  border: 2px solid rgba(184, 134, 11, 0.4) !important;
+  background: rgba(184, 134, 11, 0.05) !important;
+}
+
+/* Partial Release */
+.partial-release {
+  border: 1px solid rgba(234, 179, 8, 0.3) !important;
+  background: rgba(234, 179, 8, 0.05) !important;
+}
+
+.partial-release-note {
+  padding: 16px;
+  background: rgba(234, 179, 8, 0.08);
+  border: 1px solid rgba(234, 179, 8, 0.2);
+  border-radius: 8px;
+}
+
+.partial-release-note p {
+  color: #D4A843;
+  font-size: 0.95rem;
+  margin: 0 0 12px;
+}
+
+.view-files-link {
+  color: #D4A843;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: inline-block;
+}
+
+.view-files-link:hover {
+  text-decoration: underline;
+}
+
+.release-badge.warning {
+  background: rgba(234, 179, 8, 0.15);
+  color: #EAB308;
+  border: 1px solid rgba(234, 179, 8, 0.4);
+}
+
+/* Archive Section */
+.archive-section {
+  background: rgba(31, 26, 23, 0.4);
+  border: 1px solid rgba(184, 134, 11, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.archive-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  cursor: pointer;
+  user-select: none;
+  color: #A8A29E;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.archive-summary:hover {
+  background: rgba(184, 134, 11, 0.05);
+  color: #D4A843;
+}
+
+.archive-summary svg {
+  transition: transform 0.2s ease;
+}
+
+.details[open] .archive-summary svg {
+  transform: rotate(180deg);
+}
+
+.archive-content {
+  padding: 0 20px 20px;
+}
+
+.archive-note {
+  color: #78716C;
+  font-size: 0.9rem;
+  margin: 0 0 16px;
+  padding: 12px;
+  background: rgba(184, 134, 11, 0.05);
+  border-radius: 8px;
+}
+
+.archive-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.archive-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px;
+  background: rgba(31, 26, 23, 0.6);
+  border: 1px solid rgba(184, 134, 11, 0.1);
+  border-radius: 8px;
+}
+
+.archive-version {
+  font-weight: 600;
+  color: #FAF8F5;
+  font-size: 0.95rem;
+}
+
+.archive-date {
+  color: #78716C;
+  font-size: 0.85rem;
+}
+
+.archive-link {
+  margin-left: auto;
+  color: #D4A843;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.archive-link:hover {
+  text-decoration: underline;
 }
 
 /* Downloads Grid */
