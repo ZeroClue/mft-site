@@ -79,7 +79,6 @@ function ReleasesPage() {
   const [loadingState, setLoadingState] = useState<LoadingState>('loading')
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [showInstallUnix, setShowInstallUnix] = useState(true)
-  const [showInstallWindows, setShowInstallWindows] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50)
