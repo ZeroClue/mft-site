@@ -25,3 +25,4 @@ Auto-deploys to Vercel from the `main` branch.
 |------|------|-------|
 | mftplus.co.za | ZeroClue/mft-site | CTO (tech) + CMO (content) |
 | docs.mftplus.co.za | ZeroClue/mft-docs | CMO |
+# Trigger redeploy
