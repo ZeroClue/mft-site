@@ -145,6 +145,10 @@ function ReleasesPage() {
             mftctl CLI, mft-agent-cli, mft-discover, and MFT.Agent desktop app available now.
           </p>
         )}
+        <p className="verify-note">
+          All downloads are checksummed and (from the next release) minisign-signed.{' '}
+          <a href="https://docs.mftplus.co.za/install/verify">How to verify your download</a>
+        </p>
       </header>
 
       <main className="releases-list">
