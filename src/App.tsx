@@ -411,7 +411,7 @@ mftctl jobs create --source ./data --dest sftp://server/`} />
           <div className="feature-card">
             <div className="feature-icon">✍️</div>
             <h3>Signed Releases</h3>
-            <p>Releases are signed with minisign Ed25519 detached signatures as they roll out through our signing pipeline. Verify any download against our public signing key before you run it.</p>
+            <p>Releases will be signed with minisign Ed25519 detached signatures as part of our Phase 1A signing pipeline — so you can verify any download against our public signing key before you run it.</p>
             <CodeBlock code={`minisign -Vm mftctl-linux-x64 \\
   -P <public-key>`} />
           </div>
@@ -419,22 +419,24 @@ mftctl jobs create --source ./data --dest sftp://server/`} />
           <div className="feature-card">
             <div className="feature-icon">🧾</div>
             <h3>Published Checksums</h3>
-            <p>Each release ships a SHA256SUMS manifest alongside the binaries, published at a stable per-version URL so checksums can be checked out-of-band.</p>
-            <CodeBlock code={`sha256sum -c SHA256SUMS`} />
+            <p>Per-file SHA-256 digests are available today in each release's release-info.json manifest. A consolidated, signed SHA256SUMS manifest is rolling out with our Phase 1A signing pipeline.</p>
+            <CodeBlock code={`curl -fsSL "https://releases.mftplus.co.za/v0.7.0/release-info.json" \\
+  | jq -r '.[0].downloads[] | "\\(.sha256)  \\(.url | split("/")[-1])"' > SHA256SUMS.local
+sha256sum -c --ignore-missing SHA256SUMS.local`} />
           </div>
 
           <div className="feature-card">
             <div className="feature-icon">🔓</div>
             <h3>No Blind Trust Required</h3>
-            <p>The installer, binaries, checksums, and .minisig signature files all sit side by side at releases.mftplus.co.za/v{`{version}`}/ — audit everything before it touches your system.</p>
+            <p>The installer, binaries, and per-file checksums sit side by side at releases.mftplus.co.za/v{`{version}`}/ — audit everything before it touches your system. `.minisig` signature files join them as our Phase 1A signing pipeline rolls out.</p>
             <CodeBlock code={`curl -fsSL https://releases.mftplus.co.za/v0.7.0/release-info.json`} />
           </div>
 
           <div className="feature-card">
             <div className="feature-icon">📦</div>
             <h3>SBOM Availability</h3>
-            <p>A Software Bill of Materials is published for each release, so security teams can see exactly what ships inside the agent binary.</p>
-            <CodeBlock code={`# SBOM published per release
+            <p>A Software Bill of Materials will be published for each release once the checksums/SBOM pipeline lands, so security teams can see exactly what ships inside the agent binary.</p>
+            <CodeBlock code={`# SBOM rolling out with the checksums/SBOM pipeline
 # Full dependency transparency`} />
           </div>
         </div>
@@ -635,7 +637,7 @@ mftctl jobs create --source ./data --dest sftp://server/`} />
               </tr>
               <tr>
                 <td>Supply Chain Security</td>
-                <td className="highlight-col">Signed releases + published checksums + SBOM</td>
+                <td className="highlight-col">Verifiable releases — signing, SHA256SUMS + SBOM rolling out</td>
                 <td>Enterprise contracts only</td>
                 <td>Limited</td>
                 <td>Limited</td>
