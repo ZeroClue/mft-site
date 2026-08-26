@@ -752,6 +752,17 @@
   line-height: 1.6;
 }
 
+.verify-note {
+  margin: 16px 0 0;
+  color: #A8A29E;
+  font-size: 0.95rem;
+}
+
+.verify-note a {
+  color: #D4A843;
+  font-weight: 600;
+}
+
 .error-fallback-link {
   display: inline-block;
   color: #D4A843;
