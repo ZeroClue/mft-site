@@ -148,6 +148,7 @@ function App() {
             <div className="terminal-line">
               <span className="prompt">$</span>
               <span className="command">curl -fsSL https://releases.mftplus.co.za/install.sh | sh</span>
+              <a href="https://docs.mftplus.co.za/guide/verifying-releases" className="verify-link" style={{ marginLeft: 'auto', fontSize: '0.75rem', color: 'var(--color-primary)', textDecoration: 'none' }} data-umami-event="hero-verify-script">Verify this script</a>
             </div>
             <div className="terminal-line output">
               <span className="success">✓</span>
@@ -399,6 +400,48 @@ mftctl jobs create --source ./data --dest sftp://server/`} />
         </div>
       </section>
 
+      <section id="security" className={`security-section ${visibleSections.has('security') ? 'visible' : ''}`}>
+        <div className="section-header">
+          <span className="section-tag">Supply Chain Security</span>
+          <h2>Every Release, Verifiable</h2>
+          <p>The install script above pipes straight into your shell — that demands trust. Here is how every MFTPlus release will be verifiable, end to end.</p>
+        </div>
+
+        <div className="features-grid">
+          <div className="feature-card">
+            <div className="feature-icon">✍️</div>
+            <h3>Signed Releases</h3>
+            <p>Releases will be signed with minisign Ed25519 detached signatures as part of our Phase 1A signing pipeline — so you can verify any download against our public signing key before you run it.</p>
+            <CodeBlock code={`minisign -Vm mftctl-linux-x64 \\
+  -P <public-key>`} />
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-icon">🧾</div>
+            <h3>Published Checksums</h3>
+            <p>Per-file SHA-256 digests are available today in each release's release-info.json manifest. A consolidated, signed SHA256SUMS manifest is rolling out with our Phase 1A signing pipeline.</p>
+            <CodeBlock code={`curl -fsSL "https://releases.mftplus.co.za/v0.7.0/release-info.json" \\
+  | jq -r '.[0].downloads[] | "\\(.sha256)  \\(.url | split("/")[-1])"' > SHA256SUMS.local
+sha256sum -c --ignore-missing SHA256SUMS.local`} />
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-icon">🔓</div>
+            <h3>No Blind Trust Required</h3>
+            <p>The installer, binaries, and per-file checksums sit side by side at releases.mftplus.co.za/v{`{version}`}/ — audit everything before it touches your system. `.minisig` signature files join them as our Phase 1A signing pipeline rolls out.</p>
+            <CodeBlock code={`curl -fsSL https://releases.mftplus.co.za/v0.7.0/release-info.json`} />
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-icon">📦</div>
+            <h3>SBOM Availability</h3>
+            <p>A Software Bill of Materials will be published for each release once the checksums/SBOM pipeline lands, so security teams can see exactly what ships inside the agent binary.</p>
+            <CodeBlock code={`# SBOM rolling out with the checksums/SBOM pipeline
+# Full dependency transparency`} />
+          </div>
+        </div>
+      </section>
+
       <section id="how-it-works" className={`how-section ${visibleSections.has('how-it-works') ? 'visible' : ''}`}>
         <div className="section-header">
           <span className="section-tag">How It Works</span>
@@ -591,6 +634,13 @@ mftctl jobs create --source ./data --dest sftp://server/`} />
                 <td>Add-on module</td>
                 <td>Built-in</td>
                 <td>Built-in</td>
+              </tr>
+              <tr>
+                <td>Supply Chain Security</td>
+                <td className="highlight-col">Verifiable releases — signing, SHA256SUMS + SBOM rolling out</td>
+                <td>Enterprise contracts only</td>
+                <td>Limited</td>
+                <td>Limited</td>
               </tr>
             </tbody>
           </table>
