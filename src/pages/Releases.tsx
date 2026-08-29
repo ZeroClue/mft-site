@@ -8,11 +8,19 @@ interface Download {
   sha256: string
 }
 
+interface Signing {
+  scheme: string
+  pubkeyUrl: string
+  pubkeyFingerprint: string
+  signatureDir: string
+}
+
 interface Release {
   version: string
   date: string
   stable: boolean
   downloads: Download[]
+  signing?: Signing
 }
 
 interface ArchivedRelease {
@@ -73,6 +81,14 @@ function groupDownloadsByBinary(downloads: Download[]) {
   return groups
 }
 
+const RELEASE_INFO_URL = 'https://releases.mftplus.co.za/release-info.json'
+const VERIFY_GUIDE_URL = 'https://docs.mftplus.co.za/install/verify'
+
+function sigUrl(download: Download, signing: Signing): string {
+  const asset = new URL(download.url).pathname.split('/').pop()!
+  return `${signing.signatureDir}${asset}.minisig`
+}
+
 function ReleasesPage() {
   const [scrolled, setScrolled] = useState(false)
   const [releases, setReleases] = useState<Release[]>([])
@@ -89,7 +105,7 @@ function ReleasesPage() {
   useEffect(() => {
     const fetchReleases = async () => {
       try {
-        const response = await fetch('https://releases.mftplus.co.za/release-info.json')
+        const response = await fetch(RELEASE_INFO_URL)
         if (!response.ok) {
           throw new Error(`Failed to fetch releases: ${response.status} ${response.statusText}`)
         }
@@ -145,10 +161,20 @@ function ReleasesPage() {
             mftctl CLI, mft-agent-cli, mft-discover, and MFT.Agent desktop app available now.
           </p>
         )}
-        <p className="verify-note">
-          All downloads are checksummed and (from the next release) minisign-signed.{' '}
-          <a href="https://docs.mftplus.co.za/install/verify">How to verify your download</a>
-        </p>
+        {loadingState === 'success' && latestRelease?.signing && (
+          <p className="verify-note">
+            <strong>Public key:</strong>{' '}
+            <code><a href={latestRelease.signing.pubkeyUrl} target="_blank" rel="noopener noreferrer">{latestRelease.signing.pubkeyFingerprint}</a></code>
+            {' | '}
+            <a href={VERIFY_GUIDE_URL} target="_blank" rel="noopener noreferrer">How to verify your download</a>
+          </p>
+        )}
+        {!latestRelease?.signing && (
+          <p className="verify-note">
+            All downloads are checksummed and (from the next release) minisign-signed.{' '}
+            <a href={VERIFY_GUIDE_URL}>How to verify your download</a>
+          </p>
+        )}
       </header>
 
       <main className="releases-list">
@@ -273,7 +299,7 @@ function ReleasesPage() {
                       <h3>MFT.Agent (Desktop App)</h3>
                       <p className="binary-description">Graphical desktop application for managing file transfers.</p>
                       <div className="downloads-grid">
-                        {groups.gui.map((download) => (
+{groups.gui.map((download) => (
                           <div key={download.platform} className="download-item">
                             <div className="download-header">
                               <span className="download-platform">{download.platform}</span>
@@ -283,13 +309,26 @@ function ReleasesPage() {
                               Download
                               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <polyline points="7 10 12 15 17 10"></line>
                                 <line x1="12" y1="15" x2="12" y2="3"></line>
                               </svg>
                             </a>
                             <div className="download-sha256">
                               <span className="sha256-label">SHA-256:</span>
                               <code className="sha256-value">{download.sha256}</code>
+                              {latestRelease.signing && (
+                                <>
+                                  {' | '}
+                                  <a
+                                    href={sigUrl(download, latestRelease.signing)}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="verify-signature-link"
+                                  >
+                                    Verify signature
+                                  </a>
+                                </>
+                              )}
                             </div>
                           </div>
                         ))}
@@ -319,6 +358,19 @@ function ReleasesPage() {
                             <div className="download-sha256">
                               <span className="sha256-label">SHA-256:</span>
                               <code className="sha256-value">{download.sha256}</code>
+                              {latestRelease.signing && (
+                                <>
+                                  {' | '}
+                                  <a
+                                    href={sigUrl(download, latestRelease.signing)}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="verify-signature-link"
+                                  >
+                                    Verify signature
+                                  </a>
+                                </>
+                              )}
                             </div>
                           </div>
                         ))}
@@ -348,6 +400,19 @@ function ReleasesPage() {
                             <div className="download-sha256">
                               <span className="sha256-label">SHA-256:</span>
                               <code className="sha256-value">{download.sha256}</code>
+                              {latestRelease.signing && (
+                                <>
+                                  {' | '}
+                                  <a
+                                    href={sigUrl(download, latestRelease.signing)}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="verify-signature-link"
+                                  >
+                                    Verify signature
+                                  </a>
+                                </>
+                              )}
                             </div>
                           </div>
                         ))}
@@ -377,6 +442,19 @@ function ReleasesPage() {
                             <div className="download-sha256">
                               <span className="sha256-label">SHA-256:</span>
                               <code className="sha256-value">{download.sha256}</code>
+                              {latestRelease.signing && (
+                                <>
+                                  {' | '}
+                                  <a
+                                    href={sigUrl(download, latestRelease.signing)}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="verify-signature-link"
+                                  >
+                                    Verify signature
+                                  </a>
+                                </>
+                              )}
                             </div>
                           </div>
                         ))}
