@@ -8,11 +8,19 @@ interface Download {
   sha256: string
 }
 
+interface SigningInfo {
+  scheme: string
+  pubkeyUrl: string
+  pubkeyFingerprint: string
+  signatureDir: string
+}
+
 interface Release {
   version: string
   date: string
   stable: boolean
   downloads: Download[]
+  signing?: SigningInfo
 }
 
 interface ArchivedRelease {
@@ -71,6 +79,16 @@ function groupDownloadsByBinary(downloads: Download[]) {
   })
 
   return groups
+}
+
+function getAssetFilename(url: string): string {
+  const parts = url.split('/')
+  return parts[parts.length - 1]
+}
+
+function getMinisigUrl(download: Download, version: string): string {
+  const asset = getAssetFilename(download.url)
+  return `https://releases.mftplus.co.za/v${version}/${asset}.minisig`
 }
 
 function ReleasesPage() {
@@ -145,10 +163,16 @@ function ReleasesPage() {
             mftctl CLI, mft-agent-cli, mft-discover, and MFT.Agent desktop app available now.
           </p>
         )}
-        <p className="verify-note">
-          All downloads are checksummed and (from the next release) minisign-signed.{' '}
-          <a href="https://docs.mftplus.co.za/install/verify">How to verify your download</a>
-        </p>
+        <div className="verify-section">
+          <p className="verify-note">
+            All downloads are checksummed and minisign-signed (Ed25519).{' '}
+            <a href="https://docs.mftplus.co.za/install/verify" target="_blank" rel="noopener">How to verify your download</a>
+          </p>
+          <p className="verify-key">
+            Public key: <code>mftplus-release.pub</code> (fingerprint: <strong>CE2C549429F978BB</strong>){' '}
+            <a href="https://releases.mftplus.co.za/mftplus-release.pub" target="_blank" rel="noopener">Download public key</a>
+          </p>
+        </div>
       </header>
 
       <main className="releases-list">
@@ -273,26 +297,29 @@ function ReleasesPage() {
                       <h3>MFT.Agent (Desktop App)</h3>
                       <p className="binary-description">Graphical desktop application for managing file transfers.</p>
                       <div className="downloads-grid">
-                        {groups.gui.map((download) => (
-                          <div key={download.platform} className="download-item">
-                            <div className="download-header">
-                              <span className="download-platform">{download.platform}</span>
-                              <span className="download-size">{download.size}</span>
-                            </div>
-                            <a href={`${download.url}${download.url.includes('?') ? '&' : '?'}utm_ref=mft-site`} className="download-button" download data-umami-event={`download-${download.platform.toLowerCase().replace(/\s+/g, '-')}`}>
-                              Download
-                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                <polyline points="7 10 12 15 17 10"></polyline>
-                                <line x1="12" y1="15" x2="12" y2="3"></line>
-                              </svg>
-                            </a>
-                            <div className="download-sha256">
-                              <span className="sha256-label">SHA-256:</span>
-                              <code className="sha256-value">{download.sha256}</code>
-                            </div>
-                          </div>
-                        ))}
+{groups.gui.map((download) => (
+                              <div key={download.platform} className="download-item">
+                                <div className="download-header">
+                                  <span className="download-platform">{download.platform}</span>
+                                  <span className="download-size">{download.size}</span>
+                                </div>
+                                <a href={`${download.url}${download.url.includes('?') ? '&' : '?'}utm_ref=mft-site`} className="download-button" download data-umami-event={`download-${download.platform.toLowerCase().replace(/\s+/g, '-')}`}>
+                                  Download
+                                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                  </svg>
+                                </a>
+                                <div className="download-sha256">
+                                  <span className="sha256-label">SHA-256:</span>
+                                  <code className="sha256-value">{download.sha256}</code>
+                                </div>
+                                <a href={getMinisigUrl(download, latestRelease.version)} className="verify-signature-link" target="_blank" rel="noopener" data-umami-event={`verify-${download.platform.toLowerCase().replace(/\s+/g, '-')}`}>
+                                  Verify signature
+                                </a>
+                              </div>
+                            ))}
                       </div>
                     </div>
                   )}
@@ -302,26 +329,29 @@ function ReleasesPage() {
                       <h3>mftctl (Admin CLI)</h3>
                       <p className="binary-description">Command-line interface for managing transfers, agents, and jobs.</p>
                       <div className="downloads-grid">
-                        {groups.mftctl.map((download) => (
-                          <div key={download.platform} className="download-item">
-                            <div className="download-header">
-                              <span className="download-platform">{download.platform}</span>
-                              <span className="download-size">{download.size}</span>
-                            </div>
-                            <a href={`${download.url}${download.url.includes('?') ? '&' : '?'}utm_ref=mft-site`} className="download-button" download data-umami-event={`download-${download.platform.toLowerCase().replace(/\s+/g, '-')}`}>
-                              Download
-                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                <polyline points="7 10 12 15 17 10"></polyline>
-                                <line x1="12" y1="15" x2="12" y2="3"></line>
-                              </svg>
-                            </a>
-                            <div className="download-sha256">
-                              <span className="sha256-label">SHA-256:</span>
-                              <code className="sha256-value">{download.sha256}</code>
-                            </div>
-                          </div>
-                        ))}
+{groups.mftctl.map((download) => (
+                              <div key={download.platform} className="download-item">
+                                <div className="download-header">
+                                  <span className="download-platform">{download.platform}</span>
+                                  <span className="download-size">{download.size}</span>
+                                </div>
+                                <a href={`${download.url}${download.url.includes('?') ? '&' : '?'}utm_ref=mft-site`} className="download-button" download data-umami-event={`download-${download.platform.toLowerCase().replace(/\s+/g, '-')}`}>
+                                  Download
+                                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                  </svg>
+                                </a>
+                                <div className="download-sha256">
+                                  <span className="sha256-label">SHA-256:</span>
+                                  <code className="sha256-value">{download.sha256}</code>
+                                </div>
+                                <a href={getMinisigUrl(download, latestRelease.version)} className="verify-signature-link" target="_blank" rel="noopener" data-umami-event={`verify-${download.platform.toLowerCase().replace(/\s+/g, '-')}`}>
+                                  Verify signature
+                                </a>
+                              </div>
+                            ))}
                       </div>
                     </div>
                   )}
@@ -331,26 +361,29 @@ function ReleasesPage() {
                       <h3>mft-agent-cli (Agent CLI)</h3>
                       <p className="binary-description">Lightweight CLI for running on agent machines.</p>
                       <div className="downloads-grid">
-                        {groups.agentCli.map((download) => (
-                          <div key={download.platform} className="download-item">
-                            <div className="download-header">
-                              <span className="download-platform">{download.platform}</span>
-                              <span className="download-size">{download.size}</span>
-                            </div>
-                            <a href={`${download.url}${download.url.includes('?') ? '&' : '?'}utm_ref=mft-site`} className="download-button" download data-umami-event={`download-${download.platform.toLowerCase().replace(/\s+/g, '-')}`}>
-                              Download
-                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                <polyline points="7 10 12 15 17 10"></polyline>
-                                <line x1="12" y1="15" x2="12" y2="3"></line>
-                              </svg>
-                            </a>
-                            <div className="download-sha256">
-                              <span className="sha256-label">SHA-256:</span>
-                              <code className="sha256-value">{download.sha256}</code>
-                            </div>
-                          </div>
-                        ))}
+{groups.agentCli.map((download) => (
+                              <div key={download.platform} className="download-item">
+                                <div className="download-header">
+                                  <span className="download-platform">{download.platform}</span>
+                                  <span className="download-size">{download.size}</span>
+                                </div>
+                                <a href={`${download.url}${download.url.includes('?') ? '&' : '?'}utm_ref=mft-site`} className="download-button" download data-umami-event={`download-${download.platform.toLowerCase().replace(/\s+/g, '-')}`}>
+                                  Download
+                                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                  </svg>
+                                </a>
+                                <div className="download-sha256">
+                                  <span className="sha256-label">SHA-256:</span>
+                                  <code className="sha256-value">{download.sha256}</code>
+                                </div>
+                                <a href={getMinisigUrl(download, latestRelease.version)} className="verify-signature-link" target="_blank" rel="noopener" data-umami-event={`verify-${download.platform.toLowerCase().replace(/\s+/g, '-')}`}>
+                                  Verify signature
+                                </a>
+                              </div>
+                            ))}
                       </div>
                     </div>
                   )}
@@ -360,26 +393,29 @@ function ReleasesPage() {
                       <h3>mft-discover (Discovery Tool)</h3>
                       <p className="binary-description">Network discovery tool for finding MFT agents.</p>
                       <div className="downloads-grid">
-                        {groups.discover.map((download) => (
-                          <div key={download.platform} className="download-item">
-                            <div className="download-header">
-                              <span className="download-platform">{download.platform}</span>
-                              <span className="download-size">{download.size}</span>
-                            </div>
-                            <a href={`${download.url}${download.url.includes('?') ? '&' : '?'}utm_ref=mft-site`} className="download-button" download data-umami-event={`download-${download.platform.toLowerCase().replace(/\s+/g, '-')}`}>
-                              Download
-                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                <polyline points="7 10 12 15 17 10"></polyline>
-                                <line x1="12" y1="15" x2="12" y2="3"></line>
-                              </svg>
-                            </a>
-                            <div className="download-sha256">
-                              <span className="sha256-label">SHA-256:</span>
-                              <code className="sha256-value">{download.sha256}</code>
-                            </div>
-                          </div>
-                        ))}
+{groups.discover.map((download) => (
+                              <div key={download.platform} className="download-item">
+                                <div className="download-header">
+                                  <span className="download-platform">{download.platform}</span>
+                                  <span className="download-size">{download.size}</span>
+                                </div>
+                                <a href={`${download.url}${download.url.includes('?') ? '&' : '?'}utm_ref=mft-site`} className="download-button" download data-umami-event={`download-${download.platform.toLowerCase().replace(/\s+/g, '-')}`}>
+                                  Download
+                                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                  </svg>
+                                </a>
+                                <div className="download-sha256">
+                                  <span className="sha256-label">SHA-256:</span>
+                                  <code className="sha256-value">{download.sha256}</code>
+                                </div>
+                                <a href={getMinisigUrl(download, latestRelease.version)} className="verify-signature-link" target="_blank" rel="noopener" data-umami-event={`verify-${download.platform.toLowerCase().replace(/\s+/g, '-')}`}>
+                                  Verify signature
+                                </a>
+                              </div>
+                            ))}
                       </div>
                     </div>
                   )}
@@ -450,6 +486,13 @@ function ReleasesPage() {
                               <line x1="12" y1="15" x2="12" y2="3"></line>
                             </svg>
                           </a>
+                          <div className="download-sha256">
+                            <span className="sha256-label">SHA-256:</span>
+                            <code className="sha256-value">{download.sha256}</code>
+                          </div>
+                          <a href={getMinisigUrl(download, previousRelease.version)} className="verify-signature-link" target="_blank" rel="noopener" data-umami-event={`verify-${download.platform.toLowerCase().replace(/\s+/g, '-')}`}>
+                            Verify signature
+                          </a>
                         </div>
                       ))}
                     </div>
@@ -473,6 +516,13 @@ function ReleasesPage() {
                               <polyline points="7 10 12 15 17 10"></polyline>
                               <line x1="12" y1="15" x2="12" y2="3"></line>
                             </svg>
+                          </a>
+                          <div className="download-sha256">
+                            <span className="sha256-label">SHA-256:</span>
+                            <code className="sha256-value">{download.sha256}</code>
+                          </div>
+                          <a href={getMinisigUrl(download, previousRelease.version)} className="verify-signature-link" target="_blank" rel="noopener" data-umami-event={`verify-${download.platform.toLowerCase().replace(/\s+/g, '-')}`}>
+                            Verify signature
                           </a>
                         </div>
                       ))}
@@ -498,6 +548,13 @@ function ReleasesPage() {
                               <line x1="12" y1="15" x2="12" y2="3"></line>
                             </svg>
                           </a>
+                          <div className="download-sha256">
+                            <span className="sha256-label">SHA-256:</span>
+                            <code className="sha256-value">{download.sha256}</code>
+                          </div>
+                          <a href={getMinisigUrl(download, previousRelease.version)} className="verify-signature-link" target="_blank" rel="noopener" data-umami-event={`verify-${download.platform.toLowerCase().replace(/\s+/g, '-')}`}>
+                            Verify signature
+                          </a>
                         </div>
                       ))}
                     </div>
@@ -521,6 +578,13 @@ function ReleasesPage() {
                               <polyline points="7 10 12 15 17 10"></polyline>
                               <line x1="12" y1="15" x2="12" y2="3"></line>
                             </svg>
+                          </a>
+                          <div className="download-sha256">
+                            <span className="sha256-label">SHA-256:</span>
+                            <code className="sha256-value">{download.sha256}</code>
+                          </div>
+                          <a href={getMinisigUrl(download, previousRelease.version)} className="verify-signature-link" target="_blank" rel="noopener" data-umami-event={`verify-${download.platform.toLowerCase().replace(/\s+/g, '-')}`}>
+                            Verify signature
                           </a>
                         </div>
                       ))}

@@ -660,6 +660,38 @@
   line-height: 1.4;
 }
 
+.verify-signature-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #D4A843;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 4px 8px;
+  border: 1px solid rgba(212, 168, 67, 0.3);
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  margin-top: 4px;
+}
+
+.verify-signature-link:hover {
+  background: rgba(212, 168, 67, 0.1);
+  border-color: #D4A843;
+  text-decoration: none;
+}
+
+.verify-signature-link::before {
+  content: '';
+  width: 12px;
+  height: 12px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23D4A843' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'/%3E%3C/path%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  flex-shrink: 0;
+}
+
 /* Footer - matches App.css */
 .releases-page .footer {
   position: relative;
@@ -752,13 +784,46 @@
   line-height: 1.6;
 }
 
-.verify-note {
+.verify-section {
   margin: 16px 0 0;
+  padding: 16px;
+  background: rgba(184, 134, 11, 0.05);
+  border: 1px solid rgba(184, 134, 11, 0.15);
+  border-radius: 8px;
+}
+
+.verify-note {
   color: #A8A29E;
   font-size: 0.95rem;
+  margin: 0 0 8px;
 }
 
 .verify-note a {
+  color: #D4A843;
+  font-weight: 600;
+}
+
+.verify-key {
+  color: #78716C;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.verify-key code {
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+  font-size: 0.8rem;
+  color: #A8A29E;
+  background: rgba(31, 26, 23, 0.8);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.verify-key strong {
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+  color: #D4A843;
+}
+
+.verify-key a {
   color: #D4A843;
   font-weight: 600;
 }
